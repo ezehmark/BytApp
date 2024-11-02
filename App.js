@@ -4,9 +4,13 @@ import Menu from './menu.tsx';
 
 
 export default function App() {
+const[menuSeen, setMenuSeen]= useState(false);
+    const toggleMenu =()=>{                                            setMenuSeen(prevMenu =>!prevMenu);
+    }
+
   return (
 	  <>
-  <Menu/>
-	  <Home/>
+	  <Menu isMenu ={menuSeen} toggleMenu ={toggleMenu} />
+  <Home toggleMenu ={toggleMenu} />
   </>);
 }

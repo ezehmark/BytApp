@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, TouchableOpacity} from "react";
 import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
 import { BlurView } from 'expo-blur';
 import {LinearGradient} from 'expo-linear-gradient';
 import Menu from './menu.tsx';
 
-const Home: React.FC = () => {
+interface HomeProps{toggleMenu:()=> void}
+
+const Home: React.FC<HomeProps> = ({toggleMenu}) => {
     const [click, setClick] = useState(false);
 
     const toggleClick = () => {
         setClick(click => !click);
     }
 
+
     return (
         <View style={styles.container}>
-
 
 
                <BlurView style={styles.topContainer}>
@@ -37,9 +39,13 @@ const Home: React.FC = () => {
                 <Text style={styles.welcome}>Welcome, Mark</Text>
             
 </BlurView>
-    <View style={styles.menuCircle}>
-                <Image style={styles.menuIcon} onPress={toggleMenu}  source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
-            </View>
+
+	    
+	    <View style={styles.menuCircle}>
+                <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
+		</View>
+        
+	    
 
             <View style={styles.infoCircle}>
                 <Image style={styles.bellIcon} source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }} />
@@ -183,7 +189,7 @@ const styles = StyleSheet.create({
     scrollView: {
         flex: 1,
 	zIndex: 1,
-        marginTop: 160,
+        marginTop: 130,
 	
         width: '100%',
         paddingTop: 20,
@@ -527,21 +533,22 @@ balance: {
 	zIndex: 3,
     },
     menuCircle: {
-        position: 'absolute',
+        
         top: 10,
         left: 10,
-        height: 35,
-        width: 50,
+        height: 30,
+        width: 35,
         borderRadius: 10,
-        backgroundColor: 'none',overflow: 'hidden',
+        backgroundColor: '#FBEBE5',overflow: 'hidden',
 	zIndex: 3,
     },
     menuIcon: {
         height: 24,
         width: 24, 
-        position: 'absolute',
+
 	left:8,
 	resizeMode:'contain',
+	
     },
     
     bellIcon: {
