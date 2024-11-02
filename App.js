@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Home from './home.tsx';
 import Menu from './menu.tsx';
+import Fund from './fund.tsx;
 
 export default function App() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -11,8 +12,8 @@ export default function App() {
 
     return (
         <>
-            <Menu isOpen={menuOpen} toggleMenu={toggleMenu} />
-            <Home toggleMenu={toggleMenu} />
+           // <Menu isOpen={menuOpen} toggleMenu={toggleMenu} />
+            //<Home toggleMenu={toggleMenu} />
         </>
     );
 }
