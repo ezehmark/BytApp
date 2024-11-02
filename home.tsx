@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from "react-native";
+import { Text, View, Image, StyleSheet, ScrollView} from "react-native";
 import { BlurView } from 'expo-blur';
 import {LinearGradient} from 'expo-linear-gradient';
 import Menu from './menu.tsx';
 
-const Home: React.FC<HomeProps> = ({toggleMenu}) => {
+const Home: React.FC= () => {
     const [click, setClick] = useState(false);
 
     const toggleClick = () => {
@@ -159,7 +159,6 @@ const styles = StyleSheet.create({
 		shadowOffset: {height: 0.5, width: 0},                  
 		shadowOpacity: 0.2, 
 		elevation: 1,
-		shadowRadius: 1,                                           blur: 3,
 		zIndex: 3,                                        
 	},
 		
@@ -470,7 +469,6 @@ balance: {
 	zIndex: 3,
 	borderTopWidth: 0.5,
 	borderColor: '#ddd',
-	blur:3,
 	paddingBottom:5,
 
     },
