@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
 import { BlurView } from 'expo-blur';
 import {LinearGradient} from 'expo-linear-gradient';
+import Menu from './menu.tsx';
 
 const Home: React.FC = () => {
     const [click, setClick] = useState(false);
@@ -13,10 +14,12 @@ const Home: React.FC = () => {
     return (
         <View style={styles.container}>
 
+
+
                <BlurView style={styles.topContainer}>
+	       <Image source={{uri: 'https://i.postimg.cc/sXShHWLR/Picsart-24-11-01-15-07-20-853.png'}} style={styles.icon}/>
 	       <View style={styles.balanceArea}>
-                    <Text style={styles.refresh}>
-		    </Text>
+                
                     <Text style={styles.balance}>Balance</Text>
                     <View style={styles.currency}>
                         <Text style={styles.NGN}>NGN</Text>
@@ -35,7 +38,7 @@ const Home: React.FC = () => {
             
 </BlurView>
     <View style={styles.menuCircle}>
-                <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
+                <Image style={styles.menuIcon} onPress={toggleMenu}  source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
             </View>
 
             <View style={styles.infoCircle}>
@@ -63,7 +66,7 @@ const Home: React.FC = () => {
 
 	    <View style={styles.sellGiftCard}>
 		<Text style={styles.Sell}>Sell</Text>
-		<Text style={styles.GiftCards}>Gift Cards</Text>
+		<Text style={styles.GiftCardSell}>Gift Cards</Text>
 		<View style={styles.sellIcon}>
 		    <Image style={styles.sImage} source={{ uri: 'https://i.postimg.cc/SN8bBzFw/Screenshot-20241031-210908.png' }} />
 		</View>
@@ -84,7 +87,23 @@ const Home: React.FC = () => {
 	    </View>
 	    
 	    <View style={styles.subscribeTv}>
-	    <Text style={styles.Sell}>Fast Tv Subscriptions</Text>
+	    <Image style={styles.tvImage} source={{uri: 'https://i.postimg.cc/7LXTzX0b/TvSubs.png'}}/>
+	    <Text style={styles.tvheading}>Fast Tv Subscriptions</Text>
+	    <View style={styles.TVs}>
+
+	    <View style={styles.TV}>
+	    <Image style={styles.TVimage} source={{uri: "https://i.postimg.cc/zDLwKZBh/images-32.jpg"}}/>
+	    </View>
+
+	    <View style={styles.TV}>                                   <Image style={styles.TVimage} source={{uri: "https://i.postimg.cc/JnHyD8q4/images-33.jpg"}}/>                         </View>
+
+
+
+	    <View style={styles.TV}>                                   <Image style={styles.TVimageS} source={{uri: 'https://i.postimg.cc/9MbdbC9P/Picsart-24-11-01-13-40-07-270.png'}}/>                </View>
+
+
+	    </View>
+
 	    </View>
 	</View>
 	
@@ -115,19 +134,30 @@ const Home: React.FC = () => {
     );
 };
 const styles = StyleSheet.create({
+
+
+	icon:{
+		height:32,
+		width:50,
+		position:'absolute',
+		top:7,
+		left:50,
+		borderRadius:5,
+	},
 	topContainer: {                                           
 		padding: 20,                                         
 		height: 170,                                         
-		width: '100%',                                        
-		borderBottomRightRadius: 25,                          
-		borderBottomLeftRadius: 25,
-		
+		width: '100%',
+		top:0,
+		borderBottomRightRadius: 25,                                                                                          borderBottomLeftRadius: 25,
 		position: 'absolute',                                 
-		shadowColor: 'white',                                 
-		shadowOffset: {height: 4, width: 0},                  
-		shadowOpacity: 0.3,                                   
-		shadowRadius: 4,                                           blur: 3,
-		zIndex: 2,                                        },
+		shadowColor: 'black',                                 
+		shadowOffset: {height: 0.5, width: 0},                  
+		shadowOpacity: 0.2, 
+		elevation: 1,
+		shadowRadius: 1,                                           blur: 3,
+		zIndex: 3,                                        
+	},
 		
     headingContainer: {
 	    position:'absolute',
@@ -148,10 +178,8 @@ const styles = StyleSheet.create({
 	    bottom:8,
 	    color:'#526669',
     },
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
+    container: {                                                   flex: 1,                                                   backgroundColor: '#EBE2C2',                               },
+
     scrollView: {
         flex: 1,
 	zIndex: 1,
@@ -181,7 +209,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         elevation: 4,
         position: 'absolute',
-        top: 45,
+        top: 55,
     },
     Buy: {
         fontWeight: 'bold',
@@ -199,6 +227,7 @@ const styles = StyleSheet.create({
         top: 15,
         left: 25,
     },
+
     recharge: {                                                        fontWeight: 'bold',                                        fontSize: 17,                                              color: '#D8711B',                                              position: 'absolute',                                      top: 15,                                                   left: 25,
     },
     GiftCards: {
@@ -215,13 +244,15 @@ const styles = StyleSheet.create({
 	borderWidth:1,
 	borderColor:'white',
     },
+
+    GiftCardSell: {                                                   fontWeight: 'bold',                                        fontSize: 16,                                              color: '#09435F',                                          position: 'absolute',                                      bottom: 20,                                                justifyContent: 'center',                                                                                             marginLeft:30,                                             padding:8,                                                 borderRadius:15,                                           borderWidth:1,                                             borderColor:'white',                                   },
     sBuy: {                                                         fontWeight: 'bold',
         fontSize: 17,
         color: '#06F983',
         position: 'absolute',
         top: 15,                                                   right: 30,
     },
-    sGiftCards: {                                                   fontWeight: 'bold',                                        fontSize: 16,                                              color: '#D63440',                                          position: 'absolute',                                      bottom: 20,                                                justifyContent: 'center',
+    sGiftCards: {                                                   fontWeight: 'bold',                                        fontSize: 16,                                              color: '#F77802',                                          position: 'absolute',                                      bottom: 20,                                                justifyContent: 'center',
                                                                    marginLeft:30,                                             padding:8,                                                 borderRadius:15,                                           borderWidth:1,                                             borderColor:'white',                                   },
 
 	topUp: {                                                   fontWeight: 'bold',                                        fontSize: 16,                                              color: 'white',                                          position: 'absolute',                                      bottom: 20,                                                justifyContent: 'center',                                                                                            marginLeft:30,                                             padding:8,                                                 borderRadius:15,                                           borderWidth:1,                                             borderColor:'white',                                   },							   
@@ -261,7 +292,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         elevation: 4,
         position: 'absolute',
-        top: 45,
+        top: 55,
         right: 15,
     },
     sellIcon: {
@@ -287,7 +318,7 @@ const styles = StyleSheet.create({
         height: 120,
         width: 160,
         marginVertical: 20,
-        backgroundColor: '#504A4C',
+        backgroundColor: '#2e4a5f',
         borderRadius: 15,
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 4 },
@@ -295,7 +326,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         elevation: 4,
         position: 'absolute',
-        top: 200,
+        top: 215,
     },
     buyAirtime: {
         height: 120,
@@ -308,7 +339,7 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         shadowOpacity: 0.3,
         elevation: 4,
-        top: 200,
+        top: 215,
         position: 'absolute',
         right: 15,
     },
@@ -323,27 +354,34 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         shadowOpacity: 0.3,
         elevation: 4,
-        top: 370,
+        top: 400,
         position: 'absolute',
         right: 15,
+	overflow: 'hidden',
+    },
+
+    tvImage:{
+	    height:120,
+	    width:327,
     },
       balanceArea: {
         position: 'absolute',
         height: 100,
         width: 270,
-        borderRadius: 30,
         justifyContent: 'center',
         alignSelf: 'center',
         padding: 20,
-        top: 60,borderWidth:0.5,
+        top: 60,borderWidth:0,
 	borderColor: '#4AD8E3',
 
-	borderRadius:15,
+	borderRadius:20,
 	shadowColor:'#ccc',                                       shadowOffset:{width:0, height: 0},                         shadowRadius:6,                                            elevation: 3,
         shadowOpacity: 0.6,
+	zIndex:4,
+	backgroundColor:'#4A6163',
       },
 balance: {
-        color: 'black',
+        color: '#ccc',
         position: 'absolute',
         top: 10,
         left: 20,
@@ -356,7 +394,7 @@ balance: {
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 12,
-        backgroundColor: 'white',
+        backgroundColor:'white',
         position: 'absolute',
         left: 10,
         marginTop:'auto',                                     
@@ -367,7 +405,7 @@ balance: {
        },
 
        hide: {
-        backgroundColor: 'white',
+        backgroundColor: '#4A6163',
         width: 38,
         height: 23,
         borderRadius: 12,
@@ -377,7 +415,7 @@ balance: {
 	right:10,
 	marginTop:'auto',
 	marginBottom: 'auto',
-	shadowColor:'black',
+	shadowColor:'white',
 	shadowOffset:{width:0, height: 0},
 	shadowRadius:3,
 	elevation: 2,
@@ -386,7 +424,7 @@ balance: {
     hideAndSee: {
         fontWeight: 'bold',
         fontSize: 10,
-        color: 'red',
+        color: 'white',
         
     },
     
@@ -408,8 +446,8 @@ balance: {
     
     total: {
         fontWeight: 'bold',
-        fontSize: 30,
-        color: 'black',
+        fontSize: 26,
+        color: '#ccc',
         position: 'absolute',
         top: 40,
         alignSelf: 'center',
@@ -429,6 +467,7 @@ balance: {
 	borderTopWidth: 0.5,
 	borderColor: '#ddd',
 	blur:3,
+	paddingBottom:5,
 
     },
     tabArea: {
@@ -509,6 +548,53 @@ balance: {
         height: 25,
         width: 25,
 	left:1
+    },
+
+    TVs:{
+	    justifyContent:'space-around',
+	    position:'absolute',
+	    height:60,
+	    width:'100%',
+	    flexDirection: 'row',
+	    bottom:15,
+
+    },
+
+    TV:{
+	    height:45,
+	    width:65,
+	    borderRadius:15,
+	    backgroundColor:'white',
+	    overflow:'hidden',
+	    backgroundColor:'#ccc',
+	    borderWidth:1,
+	    borderColor: 'white',
+	    shadowColor:'black',                                       shadowOffset:{width:0, height: 0},                         shadowRadius:3,                                            elevation: 2,                                              shadowOpacity: 0.5,
+
+    },
+
+    TVimage:{
+	
+	    height:60,
+	    width:65,
+
+	    
+    },
+
+    TVimageS:{                                                                                                                     height:45,                                                 width:65,
+	    resizeMode: 'contain',
+    },
+
+    tvheading:{
+	    alignSelf: 'center',
+	    top:15,
+	    position:'absolute',
+	    padding:3,
+	    borderRadius:15,
+	    fontSize:10,
+	    backgroundColor:'#3D6178',
+	    color:'white',
+
     },
 });
 
