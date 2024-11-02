@@ -1,10 +1,8 @@
-import React, { useState, TouchableOpacity} from "react";
-import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from "react-native";
 import { BlurView } from 'expo-blur';
 import {LinearGradient} from 'expo-linear-gradient';
 import Menu from './menu.tsx';
-
-interface HomeProps{toggleMenu:()=> void}
 
 const Home: React.FC<HomeProps> = ({toggleMenu}) => {
     const [click, setClick] = useState(false);
