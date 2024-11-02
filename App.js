@@ -1,16 +1,18 @@
-import React from 'react';
-import Home from './home.tsx'; // Import your SignupScreen
+import React, { useState } from 'react';
+import Home from './home.tsx';
 import Menu from './menu.tsx';
 
-
 export default function App() {
-const[menuSeen, setMenuSeen]= useState(false);
-    const toggleMenu =()=>{                                            setMenuSeen(prevMenu =>!prevMenu);
-    }
+    const [menuOpen, setMenuOpen] = useState(false);
 
-  return (
-	  <>
-	  <Menu isMenu ={menuSeen} toggleMenu ={toggleMenu} />
-  <Home toggleMenu ={toggleMenu} />
-  </>);
+    const toggleMenu = () => {
+        setMenuOpen(prev => !prev);
+    };
+
+    return (
+        <>
+            <Menu isOpen={menuOpen} toggleMenu={toggleMenu} />
+            <Home toggleMenu={toggleMenu} />
+        </>
+    );
 }
