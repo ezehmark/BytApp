@@ -9,7 +9,7 @@ const Fund: React.FC = () => {
 	    <>
         <View style={styles.container}>
 	<LinearGradient
-	colors={['white', 'white', '#EBE2C2']}
+	colors={['white', '#f5b857']}
 	start={{x:0, y:0}}
 	end={{x:0, y:1}}
 	style={styles.gradientContainer}>
@@ -35,23 +35,33 @@ const Fund: React.FC = () => {
 
 
 		    <View style={styles.balArea}>
-		    <Text style={styles.bal}>Bal</Text>
+		    <Text style={styles.bal}>Bal:</Text>
 		    <Text style={styles.balance}>₦100,000</Text>
 		    </View>
 
 		    <Text style={styles.recentAccounts}>Recent Accounts</Text>
 		    <View style={styles.accountsList}>
-		    <Text style={styles.usedAccount}/>
-		    <Text style={styles.usedAccount}/>
-		    <Text style={styles.usedAccount}/>
-		    <Text style={styles.usedAccount}/>
+		    <LinearGradient
+		    colors={[ '#fff', '#fff', '#fff', '#ccc']}
+		    start={{x:0, y:0}}
+		    end={{x:1, y:0}}
+		    style={styles.usedAccount}/>
+
+		    <LinearGradient                                                 colors={['#fff', '#fff', '#fff', '#ccc']}
+                    start={{x:0, y:0}}                                              end={{x:1, y:0}}                                                style={styles.usedAccount}/>
+
+		    <LinearGradient                                                 colors={[ '#fff', '#fff', '#fff', '#ccc']}
+                    start={{x:0, y:0}}                                              end={{x:1, y:0}}                                                style={styles.usedAccount}/>
+
+		    <LinearGradient                                                 colors={['#fff', '#fff', '#fff', '#ccc']}
+                    start={{x:0, y:0}}                                              end={{x:1, y:0}}                                                style={styles.usedAccount}/>
 
 		    </View>
 
 		    <View style={styles.fundButtons}>
 
-
                         <View style={styles.fund1}>
+<Image style={styles.addImage}                             source={{uri: 'https://i.postimg.cc/x14DHtjJ/Picsart-24-11-03-14-43-11-943.png'}}/>
 
 			<Text style ={styles.addFund}>Add Fund</Text>
 			</View>
@@ -121,7 +131,7 @@ const styles = StyleSheet.create({
         width: '100%',
         top: 0,
         position: 'absolute',
-	//backgroundColor:'#F77802',
+	backgroundColor:' #f5b857',
 	
     },
     contentArea: {
@@ -130,7 +140,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'center',
         top: 40,
-        backgroundColor: '#EBE2C2',
+        backgroundColor: '#cfccc5',
         borderRadius: 30,
 	
 	
@@ -145,11 +155,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 15,
         top: 80,
-        backgroundColor: '#ddd',
+        backgroundColor: '#f7fcf6',
         height: 350,
         width:320,
 	alignSelf:'center',
-	borderRadius:15,
+	borderRadius:30,
 	shadowColor:'black',
 	shadowOffset:{width:0, height:2},
 	shadowRadius:2,
@@ -164,17 +174,18 @@ const styles = StyleSheet.create({
 	    width:100,
 	    justifyContent:'space-around',
 	    position: 'absolute',
-	    top:75,
+	    top:85,
 	    right:20,
-	    borderRadius:2,
-	    backgroundColor:'yellow',
+	    borderRadius:15,
 	    flexDirection:'row',
+	    borderWidth:0.3,
+	    borderColor:'#548C94',
 
     },
 
     bal:{
 	    fontSize:12,
-	    color:'green',
+	    color:'#548C94',
 	    fontWeight:'bold',
 	    alignSelf:'center',
 	    left:5,
@@ -182,29 +193,47 @@ const styles = StyleSheet.create({
     },
 
     balance:{
-	    fontSize:15,
-	    color:'black',
+	    fontSize:12,
+	    color:'#082350',
 	    alignSelf:'center',
+	    fontWeight:'bold',
     },
     fund1:{
-	    height:50,
+	    height:60,
 	    width:130,
 	    borderRadius:15,
 	    shadowColor:'black',
 	    shadowOffset:{width:0, height:0},
 	    shadowRadius:4,
 	    elevation:5,
-	    shadowOpacity:0.3,
+	    backgroundColor:'#3CB2CB',
+	    shadowOpacity:0.3,},
+	fund2:{                                                                 height:60,                                                      width:130,                                                      borderRadius:15,                                                shadowColor:'black',                                            shadowOffset:{width:0, height:0},                               shadowRadius:4,                                                 elevation:5,                                                    shadowOpacity:0.3,
+		backgroundColor:'#548C94',
+	},
+
+
+
+
+	addImage:{                                                         top:-8,                                                                                                                          height:60,                                                      width:100,                                                      resizeMode:'contain',                                           alignSelf:'center',                                             position:'absolute',                                                                                                                                                                                                                                                                                            },
+
+
+
+
+
+
 
 	    withdrawImage:{
+		    top:5,
+	
 		    height:45,
 		    width:100,
-		    resizeMode:'cover',
+		    resizeMode:'contain',
 		    alignSelf:'center',
 		    position:'absolute',
 
 
-	    },
+	    
 
     },
 
@@ -212,30 +241,20 @@ const styles = StyleSheet.create({
 	    fontWeight:'bold',
 	    position: 'absolute',
 	    alignSelf:'center',
-	    color:'blue',
-	    bottom:5,
+	    color:'white',
+	    bottom:4.5,
     },
 
     withdraw:{
-	    fontWeight:'bold',                                                    position: 'absolute',                                                 alignSelf:'center',                                                   color:'blue',                                                         bottom:5,
+	    fontWeight:'bold',                                                    position: 'absolute',                                                 alignSelf:'center',                                                   color:'black',                                                         bottom:4.5,
     },
 
 
 
-    fund2:{
-            height:50,
-            width:130,
-            borderRadius:15,
-            shadowColor:'black',
-            shadowOffset:{width:0, height:0},
-            shadowRadius:4,
-            elevation:5,
-	    shadowOpacity:0.3,
-    },
 
     recentAccounts:{
 	    position:'absolute',
-	    top:100,
+	    top:85,
 	    left:30,
 	    fontWeight:'bold',
     },
@@ -253,20 +272,19 @@ const styles = StyleSheet.create({
     accountsList:{
 	    position:'absolute',
 	    top:120,
-	    left:10,
+	    
 	    flex:1,
 	    padding:15,
 	    justifyContent:'space-around',
 	    flexDirection:'column',
 	    alignItems:'center',
 	    borderRadius:30,
-	    shadowOffset:{width:0, height:0},
-            shadowRadius:4,
             elevation:5,
-            shadowOpacity:0.3,
-	    //backgroundColor:'blue',
+	    backgroundColor:'#ccc',
 	    paddingTop:20,
 	    paddingBottom:20,
+	    paddingRight:60,
+	    alignSelf:'center',
 	    
 	    
 

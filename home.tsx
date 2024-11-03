@@ -3,6 +3,8 @@ import { Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from "reac
 import { BlurView } from 'expo-blur';
 import {LinearGradient} from 'expo-linear-gradient';
 import Menu from './menu.tsx';
+import {useNavigation} from '@react-navigation/native';
+
 
 interface HomeProps{toggleMenu: ()=> void}
 const Home: React.FC<HomeProps>= ({toggleMenu}) => {
@@ -12,7 +14,7 @@ const Home: React.FC<HomeProps>= ({toggleMenu}) => {
         setClick(click => !click);
     }
 
-
+const navigation = useNavigation();
     return (
         <View style={styles.container}>
 
@@ -113,19 +115,33 @@ const Home: React.FC<HomeProps>= ({toggleMenu}) => {
 	    </View>
 	</View>
 	
+<View style={styles.buyElectricity}>
+            <Text style={styles.PHCN}>PHCN</Text>                 <Text style={styles.electricityBills}>Electricity Bills</Text>
+                <View style={styles.electricIcon}>                                             <Image style={styles.electricImage} source={{ uri: 'https://i.postimg.cc/FH711vFn/Picsart-24-11-02-16-24-24-701.png' }} />                     </View>                                                           </View>                                                                                                                                     <View style={styles.fundBet}>
+            <Text style={styles.recharge}>FundBet</Text>                 <Text style={styles.topUp}>Coming Soon..</Text>                                           <View style={styles.sellIcon}>                                            <Image style={styles.sImage} source={{ uri: 'https://i.postimg.cc/h47r3pL1/Picsart-24-11-02-20-16-32-266.png' }} />                   </View>
+            </View>
+
+
+<View style={styles.Crypto}>                                     <Image style={styles.tvImage} source={{uri: 'https://i.postimg.cc/RFR1h8GH/file-aer7z-HOsxsly-QZSujnn5-Cdzi-1-1.jpg'}}/>                                                  <BlurView intensity={15} style={styles.cryptoHeading1}>
+F⚡ASH™ Trading App</BlurView> 
+
+
+<Text style={styles.comingSoon}>Coming Soon...</Text>
+</View>
 
                 {/* Add more scrollable content if needed */}
             </ScrollView>
 
             <BlurView style={styles.bottomTab}>
-                <View style={styles.tabArea}>
+                <TouchableOpacity onPress={()=>navigation.navigate('home')}  style={styles.tabArea}>
                     <View style={styles.tab} >
 		    <Image style={styles.homeImage} source={{uri : 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png'}}/>
 		    </View>
                     <Text style={styles.tabText}>Home</Text>
-                </View>
+                </TouchableOpacity>
 
-		<View style={styles.tabArea}>                             <View style={styles.tab} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                </View>
+		<TouchableOpacity onPress={()=>navigation.navigate('fund')} style={styles.tabArea}>                             <View style={styles.tab} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                
+		</TouchableOpacity>
                 <View style={styles.tabArea}>
                     <View style={styles.tab} >
 		    <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png'}}/>                                                                             </View>
@@ -137,11 +153,8 @@ const Home: React.FC<HomeProps>= ({toggleMenu}) => {
                 </View>
             </BlurView>
         </View>
-    
     );
 };
-
-
 const styles = StyleSheet.create({
 
 
@@ -186,7 +199,8 @@ const styles = StyleSheet.create({
 	    bottom:8,
 	    color:'#526669',
     },
-    container: {                                                   flex: 1,                                                   backgroundColor: '#EBE2C2',                               },
+    container: {                                                  
+	    flex: 1,                                                   backgroundColor: '#EBE2C2',                               },
 
     scrollView: {
         flex: 1,
@@ -197,7 +211,7 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
     services: {
-        height: 600,
+        height: 1050,
         width: '100%',
         position: 'absolute',
         padding: 30,
@@ -219,6 +233,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 55,
     },
+    
+
     Buy: {
         fontWeight: 'bold',
         fontSize: 17,
@@ -227,6 +243,16 @@ const styles = StyleSheet.create({
         top: 15,
         right: 30,
     },
+
+    buyElectricity: {                                                            height: 120,                                                          width: 160,                                                           marginVertical: 20,                                                   backgroundColor: '#ECFBFF',                                           borderRadius: 15,                                                     shadowColor: 'black',                                                 shadowOffset: { width: 0, height: 4 },                                shadowRadius: 4,                                                      shadowOpacity: 0.3,                                                   elevation: 4,                                                         position: 'absolute',                                                 top: 550,
+	    left:15,
+    },
+    PHCN: {                                                                    fontWeight: 'bold',                                                   fontSize: 17,                                                         color: '#F87F20',                                                     position: 'absolute',                                                 top: 15,                                                              right: 30,                                                        },
+
+    electricityBills: {                                                              fontWeight: 'bold',                                                   fontSize: 16,                                                         color: '#2E5E74',                                                     position: 'absolute',                                                 bottom: 20,                                                           justifyContent: 'center',                                                                                                                   marginLeft:30,                                                        padding:8,                                                            borderRadius:15,                                                      borderWidth:1,                                                        borderColor:'#2E5E74',                                              },
+    electricIcon: {                                                                position: 'absolute',                                                 height: 52,                                                           width: 50,                                                            borderRadius:15,                                                      borderColor: '#20a385',                                                                                                                    backgroundColor: '#EFAA51',                                           overflow: 'hidden',                                                   alignItems: 'center',                                                 justifyContent: 'center',                                             left:5,                                                               top:5,                                                        },                                                                                                                                          electricImage: {                                                              height:53,                                                            width:53,                                                             position: 'absolute',                                                                                                                       resizeMode: 'cover',                                      },
+fundBet: {                                                             height: 120,                                                          width: 160,                                                           marginVertical: 20,                                                   backgroundColor: '#4A6163',                                           borderRadius: 15,                                                     shadowColor: 'black',                                                 shadowOffset: { width: 0, height: 4 },                                shadowRadius: 4,                                                      shadowOpacity: 0.3,                                                   elevation: 4,                                                         top: 550,                                                             position: 'absolute',                                                 right: 15,                                                        },
+
     Sell: {
         fontWeight: 'bold',
         fontSize: 17,
@@ -277,6 +303,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+
+
+    electricImage: {
+	    height:53,
+	    width:53,
+	    position: 'absolute',                                                                                                 
+	    resizeMode: 'cover',                                      },
     image: {
         height: 45,
         width: 45,
@@ -370,6 +403,41 @@ const styles = StyleSheet.create({
         right: 15,
 	overflow: 'hidden',
     },
+
+         Crypto: {                                                            height: 120,                                                          width: 327,                                                           marginVertical: 'auto',                                               backgroundColor: '#20a385',                                           borderRadius: 15,                                                     shadowColor: 'black',                                                 shadowOffset: { width: 0, height: 4 },                                shadowRadius: 4,                                                      shadowOpacity: 0.3,                                                   elevation: 4,                                                         top: 750,                                                             position: 'absolute',                                                 right: 15,                                                            overflow: 'hidden',                                               },
+
+	 cryptoHeading1:{                                                               alignSelf: 'center',
+	
+		 top:'45%',
+		 position:'absolute',                                                  fontWeight:'bold',         
+		 
+		 fontSize:20,                                                          
+		 color:'#22243B',
+		 borderRadius:10,
+		 borderWidth:1,
+		 borderColor:'white',
+		 padding:10,
+		 backgroundColor:'#E8F1D7',
+		 shadowRadius:3,
+		 shadowColor:'yellow',
+		 shadowOffset:{height:2, width:2},
+		 elevation:5,
+
+	 },
+
+	 
+		 comingSoon:{
+			 bottom:5, 
+			 alignSelf:'center',
+			 fontSize: 15,
+			 
+			 color:'red',
+			 position: 'absolute',
+			 fontWeight:'bold',
+
+		 },
+
+
 
     tvImage:{
 	    height:120,
@@ -601,7 +669,7 @@ balance: {
 	    position:'absolute',
 	    padding:3,
 	    borderRadius:15,
-	    fontSize:10,
+	    fontSize:15,
 	    backgroundColor:'#3D6178',
 	    color:'white',
 
@@ -609,6 +677,7 @@ balance: {
 });
 
 export default Home
+
 
 
 
