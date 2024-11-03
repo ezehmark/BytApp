@@ -9,9 +9,9 @@ const Fund: React.FC = () => {
 	    <>
         <View style={styles.container}>
 	<LinearGradient
-	colors={['#F77802', '#F77802', '#EBE2C2']}
+	colors={['white', 'white', '#EBE2C2']}
 	start={{x:0, y:0}}
-	end={{x:1, y:1}}
+	end={{x:0, y:1}}
 	style={styles.gradientContainer}>
 	<View style={styles.body}>
 	<TouchableOpacity style={styles.menuCircle}>                                                     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
@@ -48,12 +48,18 @@ const Fund: React.FC = () => {
 
 		    </View>
 
+		    <View style={styles.fundButtons}>
+
 
                         <View style={styles.fund1}>
+
 			<Text style ={styles.addFund}>Add Fund</Text>
 			</View>
                         <View style={styles.fund2}>
+			<Image style={styles.withdrawImage}
+			source={{uri: 'https://i.postimg.cc/TwGKMd8X/Picsart-24-11-03-13-56-07-199.png'}}/>
 			<Text style={styles.withdraw}>Withdraw</Text>
+			</View>
 			</View>
                    </View> 
                 </ScrollView>
@@ -115,7 +121,7 @@ const styles = StyleSheet.create({
         width: '100%',
         top: 0,
         position: 'absolute',
-	backgroundColor:'#F77802',
+	//backgroundColor:'#F77802',
 	
     },
     contentArea: {
@@ -129,9 +135,13 @@ const styles = StyleSheet.create({
 	
 	
     },
+    fundButtons:{
+	    flex:1,
+	    position: 'absolute',                                           justifyContent: 'space-around',                                 flexDirection: 'row',                                           gap:20,
+    },
     fundingArea: {
         position: 'absolute',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         flexDirection: 'row',
         padding: 15,
         top: 80,
@@ -145,7 +155,7 @@ const styles = StyleSheet.create({
 	shadowRadius:2,
 	shadowOpacity:0.2,
 	elevation:5,
-	gap:15,
+
 	
     },
 
@@ -185,6 +195,16 @@ const styles = StyleSheet.create({
 	    shadowRadius:4,
 	    elevation:5,
 	    shadowOpacity:0.3,
+
+	    withdrawImage:{
+		    height:45,
+		    width:100,
+		    resizeMode:'cover',
+		    alignSelf:'center',
+		    position:'absolute',
+
+
+	    },
 
     },
 
