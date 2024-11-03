@@ -137,8 +137,11 @@ const Home: React.FC<HomeProps>= ({toggleMenu}) => {
                 </View>
             </BlurView>
         </View>
+    
     );
 };
+
+
 const styles = StyleSheet.create({
 
 

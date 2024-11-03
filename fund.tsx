@@ -1,14 +1,32 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {BlurView} from 'expo-blur';
 
 
 const Fund: React.FC = () => {
     return (
+	    <>
         <View style={styles.container}>
-            <View style={styles.body}>
-                <View style={styles.contentArea}>
+	<View style={styles.body}>
+	<TouchableOpacity style={styles.menuCircle}>                                                     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
+                </TouchableOpacity>
+
+                <ScrollView style={styles.contentArea}>
+
+		<View style={styles.contentTitle}>
+
+		<Text style={styles.quickTitle}>Quick Processing
+		</Text>
+		
+
+		<Text style={styles.flash}>⚡</Text>
+
+		</View>
+
+
+		<Text style={styles.addAccount}>Link Bank Account → </Text>
                     <View style={styles.fundingArea}>
+
 
 		    <View style={styles.balArea}>
 		    <Text style={styles.bal}>Bal</Text>
@@ -25,10 +43,14 @@ const Fund: React.FC = () => {
 		    </View>
 
 
-                        <View style={styles.fund1}></View>
-                        <View style={styles.fund2}></View>
-                    </View>
-                </View>
+                        <View style={styles.fund1}>
+			<Text style ={styles.addFund}>Add Fund<Text>
+			</View>
+                        <View style={styles.fund2}>
+			<Text style={styles.withdraw}>Withdraw</Text>
+			</View>
+                   </View> 
+                </ScrollView>
             </View>
         </View>
 
@@ -46,12 +68,37 @@ const Fund: React.FC = () => {
                     <Text style={styles.tabText}>Profile</Text>
                 </View>                                                           </BlurView>
         
-    );
+   </> );
 };
 
 const styles = StyleSheet.create({
+
+	menuCircle: {                                                                                                                                   top: 10,                                                              left: 10,                                                             height: 30,                                                           width: 35,                                                            overflow: 'hidden',                                                   zIndex:3,                                                         },                                                                    menuIcon: {                                                               height: 24,                                                           width: 24,                                                                                                                                  left:8,
+        resizeMode:'contain',                                                                                                                   },
     container: {
         flex: 1,
+    },
+
+    contentTitle:{
+	    position:'absolute',
+	    top:25,
+	    alignSelf:'center',
+	    justifyContent:'space-around',
+	    width:300,
+	    height:30,
+	    flexDirection:'row',
+	    
+    },
+
+    quickTitle:{
+	    fontSize:25,
+	    fontWeight:'bold',
+	    color:'blue',
+
+    },
+
+    flash:{
+	    fontSize:30
     },
     body: {
         height: '100%',
@@ -62,12 +109,12 @@ const styles = StyleSheet.create({
 	
     },
     contentArea: {
-        height: 600,
+        height: 500,
         width: '95%',
         position: 'absolute',
         alignSelf: 'center',
         top: 50,
-        backgroundColor: '#ccc',
+        backgroundColor: '#EBE2C2',
         borderRadius: 30,
 	
 	
@@ -131,6 +178,14 @@ const styles = StyleSheet.create({
 
     },
 
+    addFund:{
+	    fontWeight:'bold',
+	    alignSelf:'center',
+	    color:'blue',
+    },
+
+
+
     fund2:{
             height:50,
             width:130,
@@ -149,6 +204,16 @@ const styles = StyleSheet.create({
 	    fontWeight:'bold',
     },
 
+
+    addAccount:{                                                              position:'absolute',                                                  
+	   top :465,                                                      
+	    alignSelf:'center',
+	fontWeight:'bold',
+	color:'blue',
+	zIndex:13,
+	fontSize:12,
+    },
+
     accountsList:{
 	    position:'absolute',
 	    top:120,
@@ -157,7 +222,7 @@ const styles = StyleSheet.create({
 	    padding:15,
 	    justifyContent:'space-around',
 	    flexDirection:'column',
-	    alignItema:'center',
+	    alignItems:'center',
 	    borderRadius:30,
 	    shadowOffset:{width:0, height:0},
             shadowRadius:4,
@@ -179,14 +244,31 @@ const styles = StyleSheet.create({
 	    margin:5,
     },
 
-    bottomTab: {                                                              position: 'absolute',                                                 bottom: 0,                                                            flexDirection: 'row',                                                 height: 70,                                                           width: '100%',                                                        justifyContent: 'space-around',                                       alignItems: 'center',                                                 backgroundColor: '#D3DEE8',                                           zIndex: 3,                                                            borderTopWidth: 0.5,                                                  borderColor: '#ddd',                                                  paddingBottom:5,                                                                                                                        },                                                                    tabArea: {                                                                                                                                          height: 60,                                                           width:60,                                                             padding:4,                                                            justifyContenet: 'space-around',                                      flexDirection: 'column',                                      },                                                                    tab: {                                                                    height: 40,                                                           width: 50,                                                            borderRadius: 15,                                                     top:0,                                                                marginLeft: 'auto',                                                   marginRight: 'auto',                                                  paddingRight: 'auto',                                                 paddingLeft:'auto',                                                                                                                                                                                           },
+    bottomTab: {                                                              position: 'absolute',                                                 bottom: 0,                                                            flexDirection: 'row',                                                 height: 70,                                                           width: '100%',                                                        justifyContent: 'space-around',                                       alignItems: 'center',                                                 backgroundColor: '#D3DEE8',                                           zIndex: 3,                                                            borderTopWidth: 0.5,                                                  borderColor: '#ddd',                                                  paddingBottom:5,                                                                                                                        },                                                                    tabArea: {                                                                                                                                          height: 60,                                                           width:60,                                                             padding:4,                                                            justifyContent: 'space-around',                                      flexDirection: 'column',                                      },                                                                    tab: {                                                                    height: 40,                                                           width: 50,                                                            borderRadius: 15,                                                     top:0,                                                                marginLeft: 'auto',                                                   marginRight: 'auto',                                                  paddingRight: 'auto',                                                 paddingLeft:'auto',                                                                                                                                                                                           },
 
-    tabImage:{                                                         height: 40,                                                     width: 50,                                                                             top:5,                                                                alignSelf: 'center',                                              position: 'absolute',                                                                                                                       resizeMode: 'contain',                                            },                                                                    homeImage:{                                                         height: 35,                                                     width: 45,                                            top:5,                                                     alignSelf: 'center',                                   position: 'absolute',                                                                                                 resizeMode: 'contain',                                 },               fundImage:{                                                         height: 40,                                                                     width: 60,                                                            top:5,                                                                alignSelf: 'center',                                        position: 'absolute',                                                           resizeMode: 'contain',                                      },                                                                      tabText: {alignSelf:'center',                                             color: '#1C445C',                                                     marginTop: 5,                                                         alignItems: 'center',                                             },
+    tabImage:{                                                       
+	    height: 40,                                                     
+	    width: 50,                                                                            
+	    top:5,                                                                alignSelf: 'center',                                            
+	    position: 'absolute',                                                                                                                       resizeMode: 'contain',                                            },
+
+	    homeImage:{                                                        
+		    height: 35,                                                  
+		    width: 45,                                            
+		    top:5,                                                   
+		    alignSelf: 'center',                                   
+		    position: 'absolute',                                                                                               
+		    resizeMode: 'contain',                                 
+
+	    },              
+		    fundImage:{                                                         height: 40,                                                                     width: 60,                                                            top:5,                                                                alignSelf: 'center',                                        position: 'absolute',                                                           resizeMode: 'contain',                                      },                                                                      tabText: {alignSelf:'center',                                             color: '#1C445C',                                                     marginTop: 5,                                                         alignItems: 'center',                                             },
 
 
 
 
 
-});
+}
+				
+				);
 
 export default Fund;
