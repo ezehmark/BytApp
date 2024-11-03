@@ -1,12 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {BlurView} from 'expo-blur';
+import {LinearGradient} from 'expo-linear-gradient';
 
 
 const Fund: React.FC = () => {
     return (
 	    <>
         <View style={styles.container}>
+	<LinearGradient
+	colors={['#F77802', '#F77802', '#EBE2C2']}
+	start={{x:0, y:0}}
+	end={{x:1, y:1}}
+	style={styles.gradientContainer}>
 	<View style={styles.body}>
 	<TouchableOpacity style={styles.menuCircle}>                                                     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
                 </TouchableOpacity>
@@ -44,7 +50,7 @@ const Fund: React.FC = () => {
 
 
                         <View style={styles.fund1}>
-			<Text style ={styles.addFund}>Add Fund<Text>
+			<Text style ={styles.addFund}>Add Fund</Text>
 			</View>
                         <View style={styles.fund2}>
 			<Text style={styles.withdraw}>Withdraw</Text>
@@ -52,6 +58,7 @@ const Fund: React.FC = () => {
                    </View> 
                 </ScrollView>
             </View>
+	    </LinearGradient>
         </View>
 
 
@@ -75,6 +82,9 @@ const styles = StyleSheet.create({
 
 	menuCircle: {                                                                                                                                   top: 10,                                                              left: 10,                                                             height: 30,                                                           width: 35,                                                            overflow: 'hidden',                                                   zIndex:3,                                                         },                                                                    menuIcon: {                                                               height: 24,                                                           width: 24,                                                                                                                                  left:8,
         resizeMode:'contain',                                                                                                                   },
+	gradientContainer:{
+		flex:1,
+	},
     container: {
         flex: 1,
     },
@@ -105,7 +115,7 @@ const styles = StyleSheet.create({
         width: '100%',
         top: 0,
         position: 'absolute',
-	backgroundColor:'red',
+	backgroundColor:'#F77802',
 	
     },
     contentArea: {
@@ -113,7 +123,7 @@ const styles = StyleSheet.create({
         width: '95%',
         position: 'absolute',
         alignSelf: 'center',
-        top: 50,
+        top: 40,
         backgroundColor: '#EBE2C2',
         borderRadius: 30,
 	
@@ -124,7 +134,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         flexDirection: 'row',
         padding: 15,
-        top: 100,
+        top: 80,
         backgroundColor: '#ddd',
         height: 350,
         width:320,
@@ -180,8 +190,14 @@ const styles = StyleSheet.create({
 
     addFund:{
 	    fontWeight:'bold',
+	    position: 'absolute',
 	    alignSelf:'center',
 	    color:'blue',
+	    bottom:5,
+    },
+
+    withdraw:{
+	    fontWeight:'bold',                                                    position: 'absolute',                                                 alignSelf:'center',                                                   color:'blue',                                                         bottom:5,
     },
 
 
@@ -206,7 +222,7 @@ const styles = StyleSheet.create({
 
 
     addAccount:{                                                              position:'absolute',                                                  
-	   top :465,                                                      
+	   top :455,                                                      
 	    alignSelf:'center',
 	fontWeight:'bold',
 	color:'blue',
