@@ -16,19 +16,19 @@ export default function App() {
 
     return (
         <>
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName="home">
+            <NavigationContainer initialRoutName='home'>
+                <Stack.Navigator>
                     <Stack.Screen name="home" component={Home} 
 	    options={{headerShown:false}}initialParams={{toggleMenu}}/>
 
 
                     <Stack.Screen name="fund" component={Fund}
-	    options={{headerShown:false}}/>
+	    options={{headerShown:false}}initialParams={{toggleMenu}}/>
 
 
                 </Stack.Navigator>
             </NavigationContainer>
-            <Menu isOpen={menuOpen} toggleMenu={toggleMenu} />
+	    {menuOpen && <Menu isOpen = {menuOpen} toggleMenu={toggleMenu} />}
         </>
     );
 }

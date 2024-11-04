@@ -2,9 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {BlurView} from 'expo-blur';
 import {LinearGradient} from 'expo-linear-gradient';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import Menu from './menu';
+
 
 
 const Fund: React.FC = () => {
+
+	const navigation=useNavigation();
+
+	const route =useRoute();
+	const toggleMenu=route.params.toggleMenu;
     return (
 	    <>
         <View style={styles.container}>
@@ -14,8 +22,10 @@ const Fund: React.FC = () => {
 	end={{x:0, y:1}}
 	style={styles.gradientContainer}>
 	<View style={styles.body}>
-	<TouchableOpacity style={styles.menuCircle}>                                                     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
+	<TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>                                                     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
                 </TouchableOpacity>
+
+		<TouchableOpacity style={styles.infoCircle}>                                          <Image style={styles.bellIcon} source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }} />                   </TouchableOpacity>
 
                 <ScrollView style={styles.contentArea}>
 
@@ -80,8 +90,9 @@ const Fund: React.FC = () => {
 
 
 	<BlurView style={styles.bottomTab}>
-                <View style={styles.tabArea}>
-                    <View style={styles.tab} >                                            <Image style={styles.homeImage} source={{uri : 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png'}}/>                        </View>                                                               <Text style={styles.tabText}>Home</Text>                          </View>                                                                                                                                     <View style={styles.tabArea}>                             <View style={styles.tab} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                </View>
+                <TouchableOpacity 
+		onPress={()=>navigation.navigate('home')}style={styles.tabArea}>
+                    <View style={styles.tab} >                                            <Image style={styles.homeImage} source={{uri : 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png'}}/>                        </View>                                                               <Text style={styles.tabText}>Home</Text>                          </TouchableOpacity>                                                                                                                                     <View style={styles.tabArea}>                             <View style={styles.tab} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                </View>
                 <View style={styles.tabArea}>
                     <View style={styles.tab} >                                            <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png'}}/>
  </View>
@@ -96,7 +107,11 @@ const Fund: React.FC = () => {
 
 const styles = StyleSheet.create({
 
-	menuCircle: {                                                                                                                                   top: 10,                                                              left: 10,                                                             height: 30,                                                           width: 35,                                                            overflow: 'hidden',                                                   zIndex:3,                                                         },                                                                    menuIcon: {                                                               height: 24,                                                           width: 24,                                                                                                                                  left:8,
+	infoCircle: {                                                             position: 'absolute',                                                 top: 6,                                                              right: 10,                                                            height: 30,                                                           width: 30,                                                            borderRadius: 15,                                                     justifyContent: 'center',                                             alignItems: 'center',                                                 backgroundColor: 'black',                                             overflow: 'hidden',                                                   zIndex: 3,                                                        },
+
+	bellIcon: {                                                               height: 25,                                                           width: 25,                                                            left:1                                                            },
+
+	menuCircle: {                                                                                                                                   top: 6,                                                              left: 10,                                                             height: 30,                                                           width: 35,                                                            overflow: 'hidden',                                                   zIndex:3,                                                         },                                                                    menuIcon: {                                                               height: 24,                                                           width: 24,                                                                                                                                  left:8,
         resizeMode:'contain',                                                                                                                   },
 	gradientContainer:{
 		flex:1,
@@ -119,7 +134,7 @@ const styles = StyleSheet.create({
     quickTitle:{
 	    fontSize:25,
 	    fontWeight:'bold',
-	    color:'blue',
+	    color:'#3CB2CB',
 
     },
 
@@ -264,7 +279,7 @@ const styles = StyleSheet.create({
 	   top :455,                                                      
 	    alignSelf:'center',
 	fontWeight:'bold',
-	color:'blue',
+	color:'#3CB2CB',
 	zIndex:13,
 	fontSize:12,
     },
@@ -315,7 +330,7 @@ const styles = StyleSheet.create({
 		    resizeMode: 'contain',                                 
 
 	    },              
-		    fundImage:{                                                         height: 40,                                                                     width: 60,                                                            top:5,                                                                alignSelf: 'center',                                        position: 'absolute',                                                           resizeMode: 'contain',                                      },                                                                      tabText: {alignSelf:'center',                                             color: '#1C445C',                                                     marginTop: 5,                                                         alignItems: 'center',                                             },
+		    fundImage:{                                                         height: 31,                                                                     width: 50,                                                            top:10,                                                                alignSelf: 'center',                                        position: 'absolute',                                                           resizeMode: 'cover',                                      },                                                                      tabText: {alignSelf:'center',                                             color: '#1C445C',                                                     marginTop: 5,                                                         alignItems: 'center',                                             },
 
 
 

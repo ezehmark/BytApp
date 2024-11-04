@@ -3,11 +3,10 @@ import { Text, View, Image, StyleSheet, ScrollView, TouchableOpacity} from "reac
 import { BlurView } from 'expo-blur';
 import {LinearGradient} from 'expo-linear-gradient';
 import Menu from './menu.tsx';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute, useIsFocused} from '@react-navigation/native';
 
 
-interface HomeProps{toggleMenu: ()=> void}
-const Home: React.FC<HomeProps>= ({toggleMenu}) => {
+const Home: React.FC = () => {
     const [click, setClick] = useState(false);
 
     const toggleClick = () => {
@@ -15,6 +14,10 @@ const Home: React.FC<HomeProps>= ({toggleMenu}) => {
     }
 
 const navigation = useNavigation();
+const route =useRoute();
+const toggleMenu = route.params.toggleMenu;
+
+const isFocused = useIsFocused();
     return (
         <View style={styles.container}>
 
@@ -133,14 +136,15 @@ F⚡ASH™ Trading App</BlurView>
             </ScrollView>
 
             <BlurView style={styles.bottomTab}>
-                <TouchableOpacity onPress={()=>navigation.navigate('home')}  style={styles.tabArea}>
-                    <View style={styles.tab} >
+                <TouchableOpacity 
+		onPress={()=>navigation.navigate('home')}  style={styles.tabArea}>
+                    <View style={[styles.tab, isFocused? styles.focusBackground:null]} >
 		    <Image style={styles.homeImage} source={{uri : 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png'}}/>
 		    </View>
                     <Text style={styles.tabText}>Home</Text>
                 </TouchableOpacity>
 
-		<TouchableOpacity onPress={()=>navigation.navigate('fund')} style={styles.tabArea}>                             <View style={styles.tab} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                
+		<TouchableOpacity onPress={()=>navigation.navigate('fund')} style={styles.tabArea}>                             <View style={[styles.tab2, isFocused?styles.focusBackground2:null]} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                
 		</TouchableOpacity>
                 <View style={styles.tabArea}>
                     <View style={styles.tab} >
@@ -568,18 +572,28 @@ balance: {
 	
 
     },
-    tabImage:{                                                         height: 40,                                                     width: 50,
+
+    focusBackground: {                                                                    height: 40,                                                           width: 50,                                                            borderRadius: 15,                                                     top:0,                                                                marginLeft: 'auto',                                                   marginRight: 'auto',                                                  paddingRight: 'auto',                                                 paddingLeft:'auto',
+	    backgroundColor:'#ddd',
+    },
+
+    tabImage:{                                                         height: 40,                                                   
+	    width: 50,
 	    top:5,
 	    alignSelf: 'center',
 	position: 'absolute',                                           
         resizeMode: 'contain',
     },
-    homeImage:{                                                         height: 35,                                                     width: 45,                                            top:5,                                                     alignSelf: 'center',                                   position: 'absolute',                                                                                                 resizeMode: 'contain',                                 },
-    fundImage:{                                                         height: 40,
-	    width: 60,           
-	    top:5,          
-	    alignSelf: 'center',                                        position: 'absolute',      
-	    resizeMode: 'contain',                                      },
+    homeImage:{                                                         height: 35,                                                  
+	    width: 45,                                       
+	    top:5,                                                    
+	    alignSelf: 'center',                                
+	    position: 'absolute',                                                                                               
+	    resizeMode: 'contain',                                 },
+   
+fundImage:{                                                      
+	height: 31,                                                                     width: 50,                                                            top:10,                                                                alignSelf: 'center',                                     
+	position: 'absolute',                                                           resizeMode: 'cover',                                      },
     tabText: {alignSelf:'center',
         color: '#1C445C',
         marginTop: 5,

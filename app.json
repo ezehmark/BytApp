@@ -11,6 +11,18 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "manifest": {
+        "short_name": "YourApp",
+        "name": "Your App Full Name",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#FFFFFF",
+        "description": "A description of your app",
+        "theme_color": "#000000"
+      }
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -20,9 +32,6 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.ezehmark.MyApp"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
