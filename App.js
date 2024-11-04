@@ -5,6 +5,7 @@ import Home from './home';
 import Menu from './menu';
 import Fund from './fund.tsx';
 import Recents from './recents.tsx';
+import Message from './message.tsx';
 
 const Stack = createStackNavigator();
 
@@ -14,6 +15,10 @@ export default function App() {
     const toggleMenu = () => {
         setMenuOpen(prev => !prev);
     };
+	const[openMsg, setOpenMsg]=useState(false);
+	const toggleMsg =()=>{
+		setOpenMsg(msg=>!msg);
+	}
 
     return (
         <>
@@ -31,6 +36,8 @@ export default function App() {
                 </Stack.Navigator>
             </NavigationContainer>
 	    {menuOpen && <Menu isOpen = {menuOpen} toggleMenu={toggleMenu} />}
+
+	    {openMsg && <Message isMsg={openMsg} toggleMsg={toggleMsg}/>}
         </>
     );
 }
