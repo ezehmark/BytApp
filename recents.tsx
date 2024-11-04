@@ -7,7 +7,7 @@ import Menu from './menu';
 
 
 
-const Fund: React.FC = () => {
+const Recents: React.FC = () => {
 
 	const navigation=useNavigation();
 
@@ -31,25 +31,17 @@ const Fund: React.FC = () => {
 
 		<View style={styles.contentTitle}>
 
-		<Text style={styles.quickTitle}>Quick Processing
+		<Text style={styles.quickTitle}>Recent Transactions
 		</Text>
+		</View>
 		
 
-		<Text style={styles.flash}>⚡</Text>
-
-		</View>
 
 
-		<Text style={styles.addAccount}>Link Bank Account → </Text>
+		<Text style={styles.addAccount}>See All → </Text>
                     <View style={styles.fundingArea}>
 
 
-		    <View style={styles.balArea}>
-		    <Text style={styles.bal}>Bal:</Text>
-		    <Text style={styles.balance}>₦100,000</Text>
-		    </View>
-
-		    <Text style={styles.recentAccounts}>Recent Accounts</Text>
 		    <View style={styles.accountsList}>
 		    <LinearGradient
 		    colors={[ '#fff', '#fff', '#fff', '#ccc']}
@@ -65,22 +57,20 @@ const Fund: React.FC = () => {
 
 		    <LinearGradient                                                 colors={['#fff', '#fff', '#fff', '#ccc']}
                     start={{x:0, y:0}}                                              end={{x:1, y:0}}                                                style={styles.usedAccount}/>
+		    <LinearGradient                                                 colors={['#fff', '#fff', '#fff', '#ccc']}                                   start={{x:0, y:0}}                                              end={{x:1, y:0}}                                                style={styles.usedAccount}/>
+
+                    <LinearGradient                                                 colors={[ '#fff', '#fff', '#fff', '#ccc']}
+                    start={{x:0, y:0}}
+              end={{x:1, y:0}}                                                style={styles.usedAccount}/>                                                                                                                            <LinearGradient
+              colors={['#fff', '#fff', '#fff', '#ccc']}
+                    start={{x:0, y:0}}
+              end={{x:1, y:0}}
+        style={styles.usedAccount}/>
+	<LinearGradient                                                 colors={[ '#fff', '#fff', '#fff', '#ccc']}                      start={{x:0, y:0}}
+                    end={{x:1, y:0}}                                                style={styles.usedAccount}/>
 
 		    </View>
 
-		    <View style={styles.fundButtons}>
-
-                        <View style={styles.fund1}>
-<Image style={styles.addImage}                             source={{uri: 'https://i.postimg.cc/x14DHtjJ/Picsart-24-11-03-14-43-11-943.png'}}/>
-
-			<Text style ={styles.addFund}>Add Fund</Text>
-			</View>
-                        <View style={styles.fund2}>
-			<Image style={styles.withdrawImage}
-			source={{uri: 'https://i.postimg.cc/TwGKMd8X/Picsart-24-11-03-13-56-07-199.png'}}/>
-			<Text style={styles.withdraw}>Withdraw</Text>
-			</View>
-			</View>
                    </View> 
                 </ScrollView>
             </View>
@@ -92,13 +82,14 @@ const Fund: React.FC = () => {
 	<BlurView style={styles.bottomTab}>
                 <TouchableOpacity 
 		onPress={()=>navigation.navigate('home')}style={styles.tabArea}>
-                    <View style={styles.tab} >                                            <Image style={styles.homeImage} source={{uri : 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png'}}/>                        </View>                                                               <Text style={styles.tabText}>Home</Text>                          </TouchableOpacity>                                                                                                                                     <TouchableOpacity onPress={()=>navigation.navigate('fund')}style={styles.tabArea}>                             <View style={styles.tab} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>navigation.navigate('recents')} style={styles.tabArea}>
-                    <View style={styles.tab} >                                            <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png'}}/>
+                    <View style={styles.tab} >                                            <Image style={styles.homeImage} source={{uri : 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png'}}/>                        </View>                                                               <Text style={styles.tabText}>Home</Text>                          </TouchableOpacity>                                                                                                                                     <TouchableOpacity onPress={()=>navigation.navigate('fund')} style={styles.tabArea}>                             <View style={styles.tab} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.navigate('recents')}style={styles.tabArea}>
+                    <View style={styles.tab} >                                            <Image style={styles.tabImage} 
+		    source={{uri : 'https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png' }}/>
  </View>
                     <Text style={styles.tabText}>Recents</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>navigation.navigate('profile')} style={styles.tabArea}>                                             <View style={styles.tab} >                                      <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png'}}/>                                                                             </View>
+                <TouchableOpacity onPress={()=>navigation.navigate('profile')}style={styles.tabArea}>                                             <View style={styles.tab} >                                      <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png'}}/>                                                                             </View>
                     <Text style={styles.tabText}>Profile</Text>
                 </TouchableOpacity>                                                           </BlurView>
         
@@ -122,7 +113,7 @@ const styles = StyleSheet.create({
 
     contentTitle:{
 	    position:'absolute',
-	    top:25,
+	    top:15,
 	    alignSelf:'center',
 	    justifyContent:'space-around',
 	    width:300,
@@ -138,9 +129,6 @@ const styles = StyleSheet.create({
 
     },
 
-    flash:{
-	    fontSize:30
-    },
     body: {
         height: '100%',
         width: '100%',
@@ -160,18 +148,14 @@ const styles = StyleSheet.create({
 	
 	
     },
-    fundButtons:{
-	    flex:1,
-	    position: 'absolute',                                           justifyContent: 'space-around',                                 flexDirection: 'row',                                           gap:20,
-    },
     fundingArea: {
         position: 'absolute',
         justifyContent: 'center',
         flexDirection: 'row',
         padding: 15,
-        top: 80,
+        top: 60,
         backgroundColor: '#f7fcf6',
-        height: 350,
+        height: 420,
         width:320,
 	alignSelf:'center',
 	borderRadius:30,
@@ -184,95 +168,11 @@ const styles = StyleSheet.create({
 	
     },
 
-    balArea:{
-	    height:20,
-	    width:100,
-	    justifyContent:'space-around',
-	    position: 'absolute',
-	    top:85,
-	    right:20,
-	    borderRadius:15,
-	    flexDirection:'row',
-	    borderWidth:0.3,
-	    borderColor:'#548C94',
-
-    },
-
-    bal:{
-	    fontSize:12,
-	    color:'#548C94',
-	    fontWeight:'bold',
-	    alignSelf:'center',
-	    left:5,
-	    
-    },
-
-    balance:{
-	    fontSize:12,
-	    color:'#082350',
-	    alignSelf:'center',
-	    fontWeight:'bold',
-    },
-    fund1:{
-	    height:60,
-	    width:130,
-	    borderRadius:15,
-	    shadowColor:'black',
-	    shadowOffset:{width:0, height:0},
-	    shadowRadius:4,
-	    elevation:5,
-	    backgroundColor:'#3CB2CB',
-	    shadowOpacity:0.3,},
-	fund2:{                                                                 height:60,                                                      width:130,                                                      borderRadius:15,                                                shadowColor:'black',                                            shadowOffset:{width:0, height:0},                               shadowRadius:4,                                                 elevation:5,                                                    shadowOpacity:0.3,
-		backgroundColor:'#548C94',
-	},
-
-
-
-
-	addImage:{                                                         top:-8,                                                                                                                          height:60,                                                      width:100,                                                      resizeMode:'contain',                                           alignSelf:'center',                                             position:'absolute',                                                                                                                                                                                                                                                                                            },
 
 
 
 
 
-
-
-	    withdrawImage:{
-		    top:5,
-	
-		    height:45,
-		    width:100,
-		    resizeMode:'contain',
-		    alignSelf:'center',
-		    position:'absolute',
-
-
-	    
-
-    },
-
-    addFund:{
-	    fontWeight:'bold',
-	    position: 'absolute',
-	    alignSelf:'center',
-	    color:'white',
-	    bottom:4.5,
-    },
-
-    withdraw:{
-	    fontWeight:'bold',                                                    position: 'absolute',                                                 alignSelf:'center',                                                   color:'black',                                                         bottom:4.5,
-    },
-
-
-
-
-    recentAccounts:{
-	    position:'absolute',
-	    top:85,
-	    left:30,
-	    fontWeight:'bold',
-    },
 
 
     addAccount:{                                                              position:'absolute',                                                  
@@ -286,7 +186,7 @@ const styles = StyleSheet.create({
 
     accountsList:{
 	    position:'absolute',
-	    top:120,
+	    top:20,
 	    
 	    flex:1,
 	    padding:15,
@@ -298,7 +198,7 @@ const styles = StyleSheet.create({
 	    backgroundColor:'#ccc',
 	    paddingTop:20,
 	    paddingBottom:20,
-	    paddingRight:30,
+	    paddingRight:60,
 	    alignSelf:'center',
 	    
 	    
@@ -307,7 +207,7 @@ const styles = StyleSheet.create({
 
     usedAccount:{
 	    height:30,
-	    width:240,
+	    width:200,
 	    backgroundColor:'black',
 	    borderRadius:20,
 	    margin:5,
@@ -340,4 +240,5 @@ const styles = StyleSheet.create({
 				
 				);
 
-export default Fund;
+export default Recents;
+

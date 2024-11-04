@@ -136,25 +136,11 @@ F⚡ASH™ Trading App</BlurView>
             </ScrollView>
 
             <BlurView style={styles.bottomTab}>
-                <TouchableOpacity 
-		onPress={()=>navigation.navigate('home')}  style={styles.tabArea}>
-                    <View style={[styles.tab, isFocused? styles.focusBackground:null]} >
-		    <Image style={styles.homeImage} source={{uri : 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png'}}/>
-		    </View>
-                    <Text style={styles.tabText}>Home</Text>
-                </TouchableOpacity>
-
-		<TouchableOpacity onPress={()=>navigation.navigate('fund')} style={styles.tabArea}>                             <View style={[styles.tab2, isFocused?styles.focusBackground2:null]} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                
-		</TouchableOpacity>
-                <View style={styles.tabArea}>
-                    <View style={styles.tab} >
-		    <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png'}}/>                                                                             </View>
-                    <Text style={styles.tabText}>Recents</Text>
-                </View>
-                <View style={styles.tabArea}>
-		    <View style={styles.tab} >                                      <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png'}}/>                                                                             </View>
-                    <Text style={styles.tabText}>Profile</Text>
-                </View>
+	    <TouchableOpacity                                                     onPress={()=>navigation.navigate('home')}style={styles
+.tabArea}>                                                                                <View style={styles.tab} >                                            <Image style={styles.homeImage} source={{uri : 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png'}}/>                        </View>                                                               <Text style={styles.tabText}>Home</Text>                          </TouchableOpacity>                                                                                                                                     <TouchableOpacity onPress={()=>navigation.navigate('fund')} style={styles.tabArea}>                             <View style={styles.tab} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                </TouchableOpacity>                                                             <TouchableOpacity onPress={()=>navigation.navigate('recents')}style={styles.tabArea}>                                                           <View style={styles.tab} >                                            <Image style={styles.tabImage}                                        source={{uri : 'https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png' }}/>                                    </View>                                                                                  <Text style={styles.tabText}>Recents</Text>                                             </TouchableOpacity> 
+	<TouchableOpacity onPress={()=>navigation.navigate('profile')}style={styles.tabArea}>                                             <View style={styles.tab} >                                      <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png'}}/>
+                                                   </View>
+                    <Text style={styles.tabText}>Profile</Text>                       </TouchableOpacity>
             </BlurView>
         </View>
     );
