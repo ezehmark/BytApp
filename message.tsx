@@ -17,7 +17,7 @@ const Message: React.FC<msgProps> = ({isMsg, toggleMsg}) => {
 	const route =useRoute();
 	const toggleMenu=route.params.toggleMenu;
 
-	if(!isMsg) return null;
+	if(isMsg) return null;
 	 
     return (
 	    <>

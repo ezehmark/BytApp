@@ -25,12 +25,12 @@ export default function App() {
             <NavigationContainer initialRouteName='recents'>
                 <Stack.Navigator initialRouteName='recents'>
                     <Stack.Screen name="home" component={Home} 
-	    options={{headerShown:false}}initialParams={{toggleMenu}}/>
-	    <Stack.Screen name='recents' component={Recents} initialParams={{toggleMenu}} options={{headerShown:false}}/>
+	    options={{headerShown:false}}initialParams={{toggleMenu, toggleMsg}}/>
+	    <Stack.Screen name='recents' component={Recents} initialParams={{toggleMenu, toggleMsg}} options={{headerShown:false}}/>
 
 
                     <Stack.Screen name="fund" component={Fund}
-	    options={{headerShown:false}}initialParams={{toggleMenu}}/>
+	    options={{headerShown:false}}initialParams={{toggleMenu, toggleMsg}}/>
 
 
                 </Stack.Navigator>

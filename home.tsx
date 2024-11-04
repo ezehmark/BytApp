@@ -16,6 +16,7 @@ const Home: React.FC = () => {
 const navigation = useNavigation();
 const route =useRoute();
 const toggleMenu = route.params.toggleMenu;
+const toggleMsg =route.params.toggleMsg;
 
 const isFocused = useIsFocused();
     return (
@@ -52,9 +53,9 @@ const isFocused = useIsFocused();
         
 	    
 
-            <View style={styles.infoCircle}>
+            <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
                 <Image style={styles.bellIcon} source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }} />
-            </View>
+            </TouchableOpacity>
 
             {/* Apply ScrollView here */}
             <ScrollView style={styles.scrollView}>
