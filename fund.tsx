@@ -13,6 +13,8 @@ const Fund: React.FC = () => {
 
 	const route =useRoute();
 	const toggleMenu=route.params.toggleMenu;
+
+	const toggleMsg=route.params.toggleMsg;
     return (
 	    <>
         <View style={styles.container}>
@@ -25,7 +27,7 @@ const Fund: React.FC = () => {
 	<TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>                                                     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
                 </TouchableOpacity>
 
-		<TouchableOpacity style={styles.infoCircle}>                                          <Image style={styles.bellIcon} source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }} />                   </TouchableOpacity>
+		<TouchableOpacity onPress={toggleMsg}style={styles.infoCircle}>                                          <Image style={styles.bellIcon} source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }} />                   </TouchableOpacity>
 
                 <ScrollView style={styles.contentArea}>
 
@@ -190,7 +192,7 @@ const styles = StyleSheet.create({
 	    justifyContent:'space-around',
 	    position: 'absolute',
 	    top:85,
-	    right:20,
+	    right:28,
 	    borderRadius:15,
 	    flexDirection:'row',
 	    borderWidth:0.3,
