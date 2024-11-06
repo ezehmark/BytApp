@@ -15,7 +15,6 @@ colors={['white', '#f5b857']}
 start={{x:0, y:0}}                                                                      
 end={{x:0, y:1}}                                                                       
 style={styles.gradientContainer}>                                                       
-<View style={styles.body}>
 
 
 <View style={styles.userInfoArea}>
@@ -81,7 +80,6 @@ style={styles.gradientContainer}>
         </TouchableOpacity>
       </BlurView>
 
-      </View>
             </LinearGradient>                                                                   </View>
     </>
   );
@@ -92,13 +90,14 @@ const styles = StyleSheet.create({
 	userInfoArea:{
 		position:'absolute',
 		height:200,
-		width:"80%",
+		width:300,
 		marginLeft:'10%',
 		borderRadius:25,
 		top:20,
 		backgroundColor:'red',
 		justifyContent:'space-around',
 		flexDirection:'row',
+		zIndex:1,
 
 	},
 
@@ -155,14 +154,15 @@ const styles = StyleSheet.create({
 	gradientContainer:{
                 
 
-		flex:1,
+		height:'100%',
+		width:'100%',
         },
 	
 	container:{flex:1},
 
 	body: {                                                                                    
-		height: '100%,                                                                        
-		width: '100%,                                                                         
+		height: '100%',                                                                        
+		width: '100%',                                                                         
 		top: 0,                                                                                
 		position: 'absolute',                                                                  
 		backgroundColor:' #f5b857',
