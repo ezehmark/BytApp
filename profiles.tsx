@@ -6,19 +6,26 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const Profile: React.FC = () => {
   const navigation = useNavigation();
+  const toggleMenu =route.params.toggleMenu;
+  const toggleMsg=route.params.toggleMsg;
 
   return (
     <View style={styles.container}>
+    <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>                                                     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} /> </TouchableOpacity>
+
+    <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
+    <Image style={styles.bellIcon} source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }} />                   </TouchableOpacity>
       <LinearGradient
         colors={['white', '#f5b857']}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
-        style={styles.gradientContainer}
-      >
+        style={styles.gradientContainer} >
         <View style={styles.userInfoArea}>
+	<View style={styles.picContainer}>
 
 	<View style={styles.userPicCircle}>
 	<Image style={styles.userPic} source={{uri:'https://i.postimg.cc/66P9tyfV/IMG-20241018-082659.jpg'}}/>
+	</View>
 	</View>
 
           <View style={styles.userInfo}>
@@ -37,13 +44,26 @@ const Profile: React.FC = () => {
           </View>
         </View>
 
-<ScrollView style={styles.moveable}>
-    <BlurView style={styles.itemsZone}>                
+    <LinearGradient
+    colors={['white','white', '#8cd5cd',]}
+    start={{x:0, y:0}}
+    end={{x:0,y:1}}
+    style={styles.itemsZone}>                
         <Text style={styles.item1}>User Verification</Text>
-        <Text style={styles.item1}>Engage Customer Support</Text>
-        <Text style={styles.item1}>Follow Us On ↓</Text>
-    </BlurView>
-</ScrollView>
+        <Text style={styles.item1}>Engage Customer Support 👨‍💻</Text>
+        <Text style={styles.item3}>Follow Us On ↓</Text>
+
+
+	<View style={styles.socialIcons}>
+	<View style={styles.icon1}>
+	<Image style={styles.iconImg} source ={{uri: 'https://i.postimg.cc/5tqT4tL4/Picsart-24-11-06-22-52-27-861.png' }}/></View>
+	<View style={styles.icon1}></View>
+	<View style={styles.icon1}></View>
+	</View>
+    </LinearGradient>
+
+
+
 
 
 
@@ -96,56 +116,77 @@ const Profile: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+
+	menuCircle: {                                                                                                                                                                            top: 6,                                                                                                               left: 10,                                                                                                             height: 30,                                                                                                           width: 35,                                                                                                            overflow: 'hidden',                                                                                                   zIndex:3,                                                         },                                                                                                             menuIcon: {                                                                                                                   height: 24,                                                                                                           width: 24,                                                                                                                                                                       left:8,                                    resizeMode:'contain',                                                                                                                   },
   container: { flex: 1 },
   gradientContainer: { flex: 1 },
   userInfoArea: {
     position: 'absolute',
-    height: 100,
-    width: '90%',
-    marginLeft: '5%',
+    height: 105,
+    width: '88%',
+    left: '6%',
     borderRadius: 25,
     top: 50,
-    backgroundColor: 'red',
+    backgroundColor: '#fff',
     justifyContent: 'space-around',
     flexDirection: 'row',
     zIndex: 1,
     padding:15,
     alignItems:'center',
+    borderWidth:2,
+    borderColor: '#dd4858',
+
     
   },
 
-  userPicCircle:{
-	  height:80,
-	  position:'absolute',
-	  width:80,
-	  borderRadius:40,
-	  backgroundColor:'blue',
+infoCircle: {                                                                                                                 position: 'absolute',                                                                                                 top: 6,                                                                                                               right: 10,                                                                                                            height: 30,                                                                                                           width: 30,                                                                                                            borderRadius: 15,                                                                                                     justifyContent: 'center',                                                                                             alignItems: 'center',                                                                                                 backgroundColor: 'black',                                                                                             overflow: 'hidden',                                                                                                   zIndex: 3,                                                        },                                                                                                     bellIcon: {height: 25,                                                                                                           width: 25,                                                                                                            left:1                                                                                                        },
+  picContainer:{
+	  height:95,
+	  width:94,
+	  borderTopRightRadius:25,                                    borderBottomRightRadius:25,
+	  position: 'absolute',
+	  backgroundColor:'#dd4858',
+	  alignItems:'center',
+	  justifyContent:'center',
 	  right:2,
+
+  },
+
+  userPicCircle:{
+	  height:76,
+	  position:'absolute',
+	  width:76,
+	  borderRadius:38,
+	  backgroundColor:'blue',
 	  
 	  overflow:'hidden',
-	  right:10,
+	  borderWidth:2,
+	  borderColor:'#8cd5cd',
+
 
 	  
 
   },
 
   userPic:{
-	  resizeModw:'contain',
+	  resizeMode:'contain',
 	  height:150,
 	  width:100,
 	  bottom:30,
   },
   userInfo: {
-    position: 'absolute',
-    height: '98%',
-    width: '55%',
-    left: 10,
+	  position:'absolute',
+    height: 95,
+    width: '65%',
+    left:2,
+    
     justifyContent: 'space-around',
     flexDirection: 'column',
-    borderRadius: 30,
-    backgroundColor: '#fff',
     alignItems:'center',
     overflow:'hidden',
+    backgroundColor:'#dd4858',
+    borderTopLeftRadius:25,
+    borderBottomLeftRadius:25,
   },
   infoWritten1: {
     height: 25,
@@ -153,15 +194,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     
-    backgroundColor: '#ccc',
     alignItems:'center',
+    borderRadius:10,
+    borderColor:'#adafa4',
+    borderWidth:1,
   },
   userName: {
-    color: 'blue',
+    color: '#ccc',
     fontWeight: 'bold',
   },
   userNameValue: {
-    color: 'green',
+    color: '#8cd5cd',
     fontWeight: 'bold',
   },
 
@@ -173,23 +216,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     
-    backgroundColor: '#ccc',
-
     alignItems:'center',
+    borderRadius:10,                                           borderColor:'#adafa4',                                        borderWidth:1,
   },
 
   infoWritten3: {                                                   
-    height: 25,                                                     width: 150,                                                     justifyContent: 'space-around',
-    flexDirection: 'row',                                                                                                   
-    backgroundColor: '#ccc',                                        alignItems:'center',                                          },
+    height: 25,                                                    
+    width: 150,                                                    
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    borderColor:'#adafa4',
+    borderRadius:10,
+    borderWidth:1,
+    alignItems:"center",
+
+  },
 
 
   rank: {
-    color: 'blue',
+    color: '#ccc',
     fontWeight: 'bold',
   },
   rankValue: {
-    color: 'green',
+    color: '#8cd5cd',
     fontWeight: 'bold',
   },
 
@@ -202,23 +251,86 @@ moveable: {
         backgroundColor: 'blue',
     },
     itemsZone: {
-        // Removed 'absolute' to let the ScrollView manage positioning
-        height: 500,
-        width: 240,
+        position:'absolute',
+	height: 400,
+        width: '90%',
         justifyContent: 'space-around',
         flexDirection: 'column',
-        top: 20,
+        top: 180,
         paddingBottom: 100,
-        backgroundColor: 'red',
-        alignSelf: 'center',
+        backgroundColor: '#fff',
+	borderRadius:15,
+	left:'5%',
+	padding:20,
+	alignItems:'center',
     },
     item1: {
-        height: 80,
-        width: 200,
-        borderColor: 'black',
+        height: 50,
+        width: '80%',
+        borderColor: '#ccc',
         borderWidth: 1,
+	alignItems:'center',
         marginBottom: 15,
-        backgroundColor: 'green',
+        backgroundColor: '#8cd5cd',
+	borderRadius:10,
+	padding:15,
+	textAlign:'center',
+	justifyContent:'center',
+	
+	fontSize:15,
+	fontWeight:'bold',
+	
+    },
+
+    item3: {
+        height: 50,
+        width: '80%',
+        borderColor: '#ccc',
+        alignItems:'center',                                       marginBottom: 15,                                          backgroundColor: 'white',                                  borderRadius:10,
+        padding:15,
+        textAlign:'center',                                        justifyContent:'center',
+
+        fontSize:18,
+	fontWeight:'bold',
+	color:'red',
+
+    },
+
+    socialIcons:{
+	    position:'absolute',
+	    justifyContent:'space-around',
+
+	    flexDirection:'row',
+	    bottom:70,
+	    height:60,
+	    width:'80%',
+	    alignSelf:'center',
+	    left:'10%',
+
+
+    },
+
+    icon1:{
+	    height:50,
+	    width:50,
+	    borderRadius:25,
+	    shadowColor:"black",
+	    shadowOpacity:0.4,
+	    shadowOffset:{height:2, width:1},
+	    elevation:4,
+	    overflow:'hidden',
+	    alignItems:'center',
+            justifyContent:'center',
+
+
+
+    },
+
+    iconImg:{
+	    resizeMode:'cover',
+	    height:48,
+	    width:48,
+
     },
   
   bottomTab: {

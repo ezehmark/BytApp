@@ -91,7 +91,7 @@ const Recents: React.FC = () => {
  </View>
                     <Text style={styles.tabText}>Recents</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>navigation.navigate('profile')}style={styles.tabArea}>                                             <View style={styles.tab} >                                      <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png'}}/>                                                                             </View>
+                <TouchableOpacity onPress={()=>navigation.navigate('profiles')}style={styles.tabArea}>                                             <View style={styles.tab} >                                      <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png'}}/>                                                                             </View>
                     <Text style={styles.tabText}>Profile</Text>
                 </TouchableOpacity>                                                           </BlurView>
         
