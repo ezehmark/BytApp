@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute} from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const Profile: React.FC = () => {
+	const route = useRoute();
   const navigation = useNavigation();
   const toggleMenu =route.params.toggleMenu;
   const toggleMsg=route.params.toggleMsg;
@@ -58,13 +59,10 @@ const Profile: React.FC = () => {
         <Text style={styles.item1}>Engage Customer Support </Text>
         <Text style={styles.item3}>Follow Us On ↓</Text>
 
-
-	<View style={styles.socialIcons}>
-	<View style={styles.icon1}>
-	<Image style={styles.iconImg} source ={{uri: 'https://i.postimg.cc/5tqT4tL4/Picsart-24-11-06-22-52-27-861.png' }}/></View>
-	<View style={styles.icon1}></View>
-	<View style={styles.icon1}></View>
-	</View>
+<TouchableOpacity
+style={styles.socialIcons}>                    
+<View onPress={navigation.navigate('https:x.com')} style={styles.icon1}>                                <Image style={styles.iconImg} source ={{uri: 'https://i.postimg.cc/Pr5HZ3gT/Picsart-24-11-07-07-24-41-438.png' }}/></View>                                                       <View style={styles.icon1}><Image style={styles.iconImg} source ={{uri: 'https://i.postimg.cc/QC7PD7P4/Picsart-24-11-07-07-18-09-134.png' }}/></View>                      
+<View style={styles.icon1}><Image style={styles.iconImg} source ={{uri: 'https://i.postimg.cc/tJ15GH19/2021-Facebook-icon-svg.png' }}/></View>                         </TouchableOpacity>
     </LinearGradient>
 
 
@@ -144,7 +142,7 @@ const styles = StyleSheet.create({
     width: '88%',
     left: '6%',
     borderRadius: 25,
-    top: 50,
+    top: 30,
     backgroundColor: '#fff',
     justifyContent: 'space-around',
     flexDirection: 'row',
@@ -152,7 +150,7 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#dd4858',
+    borderColor: '#000',
   },
   infoCircle: {
     position: 'absolute',
@@ -178,7 +176,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     borderBottomRightRadius: 25,
     position: 'absolute',
-    backgroundColor: '#dd4858',
+    backgroundColor: '#000',
     alignItems: 'center',
     justifyContent: 'center',
     right: 2,
@@ -197,7 +195,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     height: 150,
     width: 100,
-    bottom: 30,
+    bottom: 55,
+    right:17,
   },
   userInfo: {
     position: 'absolute',
@@ -208,7 +207,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor: '#dd4858',
+    backgroundColor: '#000',
     borderTopLeftRadius: 25,
     borderBottomLeftRadius: 25,
   },
@@ -272,7 +271,7 @@ const styles = StyleSheet.create({
     width: '90%',
     justifyContent: 'space-around',
     flexDirection: 'column',
-    top: 180,
+    top: 160,
     paddingBottom: 100,
     backgroundColor: '#fff',
     borderRadius: 15,
@@ -311,14 +310,11 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   socialIcons: {
-    position: 'absolute',
     justifyContent: 'space-around',
     flexDirection: 'row',
-    bottom: 70,
     height: 60,
     width: '80%',
     alignSelf: 'center',
-    left: '10%',
   },
   icon1: {
     height: 50,

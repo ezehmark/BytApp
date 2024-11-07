@@ -100,11 +100,36 @@ const Recents: React.FC = () => {
 
 const styles = StyleSheet.create({
 
-	infoCircle: {                                                             position: 'absolute',                                                 top: 6,                                                              right: 10,                                                            height: 30,                                                           width: 30,                                                            borderRadius: 15,                                                     justifyContent: 'center',                                             alignItems: 'center',                                                 backgroundColor: 'black',                                             overflow: 'hidden',                                                   zIndex: 3,                                                        },
+	infoCircle: {                                                             
+		position: 'absolute',                                                 
+		top: 6,                                                              
+		right: 10,                                                            
+		height: 30,                                                           
+		width: 30,                                                          
+		borderRadius: 15,                                                    
+		justifyContent: 'center',                                            
+		alignItems: 'center',                                                
+		backgroundColor: 'black',                                            
+		overflow: 'hidden',                                                  
+		zIndex: 3,                                                        },
 
-	bellIcon: {                                                               height: 25,                                                           width: 25,                                                            left:1                                                            },
+	bellIcon: {                                                             
+		height: 25,                                                           
+		width: 25,                                                            
+		left:1                                                           
+	},
 
-	menuCircle: {                                                                                                                                   top: 6,                                                              left: 10,                                                             height: 30,                                                           width: 35,                                                            overflow: 'hidden',                                                   zIndex:3,                                                         },                                                                    menuIcon: {                                                               height: 24,                                                           width: 24,                                                                                                                                  left:8,
+	menuCircle: {                                                                                                                                  
+		top: 6,                                                              
+		left: 10,                                                            
+		height: 30,                                                         
+		width: 35,                                                           
+		overflow: 'hidden',                                                  
+		zIndex:3,                                                         },                                                                   
+		menuIcon: {                                                              
+			height: 24,                                                           
+			width: 24,                                                                                                                                
+			left:8,
         resizeMode:'contain',                                                                                                                   },
 	gradientContainer:{
 		flex:1,
