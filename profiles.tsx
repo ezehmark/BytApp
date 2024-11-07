@@ -51,7 +51,7 @@ const Profile: React.FC = () => {
         </View>
 
     <LinearGradient
-    colors={['white','white', '#8cd5cd',]}
+    colors={['rgba(0,0,0,0.2)','rgba(0,0,0,1)', '#8cd5cd',]}
     start={{x:0, y:0}}
     end={{x:0,y:1}}
     style={styles.itemsZone}>                

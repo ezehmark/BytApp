@@ -67,13 +67,13 @@ const isFocused = useIsFocused();
 
 
 	<View style={styles.services}>
-	    <View style={styles.buyGiftCard}>
+	    <TouchableOpacity onPress={()=>navigation.navigate('buygiftcard1')}  style={styles.buyGiftCard}>
 		<Text style={styles.Buy}>Buy</Text>
 		<Text style={styles.GiftCards}>Gift Cards</Text>
 		<View style={styles.buyIcon}>
-		    <Image style={styles.image} source={{ uri: 'https://i.postimg.cc/nVSB75hc/shopping-cart-no-bg.png' }} />
-		</View>
-	    </View>
+		    <Image style={styles.image} source={{ uri: 'https://i.postimg.cc/nVSB75hc/shopping-cart-no-bg.png' }} /></View>
+		</TouchableOpacity>
+	    
 
 
 	    <View style={styles.sellGiftCard}>
