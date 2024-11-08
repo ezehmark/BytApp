@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity,TextInput} from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -9,6 +9,8 @@ const BuyGiftCard1: React.FC = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const toggleMenu = route.params.toggleMenu;
+    const [searchQuery, setSearchQuery]=useState('');
+    const[filteredCountries, setFilteredCountries]=useState(countries);
 
     const countries = [
         { name: 'Nigeria', flag: '🇳🇬' },
@@ -53,6 +55,17 @@ const BuyGiftCard1: React.FC = () => {
         { name: 'Costa Rica', flag: '🇨🇷' }
     ];
 
+    const handleSearch=(text:string)=>{
+	    setSearchQuery(text);
+	    if (text){
+		    const filtered = countries.filter(country=>country.name.toLowerCase().include(text.toLowerCase())
+						   );
+		setFilteredCountries(filtered);
+	    } else{
+		    setFilteredCountries(countries);
+	    }
+    };
+
     return (
         <>
             <View style={styles.container}>
@@ -74,6 +87,12 @@ const BuyGiftCard1: React.FC = () => {
                             <View style={styles.contentTitle}>
                                 <Text style={styles.quickTitle}>Select Country</Text>
                             </View>
+
+			    <TextInput
+			    style={styles.searchInput}
+			    placeholder='search country'
+				    value={searchQuery}
+					    onChangeText={hanfleSearch}/>
                             <ScrollView style={styles.ScrollView}>
                                 <View style={styles.accountsList}>
                                     {countries.map((country, index) => (
@@ -130,6 +149,17 @@ const styles = StyleSheet.create({
 	top:2,
 	position:'absolute',
 	color:'#002444',
+	},
+
+	searchInput:{
+	height:40,
+	width:'90%',
+	backgroundColor:'#fff',
+	borderRadius:20,
+	paddingLeft:20,
+	marginVertical:10,
+	alignSelf:'center',
+	position:'absolute',
 	},
 
 	infoCircle: {
