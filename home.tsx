@@ -391,11 +391,11 @@ fundBet: {                                                             height: 1
         elevation: 4,
         top: 400,
         position: 'absolute',
-        right: 15,
 	overflow: 'hidden',
+	alignSelf:'center',
     },
 
-         Crypto: {                                                            height: 120,                                                          width: 327,                                                           marginVertical: 'auto',                                               backgroundColor: '#20a385',                                           borderRadius: 15,                                                     shadowColor: 'black',                                                 shadowOffset: { width: 0, height: 4 },                                shadowRadius: 4,                                                      shadowOpacity: 0.3,                                                   elevation: 4,                                                         top: 750,                                                             position: 'absolute',                                                 right: 15,                                                            overflow: 'hidden',                                               },
+         Crypto: {                                                            height: 120,                                                          width: 327,                                                           marginVertical: 'auto',                                               backgroundColor: '#20a385',                                           borderRadius: 15,                                                     shadowColor: 'black',                                                 shadowOffset: { width: 0, height: 4 },                                shadowRadius: 4,                                                      shadowOpacity: 0.3,                                                   elevation: 4,                                                         top: 750,                                                             position: 'absolute',                                                 alignSelf:'center',                                                           overflow: 'hidden',                                               },
 
 	 cryptoHeading1:{                                                               alignSelf: 'center',
 	

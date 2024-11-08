@@ -9,8 +9,6 @@ const BuyGiftCard1: React.FC = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const toggleMenu = route.params.toggleMenu;
-    const [searchQuery, setSearchQuery]=useState('');
-    const[filteredCountries, setFilteredCountries]=useState(countries);
 
     const countries = [
         { name: 'Nigeria', flag: '🇳🇬' },
@@ -55,10 +53,12 @@ const BuyGiftCard1: React.FC = () => {
         { name: 'Costa Rica', flag: '🇨🇷' }
     ];
 
+    const [searchQuery, setSearchQuery]=useState('');          const[filteredCountries, setFilteredCountries]=useState(countries);
+
     const handleSearch=(text:string)=>{
 	    setSearchQuery(text);
 	    if (text){
-		    const filtered = countries.filter(country=>country.name.toLowerCase().include(text.toLowerCase())
+		    const filtered = countries.filter(country=>country.name.toLowerCase().includes(text.toLowerCase())
 						   );
 		setFilteredCountries(filtered);
 	    } else{
@@ -88,11 +88,6 @@ const BuyGiftCard1: React.FC = () => {
                                 <Text style={styles.quickTitle}>Select Country</Text>
                             </View>
 
-			    <TextInput
-			    style={styles.searchInput}
-			    placeholder='search country'
-				    value={searchQuery}
-					    onChangeText={hanfleSearch}/>
                             <ScrollView style={styles.ScrollView}>
                                 <View style={styles.accountsList}>
                                     {countries.map((country, index) => (
@@ -146,7 +141,7 @@ const styles = StyleSheet.create({
 	title:{fontSize:20,
 	fontWeight:'bold',
 	alignSelf:'center',
-	top:2,
+	top:7,
 	position:'absolute',
 	color:'#002444',
 	},
@@ -160,6 +155,7 @@ const styles = StyleSheet.create({
 	marginVertical:10,
 	alignSelf:'center',
 	position:'absolute',
+	zIndex:10,
 	},
 
 	infoCircle: {
@@ -215,6 +211,7 @@ const styles = StyleSheet.create({
 	    fontSize:20,
 	    fontWeight:'bold',
 	    color:'#3CB2CB',
+	    top:-4,
 
     },
 
