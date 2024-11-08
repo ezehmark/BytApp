@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity,TextInput} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import Menu from './menu';
 
 const BuyGiftCard1: React.FC = () => {
     const navigation = useNavigation();
     const route = useRoute();
-    const toggleMenu = route.params.toggleMenu;
+    const toggleMenu = route.params?.toggleMenu;
+
+    const [giftCards, setGiftCards] = useState<string[]>([]);
 
     const countries = [
         { name: 'Nigeria', flag: '🇳🇬' },
@@ -53,17 +54,14 @@ const BuyGiftCard1: React.FC = () => {
         { name: 'Costa Rica', flag: '🇨🇷' }
     ];
 
-    const [searchQuery, setSearchQuery]=useState('');          const[filteredCountries, setFilteredCountries]=useState(countries);
-
-    const handleSearch=(text:string)=>{
-	    setSearchQuery(text);
-	    if (text){
-		    const filtered = countries.filter(country=>country.name.toLowerCase().includes(text.toLowerCase())
-						   );
-		setFilteredCountries(filtered);
-	    } else{
-		    setFilteredCountries(countries);
-	    }
+    const fetchGiftCards = async (countryName: string) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/giftcards?country=${countryName}`);
+            const data = await response.json();
+            setGiftCards(data.giftCards);
+        } catch (error) {
+            Alert.alert('Error', 'Failed to load gift cards');
+        }
     };
 
     return (
@@ -88,18 +86,25 @@ const BuyGiftCard1: React.FC = () => {
                                 <Text style={styles.quickTitle}>Select Country</Text>
                             </View>
 
-                            <ScrollView style={styles.ScrollView}>
+                            <ScrollView style={styles.scrollView}>
                                 <View style={styles.accountsList}>
-                                    {countries.map((country, index) => (
-                                        <LinearGradient
+                                   
+
+{countries.map((country, index) => (
+                                        <TouchableOpacity
                                             key={index}
-                                            colors={['#00cdde', '#00cdde']}
-                                            start={{ x: 0, y: 0 }}
-                                            end={{ x: 1, y: 0 }}
+                                            onPress={() => fetchGiftCards(country.name)}
                                             style={styles.usedAccount}
                                         >
-                                            <Text style={styles.countries}>{`${country.name} ${country.flag}`}</Text>
-                                        </LinearGradient>
+                                            <LinearGradient
+                                                colors={['#00cdde', '#00cdde']}
+                                                start={{ x: 0, y: 0 }}
+                                                end={{ x: 1, y: 0 }}
+                                                style={styles.countryContainer}
+                                            >
+                                                <Text style={styles.countries}>{`${country.name} ${country.flag}`}</Text>
+                                            </LinearGradient>
+                                        </TouchableOpacity>
                                     ))}
                                 </View>
                             </ScrollView>
@@ -245,7 +250,7 @@ const styles = StyleSheet.create({
 
 
 
-    ScrollView:{
+    scrollView:{
     position:'absolute',
     height:'90%',
     width:'90%',
@@ -282,7 +287,7 @@ const styles = StyleSheet.create({
 	    justifyContent:'center',
 	    height:60,
 	    width:'95%',
-	    backgroundColor:'black',
+	    backgroundColor:'#00cdde',
 	    borderRadius:20,
 	    margin:5,
     },
@@ -320,3 +325,4 @@ const styles = StyleSheet.create({
 
 
 export default BuyGiftCard1;
+
