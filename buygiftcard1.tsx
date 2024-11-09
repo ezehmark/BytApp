@@ -59,10 +59,10 @@ const BuyGiftCard1: React.FC = () => {
 const fetchGiftCards = async(countryName: string)=>{
 setLoading(true);
 try{
-	const response = await fetch(`http://127.0.0.1:8000/api/giftcards?country=${countryName}`);
+	const response = await fetch(`http://127.0.0.1:8000/api/giftcards/${countryName}/`);
 	const data = await response.json();
-	if(data.giftCards){
-		setGiftCards(data.giftCards);}
+	if(data){
+		setGiftCards(data);}
 
 
 
@@ -85,8 +85,17 @@ else{
                     style={styles.gradientContainer}>
                     <View style={styles.body}>
 
-                        {giftCards.length > 0 && !loading && (
     <View style={styles.giftCardsList}>
+    {loading? (<ActivityIndicator/>) : (
+	    <FlatList
+	    data={giftCards}
+	    keyExtractor={(item)=>item.id.toString()}
+	    renderItem={({item})=>(
+		    <View style={{margin:10, padding:10, borderWidth:1}}><Text>Name:{item.name}</Text>
+		    <Text> Description:{item.description}</Text></View>)} />)}
+
+
+    </View>
         {giftCards.map((giftCard, index) => (
             <Text key={index} style={styles.giftCardText}>
                 {giftCard}
