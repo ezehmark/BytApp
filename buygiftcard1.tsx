@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -10,6 +10,7 @@ const BuyGiftCard1: React.FC = () => {
     const toggleMenu = route.params?.toggleMenu;
 
     const [giftCards, setGiftCards] = useState<string[]>([]);
+    const[loading, setLoading] = useState<boolean>(false);
 
     const countries = [
         { name: 'Nigeria', flag: '🇳🇬' },
@@ -54,15 +55,25 @@ const BuyGiftCard1: React.FC = () => {
         { name: 'Costa Rica', flag: '🇨🇷' }
     ];
 
-    const fetchGiftCards = async (countryName: string) => {
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/api/giftcards?country=${countryName}`);
-            const data = await response.json();
-            setGiftCards(data.giftCards);
-        } catch (error) {
-            Alert.alert('Error', 'Failed to load gift cards');
-        }
-    };
+
+const fetchGiftCards = async(countryName: string)=>{
+setLoading(true);
+try{
+	const response = await fetch('http://127.0.0.1:8000/api/giftcards?country=${countryName}');
+	const data = await response.json();
+	if(data.giftCards){
+		setGiftCards(data.giftCards);}
+
+
+
+else{
+	setGiftCards([]);}
+}	catch(error){
+		Alert.alert('Error', 'Failed to load gift cards');
+			    setGiftCards([]);
+	}
+	finally{setLoading(false)}
+}
 
     return (
         <>
@@ -102,12 +113,14 @@ const BuyGiftCard1: React.FC = () => {
                                                 end={{ x: 1, y: 0 }}
                                                 style={styles.countryContainer}
                                             >
-                                                <Text style={styles.countries}>{`${country.name} ${country.flag}`}</Text>
+                                                <Text style={styles.countries}>{`${country.name} ${country.flagi}`}</Text>
                                             </LinearGradient>
                                         </TouchableOpacity>
                                     ))}
                                 </View>
                             </ScrollView>
+			    {loading && <ActivityIndicator size="large" color="blue"/>}
+			    {giftCards.length===0 && !loading &&(<Text style={styles.noGiftCards}>No Gift Card Available for selected country</Text>)}
                         </View>
                     </View>
                 </LinearGradient>
@@ -135,8 +148,15 @@ const BuyGiftCard1: React.FC = () => {
                     <View style={styles.tab}>
                         <Image style={styles.tabImage} source={{ uri: 'https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png' }} />
                     </View>
-                    <Text style={styles.tabText}>Profile</Text>
+                   
+		    <Text style={styles.tabText}>Profile</Text>
+		    
                 </TouchableOpacity>
+            </BlurView>
+        </>
+    );
+};
+
             </BlurView>
         </>
     );
@@ -291,11 +311,6 @@ const styles = StyleSheet.create({
 	    borderRadius:20,
 	    margin:5,
     },
-
-    countries:{
-    fontSize:17,
-    fontWeight:'bold'},
-
     bottomTab: {                                                              position: 'absolute',                                                 bottom: 0,                                                            flexDirection: 'row',                                                 height: 70,                                                           width: '100%',                                                        justifyContent: 'space-around',                                       alignItems: 'center',                                                 backgroundColor: '#D3DEE8',                                           zIndex: 3,                                                            borderTopWidth: 0.5,                                                  borderColor: '#ddd',                                                  paddingBottom:5,                                                                                                                        },                                                                    tabArea: {                                                                                                                                          height: 60,                                                           width:60,                                                             padding:4,                                                            justifyContent: 'space-around',                                      flexDirection: 'column',                                      },                                                                    tab: {                                                                    height: 40,                                                           width: 50,                                                            borderRadius: 15,                                                     top:0,                                                                marginLeft: 'auto',                                                   marginRight: 'auto',                                                  paddingRight: 'auto',                                                 paddingLeft:'auto',                                                                                                                                                                                           },
 
     tabImage:{
