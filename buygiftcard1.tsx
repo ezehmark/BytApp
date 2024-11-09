@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -59,7 +59,7 @@ const BuyGiftCard1: React.FC = () => {
 const fetchGiftCards = async(countryName: string)=>{
 setLoading(true);
 try{
-	const response = await fetch('http://127.0.0.1:8000/api/giftcards?country=${countryName}');
+	const response = await fetch(`http://127.0.0.1:8000/api/giftcards?country=${countryName}`);
 	const data = await response.json();
 	if(data.giftCards){
 		setGiftCards(data.giftCards);}
@@ -84,7 +84,18 @@ else{
                     end={{ x: 0, y: 1 }}
                     style={styles.gradientContainer}>
                     <View style={styles.body}>
-                        <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
+
+                        {giftCards.length > 0 && !loading && (
+    <View style={styles.giftCardsList}>
+        {giftCards.map((giftCard, index) => (
+            <Text key={index} style={styles.giftCardText}>
+                {giftCard}
+            </Text>
+        ))}
+    </View>
+)}
+
+		    <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
                             <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
                         </TouchableOpacity>
                         <Text style={styles.title}>Buy Gift Cards</Text>
@@ -113,7 +124,7 @@ else{
                                                 end={{ x: 1, y: 0 }}
                                                 style={styles.countryContainer}
                                             >
-                                                <Text style={styles.countries}>{`${country.name} ${country.flagi}`}</Text>
+                                                <Text style={styles.countries}>{`${country.name} ${country.flag}`}</Text>
                                             </LinearGradient>
                                         </TouchableOpacity>
                                     ))}
@@ -157,10 +168,6 @@ else{
     );
 };
 
-            </BlurView>
-        </>
-    );
-};
 
 const styles = StyleSheet.create({
 	title:{fontSize:20,
@@ -171,17 +178,26 @@ const styles = StyleSheet.create({
 	color:'#002444',
 	},
 
-	searchInput:{
-	height:40,
-	width:'90%',
-	backgroundColor:'#fff',
-	borderRadius:20,
-	paddingLeft:20,
-	marginVertical:10,
-	alignSelf:'center',
-	position:'absolute',
-	zIndex:10,
+	giftCardsList:{
+		position:'absolute',
+		top:50,
+		height:60,
+		width:'80%',
+		borderRadius:20,
+		backgroundColor:'green',
+		
+		 
 	},
+
+	giftCardsList:{
+		position:'absolute',
+		alignSelf:'center',
+		height:50,
+		width:'90%',
+		fontSize:20,
+		fontWeight:'bold',
+	},
+
 
 	infoCircle: {
 		position: 'absolute',
