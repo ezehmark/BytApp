@@ -76,13 +76,13 @@ const isFocused = useIsFocused();
 	    
 
 
-	    <View style={styles.sellGiftCard}>
+	    <TouchableOpacity onPress={()=>navigation.navigate('sellgiftcards')}style={styles.sellGiftCard}>
 		<Text style={styles.Sell}>Sell</Text>
 		<Text style={styles.GiftCardSell}>Gift Cards</Text>
 		<View style={styles.sellIcon}>
 		    <Image style={styles.sImage} source={{ uri: 'https://i.postimg.cc/SN8bBzFw/Screenshot-20241031-210908.png' }} />
 		</View>
-	    </View>
+	    </TouchableOpacity>
 
 	    <View style={styles.buyData}>
 	    <Text style={styles.sBuy}>Buy</Text>                 <Text style={styles.sGiftCards}>Cheap Data</Text>

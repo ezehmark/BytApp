@@ -1,111 +1,133 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
-import {BlurView} from 'expo-blur';
-import {LinearGradient} from 'expo-linear-gradient';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import Menu from './menu';
-
-
+import { TextInput, View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const SellGiftCards: React.FC = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const toggleMenu = route.params?.toggleMenu;
+  const toggleMsg = route.params?.toggleMsg;
 
-	const navigation=useNavigation();
+  const [amount, setAmount]=useState("");
 
-	const route =useRoute();
-	const toggleMenu=route.params.toggleMenu;
+  return (
+    <>
+      <View style={styles.container}>
+        <LinearGradient
+          colors={['white', '#f5b857']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={styles.gradientContainer}
+        >
+          <View style={styles.body}>
+            <Text style={styles.topTitle}>Sell Gift Cards</Text>
+            <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
+              <Image
+                style={styles.menuIcon}
+                source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }}
+              />
+            </TouchableOpacity>
 
-	const toggleMsg=route.params.toggleMsg;
-    return (
-	    <>
-        <View style={styles.container}>
-	<LinearGradient
-	colors={['white', '#f5b857']}
-	start={{x:0, y:0}}
-	end={{x:0, y:1}}
-	style={styles.gradientContainer}>
-	<ScrollView style={styles.body}>
-	<Text style={styles.topTitle}>Sell Gift Cards</Text>
-	<TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>                                                     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
-                </TouchableOpacity>
+            <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
+              <Image
+                style={styles.bellIcon}
+                source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }}
+              />
+            </TouchableOpacity>
 
-		<TouchableOpacity onPress={toggleMsg}style={styles.infoCircle}>                                          <Image style={styles.bellIcon} source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }} />                   </TouchableOpacity>
+            <View style={styles.contentArea}>
 
-                <ScrollView style={styles.contentArea}>
+	    <View style={styles.topCover}/>
+              <View style={styles.contentTitle}>
+                <Text style={styles.quickTitle}>Simple and Fast</Text>
+                <Text style={styles.flash}>⚡</Text>
+              </View>
 
-		<View style={styles.contentTitle}>
-
-		<Text style={styles.quickTitle}>Simple and Fast
-		</Text>
-		
-
-		<Text style={styles.flash}>⚡</Text>
-
-		</View>
-
-
-		<Text style={styles.addAccount}>Link Bank Account → </Text>
-                    <View style={styles.fundingArea}>
-
-
-		    </View>
-
-		    <View style={styles.accountsList}>
-		    <LinearGradient
-		    colors={[ '#fff', '#fff', '#fff', '#ccc']}
-		    start={{x:0, y:0}}
-		    end={{x:1, y:0}}
-		    style={styles.usedAccount}/>
-
-		    <LinearGradient                                                 colors={['#fff', '#fff', '#fff', '#ccc']}
-                    start={{x:0, y:0}}                                              end={{x:1, y:0}}                                                style={styles.usedAccount}/>
-
-		    <LinearGradient                                                 colors={[ '#fff', '#fff', '#fff', '#ccc']}
-                    start={{x:0, y:0}}                                              end={{x:1, y:0}}                                                style={styles.usedAccount}/>
-
-		    <LinearGradient                                                 colors={['#fff', '#fff', '#fff', '#ccc']}
-                    start={{x:0, y:0}}                                              end={{x:1, y:0}}                                                style={styles.usedAccount}/>
-
-		    </View>
-
-		    <View style={styles.fundButtons}>
-
-                        <View style={styles.physical}>
-<Image style={styles.addImage}                             source={{uri: 'https://i.postimg.cc/x14DHtjJ/Picsart-24-11-03-14-43-11-943.png'}}/>
-
-			<Text style ={styles.addFund}>Physical</Text>
-			</View>
-                        <View style={styles.ecode}>
-			<Image style={styles.withdrawImage}
-			source={{uri: 'https://i.postimg.cc/TwGKMd8X/Picsart-24-11-03-13-56-07-199.png'}}/>
-			<Text style={styles.withdraw}>E-Code</Text>
-			</View>
-			</View>
-                   </View> 
-                </ScrollView>
-            </ScrollView>
-	    </LinearGradient>
-        </View>
+	      <ScrollView style ={styles.scrollView}>
 
 
 
-	<BlurView style={styles.bottomTab}>
-                <TouchableOpacity 
-		onPress={()=>navigation.navigate('home')}style={styles.tabArea}>
-                    <View style={styles.tab} >                                            <Image style={styles.homeImage} source={{uri : 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png'}}/>                        </View>                                                               <Text style={styles.tabText}>Home</Text>                          </TouchableOpacity>                                                                                                                                     <TouchableOpacity onPress={()=>navigation.navigate('fund')}style={styles.tabArea}>                             <View style={styles.tab} ><Image style={styles.fundImage} source={{uri :'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png'}}/>                                                                             </View>                           <Text style={styles.tabText}>Fund</Text>                                                                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>navigation.navigate('recents')} style={styles.tabArea}>
-                    <View style={styles.tab} >                                            <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png'}}/>
- </View>
-                    <Text style={styles.tabText}>Recents</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>navigation.navigate('profiles')} style={styles.tabArea}>                                             <View style={styles.tab} >                                      <Image style={styles.tabImage} source={{uri :'https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png'}}/>                                                                             </View>
-                    <Text style={styles.tabText}>Profile</Text>
-                </TouchableOpacity>                                                           </BlurView>
-        
-   </> );
+              <View style={styles.accountsList}>
+                  <TouchableOpacity
+                    style={styles.giftCardBox}>
+		    <Text style={styles.selectGiftCard}>Select Gift Card</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
+              </TouchableOpacity>
+
+	      <TouchableOpacity                                                 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>Select Type</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
+
+	      <TextInput style={styles.amountInput} name='amount' value={amount}/>
+	      </View>
+
+	      </ScrollView>
+
+              <View style={styles.cardsType}>
+                <View style={styles.physical}>
+                  <Image
+                    style={styles.addImage}
+                    source={{ uri: 'https://i.postimg.cc/x14DHtjJ/Picsart-24-11-03-14-43-11-943.png' }}
+                  />
+                  <Text style={styles.addFund}>Physical</Text>
+                </View>
+		<Text style={styles.andText}>and</Text>
+                <View style={styles.ecode}>
+                  <Image
+                    style={styles.withdrawImage}
+                    source={{ uri: 'https://i.postimg.cc/TwGKMd8X/Picsart-24-11-03-13-56-07-199.png' }}
+                  />
+                  <Text style={styles.withdraw}>E-Code</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </LinearGradient>
+      </View>
+
+      <BlurView style={styles.bottomTab}>
+        <TouchableOpacity onPress={() => navigation.navigate('home')} style={styles.tabArea}>
+          <View style={styles.tab}>
+            <Image
+              style={styles.homeImage}
+              source={{ uri: 'https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png' }}
+            />
+          </View>
+          <Text style={styles.tabText}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('fund')} style={styles.tabArea}>
+          <View style={styles.tab}>
+            <Image
+              style={styles.fundImage}
+              source={{ uri: 'https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png' }}
+            />
+          </View>
+          <Text style={styles.tabText}>Fund</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('recents')} style={styles.tabArea}>
+          <View style={styles.tab}>
+            <Image
+              style={styles.tabImage}
+              source={{ uri: 'https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png' }}
+            />
+          </View>
+          <Text style={styles.tabText}>Recents</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('profiles')} style={styles.tabArea}>
+          <View style={styles.tab}>
+            <Image
+              style={styles.tabImage}
+              source={{ uri: 'https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png' }}
+            />
+          </View>
+          <Text style={styles.tabText}>Profile</Text>
+        </TouchableOpacity>
+      </BlurView>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
-	topTitle:{
+  topTitle:{
 	fontSize:20,
 	fontWeight:'bold',
 	position:'absolute',
@@ -133,18 +155,32 @@ const styles = StyleSheet.create({
 	    width:300,
 	    height:30,
 	    flexDirection:'row',
+	    alignItems:'center',
+	    zIndex:4,
 	    
     },
 
+    topCover:{
+    position:'absolute',
+    height:140,
+    width:'100%',
+    backgroundColor:'black',
+    top:0,
+    borderTopLeftRadius:25,
+    borderTopRightRadius:25,
+    zIndex:1,
+    },
+
     quickTitle:{
-	    fontSize:25,
+	    fontSize:20,
 	    fontWeight:'bold',
 	    color:'#3CB2CB',
+	    zIndex:3,
 
     },
 
     flash:{
-	    fontSize:30
+	    fontSize:25
     },
     body: {
         height: '100%',
@@ -156,25 +192,35 @@ const styles = StyleSheet.create({
     },
     contentArea: {
         height: 500,
-        width: '95%',
+        width: '98%',
         position: 'absolute',
         alignSelf: 'center',
-        top: 40,
-        backgroundColor: '#cfccc5',
+        top: 50,
+        backgroundColor: '#f0f0f0',
         borderRadius: 30,
 	
 	
     },
-    fundButtons:{
+
+
+    cardsType:{
 	    flex:1,
-	    position: 'absolute',                                           justifyContent: 'space-around',                                 flexDirection: 'row',                                           gap:20,
+	    position: 'absolute',                                           justifyContent: 'space-around',                                 flexDirection: 'row',                                           gap:10,
+	    top:75,
+	    alignSelf:'center',
+	    alignItems:'center',
+	    zIndex:4,
+    },
+
+    scrollView:{
+    flex:1,
     },
     fundingArea: {
         position: 'absolute',
         justifyContent: 'center',
         flexDirection: 'row',
         padding: 15,
-        top: 80,
+        top: 320,
         backgroundColor: '#f7fcf6',
         height: 350,
         width:320,
@@ -189,47 +235,32 @@ const styles = StyleSheet.create({
 	
     },
 
-    balArea:{
-	    height:20,
-	    width:100,
-	    justifyContent:'space-around',
-	    position: 'absolute',
-	    top:85,
-	    right:28,
-	    borderRadius:15,
-	    flexDirection:'row',
-	    borderWidth:0.3,
-	    borderColor:'#548C94',
-
-    },
-
-    bal:{
-	    fontSize:12,
-	    color:'#548C94',
-	    fontWeight:'bold',
-	    alignSelf:'center',
-	    left:5,
-	    
-    },
-
-    balance:{
-	    fontSize:12,
-	    color:'#082350',
-	    alignSelf:'center',
-	    fontWeight:'bold',
-    },
     physical:{
-	    height:60,
-	    width:130,
-	    borderRadius:15,
+	    height:50,
+	    width:110,
+	    borderRadius:20,
 	    shadowColor:'black',
 	    shadowOffset:{width:0, height:0},
 	    shadowRadius:4,
 	    elevation:5,
 	    backgroundColor:'#3CB2CB',
 	    shadowOpacity:0.3,},
-	ecode:{                                                                 height:60,                                                      width:130,                                                      borderRadius:15,                                                shadowColor:'black',                                            shadowOffset:{width:0, height:0},                               shadowRadius:4,                                                 elevation:5,                                                    shadowOpacity:0.3,
+	ecode:{                                                                 height:50,                                                      width:110,                                                      borderRadius:20,                                                shadowColor:'black',                                            shadowOffset:{width:0, height:0},                               shadowRadius:4,                                                 elevation:5,                                                    shadowOpacity:0.3,
 		backgroundColor:'#548C94',
+	},
+
+	andText:{
+	color:'white',
+	backgroundColor:'red',
+	height:36,
+	width:36,
+	borderRadius:18,
+	textAlign:'center',
+	padding:5,
+	whiteSpace:'nowrap',
+	paddingTop:8,
+
+
 	},
 
 
@@ -272,12 +303,6 @@ const styles = StyleSheet.create({
 
 
 
-    recentAccounts:{
-	    position:'absolute',
-	    top:85,
-	    left:30,
-	    fontWeight:'bold',
-    },
 
 
     addAccount:{                                                              position:'absolute',                                                  
@@ -291,10 +316,10 @@ const styles = StyleSheet.create({
 
     accountsList:{
 	    position:'absolute',
-	    top:120,
+	    top:150,
 	    
-	    flex:1,
-	    padding:15,
+	    height:500,
+	    width:'90%',
 	    justifyContent:'space-around',
 	    flexDirection:'column',
 	    alignItems:'center',
@@ -303,19 +328,41 @@ const styles = StyleSheet.create({
 	    backgroundColor:'#ccc',
 	    paddingTop:20,
 	    paddingBottom:20,
-	    paddingRight:30,
+	    paddingVertical:30,
 	    alignSelf:'center',
+	    alignItems:'center',
 	    
 	    
 
     },
 
-    usedAccount:{
-	    height:30,
-	    width:240,
+    giftCardBox:{
+	    height:60,
+	    width:'95%',
 	    backgroundColor:'black',
 	    borderRadius:20,
-	    margin:5,
+	    justifyContent:'space-around',
+	    flexDirection:'row',
+	    alignItems:'center',
+
+    },
+
+    selectGiftCard:{
+    fontSize:20,
+    color:'#ccc',},
+
+    amountInput:{
+    height:60,
+    width:'95%',
+    alignItems:'center',
+    backgroundColor:'white',
+    borderRadius:20,
+    borderWidth:1,
+    borderColor:'blue'},
+
+    dropDownIcon:{
+    height:10,
+    width:15,
     },
 
     bottomTab: {                                                              position: 'absolute',                                                 bottom: 0,                                                            flexDirection: 'row',                                                 height: 70,                                                           width: '100%',                                                        justifyContent: 'space-around',                                       alignItems: 'center',                                                 backgroundColor: '#D3DEE8',                                           zIndex: 3,                                                            borderTopWidth: 0.5,                                                  borderColor: '#ddd',                                                  paddingBottom:5,                                                                                                                        },                                                                    tabArea: {                                                                                                                                          height: 60,                                                           width:60,                                                             padding:4,                                                            justifyContent: 'space-around',                                      flexDirection: 'column',                                      },                                                                    tab: {                                                                    height: 40,                                                           width: 50,                                                            borderRadius: 15,                                                     top:0,                                                                marginLeft: 'auto',                                                   marginRight: 'auto',                                                  paddingRight: 'auto',                                                 paddingLeft:'auto',                                                                                                                                                                                           },
@@ -341,9 +388,6 @@ const styles = StyleSheet.create({
 
 
 
-}
-				
-				);
+});
 
-export default SellGiftCards;
-
+export default SellGiftCards
