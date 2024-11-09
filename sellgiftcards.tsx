@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { TextInput, View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -10,7 +10,7 @@ const SellGiftCards: React.FC = () => {
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
 
-  const [amount, setAmount]=useState("");
+  const [quantity, setQuantity]=useState("");
 
   return (
     <>
@@ -49,7 +49,7 @@ const SellGiftCards: React.FC = () => {
 
 
 
-              <View style={styles.accountsList}>
+              <View style={styles.giftCardForm}>
                   <TouchableOpacity
                     style={styles.giftCardBox}>
 		    <Text style={styles.selectGiftCard}>Select Gift Card</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
@@ -57,7 +57,12 @@ const SellGiftCards: React.FC = () => {
 
 	      <TouchableOpacity                                                 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>Select Type</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
 
-	      <TextInput style={styles.amountInput} name='amount' value={amount}/>
+	      <TextInput style={styles.quantityInput} name='amount' value={amount} placeholder='Quatity' color='black' placeholderColor='#999' onChangeText={setQuantity}/>
+
+
+	      <View                                                 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>
+	      ₦ 00</Text>
+	      </View>
 	      </View>
 
 	      </ScrollView>
@@ -66,7 +71,7 @@ const SellGiftCards: React.FC = () => {
                 <View style={styles.physical}>
                   <Image
                     style={styles.addImage}
-                    source={{ uri: 'https://i.postimg.cc/x14DHtjJ/Picsart-24-11-03-14-43-11-943.png' }}
+                    source={{ uri: 'https://i.postimg.cc/8PZB3x3H/file-g-IPIy-HIkhon58isq-Be-Plahat.webp' }}
                   />
                   <Text style={styles.addFund}>Physical</Text>
                 </View>
@@ -196,8 +201,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'center',
         top: 50,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#374550',
         borderRadius: 30,
+	marginBottom:50,
 	
 	
     },
@@ -210,6 +216,7 @@ const styles = StyleSheet.create({
 	    alignSelf:'center',
 	    alignItems:'center',
 	    zIndex:4,
+
     },
 
     scrollView:{
@@ -244,7 +251,8 @@ const styles = StyleSheet.create({
 	    shadowRadius:4,
 	    elevation:5,
 	    backgroundColor:'#3CB2CB',
-	    shadowOpacity:0.3,},
+	    shadowOpacity:0.3,
+    overflow:'hidden',},
 	ecode:{                                                                 height:50,                                                      width:110,                                                      borderRadius:20,                                                shadowColor:'black',                                            shadowOffset:{width:0, height:0},                               shadowRadius:4,                                                 elevation:5,                                                    shadowOpacity:0.3,
 		backgroundColor:'#548C94',
 	},
@@ -266,7 +274,8 @@ const styles = StyleSheet.create({
 
 
 
-	addImage:{                                                         top:-8,                                                                                                                          height:60,                                                      width:100,                                                      resizeMode:'contain',                                           alignSelf:'center',                                             position:'absolute',                                                                                                                                                                                                                                                                                            },
+	addImage:{                                                        
+		height:50,                                                      width:110,                                                      resizeMode:'cover',                                           alignSelf:'center',                                             position:'absolute',},
 
 
 
@@ -314,7 +323,7 @@ const styles = StyleSheet.create({
 	fontSize:12,
     },
 
-    accountsList:{
+    giftCardForm:{
 	    position:'absolute',
 	    top:150,
 	    
@@ -331,6 +340,7 @@ const styles = StyleSheet.create({
 	    paddingVertical:30,
 	    alignSelf:'center',
 	    alignItems:'center',
+	    spacing:20,
 	    
 	    
 
@@ -338,7 +348,7 @@ const styles = StyleSheet.create({
 
     giftCardBox:{
 	    height:60,
-	    width:'95%',
+	    width:'85%',
 	    backgroundColor:'black',
 	    borderRadius:20,
 	    justifyContent:'space-around',
@@ -351,15 +361,16 @@ const styles = StyleSheet.create({
     fontSize:20,
     color:'#ccc',},
 
-    amountInput:{
+    quantityInput:{
     height:60,
-    width:'95%',
+    width:'85%',
     alignItems:'center',
     backgroundColor:'white',
     borderRadius:20,
     borderWidth:1,
-    borderColor:'blue'},
-
+    borderColor:'blue',
+    paddingLeft:10,
+    },
     dropDownIcon:{
     height:10,
     width:15,
