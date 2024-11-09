@@ -6,6 +6,7 @@ import Recents from './recents.tsx';
 import Messages from './messages.tsx';
 import Profile from './profiles.tsx';
 import BuyGiftCard1 from './buygiftcard1';
+import SellGiftCards from './sellgiftcards';
 
 const Stack = createStackNavigator();
 
@@ -24,7 +25,7 @@ export default function App() {
         <>
            <NavigationContainer>
                
-	    <Stack.Navigator initialRouteName='buygiftcard1'>
+	    <Stack.Navigator initialRouteName='sellgiftcards'>
                    
 	    <Stack.Screen name="home" component={Home}
             options={{headerShown:false}}initialParams={{toggleMenu, toggleMsg}}/>
@@ -32,6 +33,7 @@ export default function App() {
 	    <Stack.Screen name='recents' component={Recents} initialParams={{toggleMenu, toggleMsg}} options={{headerShown:false}}/>
 
 	    <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{headerShown:false}} initialParams={{toggleMenu}}/>
+	    <Stack.Screen name='sellgiftcards' options={{headerShown:false}} initialParams={{toggleMenu, toggleMsg}} component={SellGiftCards}/>
 
 
                    

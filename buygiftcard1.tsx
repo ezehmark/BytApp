@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert, ActivityIndicator, FlatList } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -85,24 +85,22 @@ else{
                     style={styles.gradientContainer}>
                     <View style={styles.body}>
 
-    <View style={styles.giftCardsList}>
+		    {giftCards? ( <View style={styles.giftCardsList}>
     {loading? (<ActivityIndicator/>) : (
 	    <FlatList
 	    data={giftCards}
 	    keyExtractor={(item)=>item.id.toString()}
 	    renderItem={({item})=>(
-		    <View style={{margin:10, padding:10, borderWidth:1}}><Text>Name:{item.name}</Text>
-		    <Text> Description:{item.description}</Text></View>)} />)}
+		    <View style={{margin:10, position:'absolute', padding:10, borderWidth:1}}><Text>Name:{item.name}</Text>
+		    <Text> Description:{item.description}</Text></View>
+	    )} 
+
+	/>
+
+    )}
 
 
-    </View>
-        {giftCards.map((giftCard, index) => (
-            <Text key={index} style={styles.giftCardText}>
-                {giftCard}
-            </Text>
-        ))}
-    </View>
-)}
+    </View>) : null}
 
 		    <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
                             <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
@@ -193,19 +191,12 @@ const styles = StyleSheet.create({
 		height:60,
 		width:'80%',
 		borderRadius:20,
-		backgroundColor:'green',
+		backgroundColor:'red',
+		zIndex:3,
 		
 		 
 	},
 
-	giftCardsList:{
-		position:'absolute',
-		alignSelf:'center',
-		height:50,
-		width:'90%',
-		fontSize:20,
-		fontWeight:'bold',
-	},
 
 
 	infoCircle: {
