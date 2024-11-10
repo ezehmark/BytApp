@@ -3,29 +3,28 @@ import { TextInput, View, Text, StyleSheet, Image, ScrollView, TouchableOpacity 
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import GiftCardsList from './giftcardslist.tsx';
 
-interface sellProps{isList:boolean}
+interface sellProps{isList:boolean;
+	giftCardType:string;
+}
 
-const SellGiftCards: React.FC<sellProps> = ({isList}) => {
+const SellGiftCards: React.FC<sellProps> = ({isListi, giftCardType}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
   const toggleCardList= route.params?.toggleCardList;
 
-  const[giftCardType, setGiftCardType] = useState("Select Type");
-  const handlegiftCardType = (cardName:string)=>{
-  setGiftCardType(cardName);
-  toggleCardList;}
   
 
   const [quantity, setQuantity]=useState("");
 
-  return ({isList && (<GiftCardList 
-	  giftCardType= {giftCardType}
-	  onselectCard={handleGiftCardType}/>)} 
+  return ( 
 	  
     <>
+    ({isList && (<GiftCardList                                       giftCardType= {giftCardType}                                    onselectCard={handleGiftCardType}/>)}
+
       <View style={styles.container}>
         <LinearGradient
           colors={['white', '#f5b857']}
@@ -64,12 +63,12 @@ const SellGiftCards: React.FC<sellProps> = ({isList}) => {
               <View style={styles.giftCardForm}>
                   <TouchableOpacity
                     style={styles.giftCardBox}>
-		    <Text style={styles.selectGiftCard}>Select Gift Card</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
+		    <Text style={styles.selectGiftCard}>{giftCardType}</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
               </TouchableOpacity>
 
 	      <TouchableOpacity
 	      onPress={toggleCardList}
-	 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>Select Type</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
+	 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>{giftCardType}</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
 	      
 
 	      <TextInput style={styles.quantityInput} name='amount' value={quantity} placeholder='Quantity' color='black' placeholderTextColor='#999' onChangeText={setQuantity}/>

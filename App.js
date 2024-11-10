@@ -27,8 +27,18 @@ export default function App() {
 		setCardList(list=>!list);
 	}
 
+	const[giftCardType, setGiftCardType] = useState("Select Type");
+
+	const handleGiftCardType = (cardName:string)=>{
+  setGiftCardType(cardName);
+  toggleCardList;}
+
     return (
         <>
+	    <SellGiftCards giftCardType={giftCardType}/>
+
+	    {cardList && (<GiftCardsList toggleCardList={()=>{}}
+		   onSelectCard={handleGiftCardType} />
            <NavigationContainer>
                
 	    <Stack.Navigator initialRouteName='sellgiftcards'>
