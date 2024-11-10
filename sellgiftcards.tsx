@@ -9,7 +9,9 @@ const SellGiftCards: React.FC = () => {
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
-  const toggleCardList= route.Params.toggleCardList;
+  const toggleCardList= route.params?.toggleCardList;
+  const[giftCardType, setGiftCardType] = useState("");
+  
 
   const [quantity, setQuantity]=useState("");
 
@@ -51,16 +53,17 @@ const SellGiftCards: React.FC = () => {
 
 
               <View style={styles.giftCardForm}>
-                  <TouchableOpacity onPress={toggleCardList}
+                  <TouchableOpacity
                     style={styles.giftCardBox}>
 		    <Text style={styles.selectGiftCard}>Select Gift Card</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
               </TouchableOpacity>
 
-	      <TouchableOpacity      
+	      <TouchableOpacity
+	      onPress={toggleCardList}
 	 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>Select Type</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
 	      
 
-	      <TextInput style={styles.quantityInput} name='amount' value={quantity} placeholder='Quantity' color='black' placeholderColor='#999' onChangeText={setQuantity}/>
+	      <TextInput style={styles.quantityInput} name='amount' value={quantity} placeholder='Quantity' color='black' placeholderTextColor='#999' onChangeText={setQuantity}/>
 
 
 	      <View                                                 style={styles.amountBox}>                                     <Text style={styles.amountText}>
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
 
     contentTitle:{
 	    position:'absolute',
-	    top:25,
+	    top:15,
 	    alignSelf:'center',
 	    justifyContent:'space-around',
 	    width:300,
@@ -170,7 +173,7 @@ const styles = StyleSheet.create({
 
     topCover:{
     position:'absolute',
-    height:140,
+    height:120,
     width:'100%',
     backgroundColor:'#5d6262',
     top:0,
@@ -217,7 +220,7 @@ const styles = StyleSheet.create({
     cardsType:{
 	    flex:1,
 	    position: 'absolute',                                           justifyContent: 'space-around',                                 flexDirection: 'row',                                           gap:10,
-	    top:75,
+	    top:55,
 	    alignSelf:'center',
 	    alignItems:'center',
 	    zIndex:4,
@@ -326,7 +329,7 @@ const styles = StyleSheet.create({
 
     giftCardForm:{
 	    position:'absolute',
-	    top:150,
+	    top:130,
 	    
 	    height:450,
 	    width:'90%',

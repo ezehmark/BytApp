@@ -39,9 +39,8 @@ export default function App() {
 	    <Stack.Screen name='recents' component={Recents} initialParams={{toggleMenu, toggleMsg}} options={{headerShown:false}}/>
 
 	    <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{headerShown:false}} initialParams={{toggleMenu}}/>
-	    <Stack.Screen name='sellgiftcards' options={{headerShown:false}} initialParams={{toggleMenu, toggleMsg, 
-			    toggleCardList}} component={SellGiftCards}/>
-	    <Stack.Screen name='giftcardslist' options={{headerShown:false}} component={GiftCardsList} initialParams ={{toggleMsg}}/>
+	    <Stack.Screen name='sellgiftcards' options={{headerShown:false}} 
+	    initialParams={{toggleMenu, toggleMsg, toggleCardList}} component={SellGiftCards}/>
 
 
                    
@@ -58,7 +57,7 @@ export default function App() {
 
            {openMsg && <Messages isMsg={openMsg} toggleMsg={toggleMsg}/>}
 
-	{cardList && (<GiftCardList isList={cardList} toggleCardList={toggleCardList}/>)}
+	{cardList && (<GiftCardsList isList={cardList} toggleCardList={toggleCardList}/>)}
 
 	    
         </>
