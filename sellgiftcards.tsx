@@ -9,6 +9,7 @@ const SellGiftCards: React.FC = () => {
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
+  const toggleCardList= route.Params.toggleCardList;
 
   const [quantity, setQuantity]=useState("");
 
@@ -50,17 +51,19 @@ const SellGiftCards: React.FC = () => {
 
 
               <View style={styles.giftCardForm}>
-                  <TouchableOpacity
+                  <TouchableOpacity onPress={toggleCardList}
                     style={styles.giftCardBox}>
 		    <Text style={styles.selectGiftCard}>Select Gift Card</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
               </TouchableOpacity>
 
-	      <TouchableOpacity                                                 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>Select Type</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
+	      <TouchableOpacity      
+	 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>Select Type</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
+	      
 
-	      <TextInput style={styles.quantityInput} name='amount' value={amount} placeholder='Quatity' color='black' placeholderColor='#999' onChangeText={setQuantity}/>
+	      <TextInput style={styles.quantityInput} name='amount' value={quantity} placeholder='Quantity' color='black' placeholderColor='#999' onChangeText={setQuantity}/>
 
 
-	      <View                                                 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>
+	      <View                                                 style={styles.amountBox}>                                     <Text style={styles.amountText}>
 	      ₦ 00</Text>
 	      </View>
 	      </View>
@@ -79,9 +82,9 @@ const SellGiftCards: React.FC = () => {
                 <View style={styles.ecode}>
                   <Image
                     style={styles.withdrawImage}
-                    source={{ uri: 'https://i.postimg.cc/TwGKMd8X/Picsart-24-11-03-13-56-07-199.png' }}
+                    source={{ uri: 'https://i.postimg.cc/nrqwLKzV/file-Czt3-RAx-TFDidojyun-BG3-Gvz6.webp' }}
                   />
-                  <Text style={styles.withdraw}>E-Code</Text>
+                  <Text style={styles.ecodeText}>E-Code</Text>
                 </View>
               </View>
             </View>
@@ -169,7 +172,7 @@ const styles = StyleSheet.create({
     position:'absolute',
     height:140,
     width:'100%',
-    backgroundColor:'black',
+    backgroundColor:'#5d6262',
     top:0,
     borderTopLeftRadius:25,
     borderTopRightRadius:25,
@@ -196,7 +199,7 @@ const styles = StyleSheet.create({
 	
     },
     contentArea: {
-        height: 500,
+        height: '80%',
         width: '98%',
         position: 'absolute',
         alignSelf: 'center',
@@ -204,6 +207,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#374550',
         borderRadius: 30,
 	marginBottom:50,
+	overflow:'hidden',
+
 	
 	
     },
@@ -220,26 +225,13 @@ const styles = StyleSheet.create({
     },
 
     scrollView:{
-    flex:1,
-    },
-    fundingArea: {
-        position: 'absolute',
-        justifyContent: 'center',
-        flexDirection: 'row',
-        padding: 15,
-        top: 320,
-        backgroundColor: '#f7fcf6',
-        height: 350,
-        width:320,
-	alignSelf:'center',
-	borderRadius:30,
-	shadowColor:'black',
-	shadowOffset:{width:0, height:2},
-	shadowRadius:2,
-	shadowOpacity:0.2,
-	elevation:5,
+    height:500,
+    width:'100%',
+    position:'absolute',
+    borderRadius:25,
+    marginBottom:200,
 
-	
+
     },
 
     physical:{
@@ -255,11 +247,19 @@ const styles = StyleSheet.create({
     overflow:'hidden',},
 	ecode:{                                                                 height:50,                                                      width:110,                                                      borderRadius:20,                                                shadowColor:'black',                                            shadowOffset:{width:0, height:0},                               shadowRadius:4,                                                 elevation:5,                                                    shadowOpacity:0.3,
 		backgroundColor:'#548C94',
+		overflow:'hidden',
 	},
 
+	ecodeText:{                                                              fontWeight:'bold',                                                    
+		position: 'absolute',                                                
+		alignSelf:'center',                                                 
+		color:'white',                                                        
+		bottom:4.5,                    },
+
+
+
 	andText:{
-	color:'white',
-	backgroundColor:'red',
+	color:'#feb819',
 	height:36,
 	width:36,
 	borderRadius:18,
@@ -267,6 +267,8 @@ const styles = StyleSheet.create({
 	padding:5,
 	whiteSpace:'nowrap',
 	paddingTop:8,
+	borderWidth:0.5,
+	borderColor:'#feb819',
 
 
 	},
@@ -284,11 +286,10 @@ const styles = StyleSheet.create({
 
 
 	    withdrawImage:{
-		    top:5,
 	
-		    height:45,
-		    width:100,
-		    resizeMode:'contain',
+		    height:50,
+		    width:110,
+		    resizeMode:'cover',
 		    alignSelf:'center',
 		    position:'absolute',
 
@@ -327,7 +328,7 @@ const styles = StyleSheet.create({
 	    position:'absolute',
 	    top:150,
 	    
-	    height:500,
+	    height:450,
 	    width:'90%',
 	    justifyContent:'space-around',
 	    flexDirection:'column',
@@ -341,6 +342,7 @@ const styles = StyleSheet.create({
 	    alignSelf:'center',
 	    alignItems:'center',
 	    spacing:20,
+	    marginBottom:100,
 	    
 	    
 
@@ -356,6 +358,11 @@ const styles = StyleSheet.create({
 	    alignItems:'center',
 
     },
+
+    amountBox:{                                                           height:60,                                                      width:'85%',                                                    backgroundColor:'#374550',                                        borderRadius:20,                                                justifyContent:'space-around',                                  flexDirection:'row',                                            alignItems:'center',                                                                                                    },
+
+    amountText:{
+    fontSize:20,                                                    color:'#feb819',},
 
     selectGiftCard:{
     fontSize:20,

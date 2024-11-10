@@ -7,6 +7,7 @@ import Messages from './messages.tsx';
 import Profile from './profiles.tsx';
 import BuyGiftCard1 from './buygiftcard1';
 import SellGiftCards from './sellgiftcards';
+import GiftCardsList from './giftcardslist';
 
 const Stack = createStackNavigator();
 
@@ -21,11 +22,16 @@ export default function App() {
                 setOpenMsg(msg=>!msg);
         }
 
+	const[cardList, setCardList] = useState(false);
+	const toggleCardList=()=>{
+		setCardList(list=>!list);
+	}
+
     return (
         <>
            <NavigationContainer>
                
-	    <Stack.Navigator initialRouteName='sellgiftcards'>
+	    <Stack.Navigator initialRouteName='home'>
                    
 	    <Stack.Screen name="home" component={Home}
             options={{headerShown:false}}initialParams={{toggleMenu, toggleMsg}}/>
@@ -33,7 +39,9 @@ export default function App() {
 	    <Stack.Screen name='recents' component={Recents} initialParams={{toggleMenu, toggleMsg}} options={{headerShown:false}}/>
 
 	    <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{headerShown:false}} initialParams={{toggleMenu}}/>
-	    <Stack.Screen name='sellgiftcards' options={{headerShown:false}} initialParams={{toggleMenu, toggleMsg}} component={SellGiftCards}/>
+	    <Stack.Screen name='sellgiftcards' options={{headerShown:false}} initialParams={{toggleMenu, toggleMsg, 
+			    toggleCardList}} component={SellGiftCards}/>
+	    <Stack.Screen name='giftcardslist' options={{headerShown:false}} component={GiftCardsList} initialParams ={{toggleMsg}}/>
 
 
                    
@@ -49,6 +57,8 @@ export default function App() {
             {menuOpen && <Menu isOpen = {menuOpen} toggleMenu={toggleMenu} />}
 
            {openMsg && <Messages isMsg={openMsg} toggleMsg={toggleMsg}/>}
+
+	{cardList && (<GiftCardList isList={cardList} toggleCardList={toggleCardList}/>)}
 
 	    
         </>
