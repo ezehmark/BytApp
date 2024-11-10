@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 interface cardListProps {
   isList: boolean;
   toggleCardList: () => void;
+  onSelectCard:(cardName:string)=> void;
 }
 
 // Define an array of gift cards
@@ -35,7 +36,7 @@ const giftCards = [
   { name: "UK Amazon With Receipt (10-100)", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
 ];
 
-const GiftCardsList: React.FC<cardListProps> = ({ isList, toggleCardList }) => {
+const GiftCardsList: React.FC<cardListProps> = ({ isList, toggleCardList, onSelectCard }) => {
   if (!isList) return null;
 
   return (
@@ -49,7 +50,7 @@ const GiftCardsList: React.FC<cardListProps> = ({ isList, toggleCardList }) => {
           <ScrollView style={styles.scrollArea}>
             <View style={styles.msgArea}>
               {giftCards.map((card, index) => (
-                <TouchableOpacity key={index} style={styles.giftCardBox}>
+                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(card.name)}>
                   <Image style={styles.giftCardLogo} source={{ uri: card.uri }} />
                   <Text style={styles.giftCardName}>{card.name}</Text>
                 </TouchableOpacity>

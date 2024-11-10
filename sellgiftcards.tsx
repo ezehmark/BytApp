@@ -4,18 +4,27 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-const SellGiftCards: React.FC = () => {
+interface sellProps{isList:boolean}
+
+const SellGiftCards: React.FC<sellProps> = ({isList}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
   const toggleCardList= route.params?.toggleCardList;
-  const[giftCardType, setGiftCardType] = useState("");
+
+  const[giftCardType, setGiftCardType] = useState("Select Type");
+  const handlegiftCardType = (cardName:string)=>{
+  setGiftCardType(cardName);
+  toggleCardList;}
   
 
   const [quantity, setQuantity]=useState("");
 
-  return (
+  return ({isList && (<GiftCardList 
+	  giftCardType= {giftCardType}
+	  onselectCard={handleGiftCardType}/>)} 
+	  
     <>
       <View style={styles.container}>
         <LinearGradient
@@ -69,6 +78,11 @@ const SellGiftCards: React.FC = () => {
 	      <View                                                 style={styles.amountBox}>                                     <Text style={styles.amountText}>
 	      ₦ 00</Text>
 	      </View>
+
+	      <View  
+	      style={styles.sellBox}>                                     <Text style={styles.sellText}> Sell Now</Text>                                                     </View>
+
+
 	      </View>
 
 	      </ScrollView>
@@ -366,6 +380,15 @@ const styles = StyleSheet.create({
 
     amountText:{
     fontSize:20,                                                    color:'#feb819',},
+
+    
+    sellBox:{                                                           height:60,                                                      width:'85%',                                                    backgroundColor:'#040301',                                        borderRadius:20,                                                justifyContent:'center',                                  
+	    alignItems:'center',                                                                                                    },                                                                                                                              
+    sellText:{                                                    fontSize:20,
+alignSelf:'center',
+
+color:'red',
+    fontWeight:'bold',},
 
     selectGiftCard:{
     fontSize:20,

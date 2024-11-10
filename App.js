@@ -31,7 +31,7 @@ export default function App() {
         <>
            <NavigationContainer>
                
-	    <Stack.Navigator initialRouteName='home'>
+	    <Stack.Navigator initialRouteName='sellgiftcards'>
                    
 	    <Stack.Screen name="home" component={Home}
             options={{headerShown:false}}initialParams={{toggleMenu, toggleMsg}}/>
@@ -40,7 +40,7 @@ export default function App() {
 
 	    <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{headerShown:false}} initialParams={{toggleMenu}}/>
 	    <Stack.Screen name='sellgiftcards' options={{headerShown:false}} 
-	    initialParams={{toggleMenu, toggleMsg, toggleCardList}} component={SellGiftCards}/>
+	    initialParams={{toggleMenu, toggleMsg, toggleCardList}} component={SellGiftCards} isList={cardList}/>
 
 
                    
