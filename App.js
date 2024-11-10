@@ -37,8 +37,8 @@ export default function App() {
         <>
 	    <SellGiftCards giftCardType={giftCardType}/>
 
-	    {cardList && (<GiftCardsList toggleCardList={()=>{}}
-		   onSelectCard={handleGiftCardType} />
+	    {cardList && (<GiftCardsList isList={cardList} toggleCardList={toggleCardList }
+		   onSelectCard={handleGiftCardType} />)}
            <NavigationContainer>
                
 	    <Stack.Navigator initialRouteName='sellgiftcards'>
@@ -50,7 +50,7 @@ export default function App() {
 
 	    <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{headerShown:false}} initialParams={{toggleMenu}}/>
 	    <Stack.Screen name='sellgiftcards' options={{headerShown:false}} 
-	    initialParams={{toggleMenu, toggleMsg, toggleCardList}} component={SellGiftCards} isList={cardList}/>
+	    initialParams={{toggleMenu, toggleMsg, toggleCardList}} component={SellGiftCards} />
 
 
                    
