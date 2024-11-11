@@ -31,7 +31,7 @@ export default function App() {
 
     return (
         <>
-            <SellGiftCards giftCardType={giftCardType} />
+
 
             {cardList && (
                 <GiftCardsList 
@@ -42,7 +42,7 @@ export default function App() {
             )}
             
             <NavigationContainer>
-                <Stack.Navigator initialRouteName='sellgiftcards'>
+                <Stack.Navigator initialRouteName='home'>
                     <Stack.Screen name="home" component={Home} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='recents' component={Recents} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{ headerShown: false }} initialParams={{ toggleMenu }} />

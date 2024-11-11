@@ -5,11 +5,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import GiftCardsList from './giftcardslist.tsx';
 
-interface sellProps{isList:boolean;
-	giftCardType:string;
-}
 
-const SellGiftCards: React.FC<sellProps> = ({isList, giftCardType}) => {
+const SellGiftCards: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
@@ -23,15 +20,13 @@ const SellGiftCards: React.FC<sellProps> = ({isList, giftCardType}) => {
   return ( 
 	  
     <>
-    {isList && <GiftCardsList/>}
 
       <View style={styles.container}>
         <LinearGradient
           colors={['white', '#f5b857']}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
-          style={styles.gradientContainer}
-        >
+          style={styles.gradientContainer} >
           <View style={styles.body}>
             <Text style={styles.topTitle}>Sell Gift Cards</Text>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
@@ -63,18 +58,19 @@ const SellGiftCards: React.FC<sellProps> = ({isList, giftCardType}) => {
               <View style={styles.giftCardForm}>
                   <TouchableOpacity
                     style={styles.giftCardBox}>
-		    <Text style={styles.selectGiftCard}>{giftCardType}</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
+		    <Text style={styles.selectGiftCard}>giftCardType</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
               </TouchableOpacity>
 
 	      <TouchableOpacity
 	      onPress={toggleCardList}
-	 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>{giftCardType}</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
+	 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>Select CardType</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
 	      
 
 	      <TextInput style={styles.quantityInput} name='amount' value={quantity} placeholder='Quantity' color='black' placeholderTextColor='#999' onChangeText={setQuantity}/>
 
 
-	      <View                                                 style={styles.amountBox}>                                     <Text style={styles.amountText}>
+	      <View 
+	      style={styles.amountBox}>                                     <Text style={styles.amountText}>
 	      ₦ 00</Text>
 	      </View>
 
