@@ -9,7 +9,7 @@ interface sellProps{isList:boolean;
 	giftCardType:string;
 }
 
-const SellGiftCards: React.FC<sellProps> = ({isListi, giftCardType}) => {
+const SellGiftCards: React.FC<sellProps> = ({isList, giftCardType}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
@@ -23,7 +23,7 @@ const SellGiftCards: React.FC<sellProps> = ({isListi, giftCardType}) => {
   return ( 
 	  
     <>
-    ({isList && (<GiftCardList                                       giftCardType= {giftCardType}                                    onselectCard={handleGiftCardType}/>)}
+    ({isList && <GiftCardList/>}
 
       <View style={styles.container}>
         <LinearGradient
