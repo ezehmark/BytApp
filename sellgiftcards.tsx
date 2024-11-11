@@ -23,7 +23,7 @@ const SellGiftCards: React.FC<sellProps> = ({isList, giftCardType}) => {
   return ( 
 	  
     <>
-    {isList && <GiftCardList/>}
+    {isList && <GiftCardsList/>}
 
       <View style={styles.container}>
         <LinearGradient
@@ -356,8 +356,6 @@ const styles = StyleSheet.create({
 	    paddingBottom:20,
 	    paddingVertical:30,
 	    alignSelf:'center',
-	    alignItems:'center',
-	    spacing:20,
 	    marginBottom:100,
 	    
 	    
