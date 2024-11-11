@@ -23,7 +23,7 @@ const SellGiftCards: React.FC<sellProps> = ({isList, giftCardType}) => {
   return ( 
 	  
     <>
-    ({isList && <GiftCardList/>}
+    {isList && <GiftCardList/>}
 
       <View style={styles.container}>
         <LinearGradient
