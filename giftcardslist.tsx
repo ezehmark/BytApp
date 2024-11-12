@@ -36,12 +36,13 @@ const giftCards = [
   { name: "UK Amazon With Receipt (10-100)", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
 ];
 
+
 const GiftCardsList: React.FC<cardListProps> = ({ isList, toggleCardList, onSelectCard }) => {
   if (!isList) return null;
 
   return (
     <View style={styles.bodi}>
-      <TouchableOpacity onPress={toggleCardList} style={styles.closeBtn}>❌</TouchableOpacity>
+      <TouchableOpacity onPress={()=>toggleCardList()} style={styles.closeBtn}>❌</TouchableOpacity>
 
       <View style={styles.container}>
         <Text style={styles.msg}>Gift Card Type</Text>
@@ -50,7 +51,7 @@ const GiftCardsList: React.FC<cardListProps> = ({ isList, toggleCardList, onSele
           <ScrollView style={styles.scrollArea}>
             <View style={styles.msgArea}>
               {giftCards.map((card, index) => (
-                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(card.name)}>
+                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(cardName)}>
                   <Image style={styles.giftCardLogo} source={{ uri: card.uri }} />
                   <Text style={styles.giftCardName}>{card.name}</Text>
                 </TouchableOpacity>
