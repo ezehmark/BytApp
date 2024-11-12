@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { useNavigation, useRoute} from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,15 +11,13 @@ const Profile: React.FC = () => {
   const toggleMsg=route.params.toggleMsg;
 
   return (
-    <View style={styles.mainContainer}>
+    <View style={styles.container}>
     <TouchableOpacity 
     onPress={toggleMenu} style={styles.menuCircle}>                                                     
     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} /> </TouchableOpacity>
 
     <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
     <Image style={styles.bellIcon} source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }} />                   </TouchableOpacity>
-
-    <ScrollView style={style.container}>
       <LinearGradient
         colors={['white', '#f5b857']}
         start={{ x: 0, y: 0 }}
@@ -113,14 +111,11 @@ style={styles.socialIcons}>
           </TouchableOpacity>
         </BlurView>
       </LinearGradient>
-    </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-
-	mainContainer:{flex:1,position:'absolute', zIndex:7,backgroundColor:'red',},
   menuCircle: {
     top: 6,
     left: 10,
@@ -142,6 +137,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   userInfoArea: {
+    position: 'absolute',
     height: 105,
     width: '88%',
     left: '6%',
@@ -203,6 +199,7 @@ const styles = StyleSheet.create({
     right:17,
   },
   userInfo: {
+    position: 'absolute',
     height: 95,
     width: '65%',
     left: 2,
@@ -263,11 +260,13 @@ const styles = StyleSheet.create({
   moveable: {
     height: 400,
     width: '96%',
+    position: 'absolute',
     top: 400,
     left: '2%',
     backgroundColor: 'blue',
   },
   itemsZone: {
+    position: 'absolute',
     height: 400,
     width: '90%',
     justifyContent: 'space-around',
@@ -335,6 +334,7 @@ const styles = StyleSheet.create({
     width: 48,
   },
   bottomTab: {
+    position: 'absolute',
     bottom: 0,
     flexDirection: 'row',
     height: 70,
@@ -392,5 +392,6 @@ const styles = StyleSheet.create({
     
 
 export default Profile;
+
 
 

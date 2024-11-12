@@ -4,6 +4,7 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import GiftCardsList from './giftcardslist.tsx';
+import AmazonCards from './amazoncards.tsx';
 
 
 const SellGiftCards: React.FC = () => {
@@ -13,8 +14,8 @@ const SellGiftCards: React.FC = () => {
   const toggleMsg = route.params?.toggleMsg;
 
 const [giftCardType, setGiftCardType] = useState("Select Type");
-    const onSelectCard = (cardName) => {
-        setGiftCardType(cardName);                                            toggleCardList();
+    const onSelectCard = (amazonCard) => {
+        setGiftCardType(amazonCard);                                            toggleCardList();
     };
   const [cardList, setCardList]=useState(false);
   const toggleCardList=()=>{
@@ -22,10 +23,26 @@ const [giftCardType, setGiftCardType] = useState("Select Type");
 
   const [quantity, setQuantity]=useState("");
 
+
+
+  const[isCard, setIsCard]=useState(false);
+  const toggleCard=()=>{
+  setIsCard(prev=>!prev);
+  }
+
+
+const [cardType, setCardType]=useState("Please Select Card");
+
+  const handleSelectCard=(cardName)=>{
+	  setCardType(cardName);
+	  toggleCardType();
+  }
+
   return ( 
 	  
     <>
-{cardList && (                                                            <GiftCardsList                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />
+    {card && (<GiftCardsList iscard ={isCard} toggleCard={toggleCard} handleSelectCard={handleSelectCard}/>)}
+{cardList && (                                                            <AmazonCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />
             )}
       <View style={styles.container}>
         <LinearGradient
@@ -62,9 +79,9 @@ const [giftCardType, setGiftCardType] = useState("Select Type");
 
 
               <View style={styles.giftCardForm}>
-                  <TouchableOpacity
+                  <TouchableOpacity onPress={()=>toggleCard()}
                     style={styles.giftCardBox}>
-		    <Text style={styles.selectGiftCard}>Select Type</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
+		    <Text style={styles.selectGiftCard}>{cardType}</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
               </TouchableOpacity>
 
 	      <TouchableOpacity

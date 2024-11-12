@@ -9,7 +9,8 @@ import Messages from './messages.tsx';
 import Profile from './profiles.tsx';
 import BuyGiftCard1 from './buygiftcard1';
 import SellGiftCards from './sellgiftcards';
-import GiftCardsList from './giftcardslist';
+import GiftCardsList from './giftcardslist.tsx';
+import AmazonCards from './amazoncards.tsx';
 
 const Stack = createStackNavigator();
 

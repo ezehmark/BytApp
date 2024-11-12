@@ -29,7 +29,7 @@ const Messages:React.FC<messagesProps>=({isMsg, toggleMsg})=>{
 	<TouchableOpacity onPress={toggleMsg}style={styles.closeBtn}>Close ❌</TouchableOpacity>
             
             <LinearGradient
-	    colors={['white', '#f5b857']}                         start={{x:0, y:0}}                                    end={{x:0, y:1}}
+	    colors={['white', '#3CB2CB']}                         start={{x:0, y:0}}                                    end={{x:0, y:1}}
 
 	    style={styles.container}>
 	    <Text style={styles.msg}>Messages</Text>
@@ -39,9 +39,12 @@ const Messages:React.FC<messagesProps>=({isMsg, toggleMsg})=>{
                     <ScrollView
 		    style={styles.scrollArea}>
                        <View style={styles.msgArea}> 
-		       {messages.map((item, index)=>
-				    <View style={styles.msgArea}>                                    <View                                                           style={styles.msgBox}>{item.message}</View>                                                                                                             </View>)} 
-                       </View> 
+		       
+		       {messages.map((item, index)=><View key={index}
+				    
+			style={styles.msgBox}>{item.message}</View>                                                                                                             )} 
+				     </View>
+                       
                         </ScrollView>
                     </View>
                 </LinearGradient>
@@ -83,7 +86,7 @@ const styles =StyleSheet.create({
 	position:'absolute',
 	top:10,
 	alignSelf:'center',
-	color:'#4A6163',
+	color:'black',
 
 
     },
@@ -133,11 +136,19 @@ const styles =StyleSheet.create({
 
     },
 
-	msgArea:{                                                 position:'absolute',                                  height:580,                                         width:'98%',                                          backgroundColor:'#ddd',                               justifyContent:'space-around',                        flexDirection:'column',
+	msgArea:{                                               
+		position:'absolute',                                  
+		                                 
+		flex:1,                                         
+		backgroundColor:'#ddd',                             
+		justifyContent:'space-around',                        
+		flexDirection:'column',
 		alignSelf:'center',
 		top:2,
 		borderTopRightRadius:15,
 		borderTopLeftRadius:15,
+		paddingBottom:50,
+		gap:15,
     },
     msgBox:{
         height:80,
