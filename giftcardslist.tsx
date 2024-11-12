@@ -51,7 +51,7 @@ const GiftCardsList: React.FC<cardListProps> = ({ isList, toggleCardList, onSele
           <ScrollView style={styles.scrollArea}>
             <View style={styles.msgArea}>
               {giftCards.map((card, index) => (
-                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(cardName)}>
+                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(card.name)}>
                   <Image style={styles.giftCardLogo} source={{ uri: card.uri }} />
                   <Text style={styles.giftCardName}>{card.name}</Text>
                 </TouchableOpacity>
@@ -66,7 +66,6 @@ const GiftCardsList: React.FC<cardListProps> = ({ isList, toggleCardList, onSele
 
 const styles = StyleSheet.create({
   bodi: {
-    position: 'absolute',
     height: '85%',
     width: '90%',
     alignSelf: 'center',
@@ -80,6 +79,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.6,
     shadowRadius: 8,
     elevation: 7,
+    position:'absolute',
+    zIndex:10,
   },
   msg: {
     fontSize: 17,

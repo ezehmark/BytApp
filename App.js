@@ -42,14 +42,13 @@ export default function App() {
             )}
             
             <NavigationContainer>
-                <Stack.Navigator initialRouteName='giftcardslist'>
+                <Stack.Navigator initialRouteName='sellgiftcards'>
                     <Stack.Screen name="home" component={Home} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='recents' component={Recents} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{ headerShown: false }} initialParams={{ toggleMenu }} />
                     <Stack.Screen name='sellgiftcards' component={SellGiftCards} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg, toggleCardList }} />
                     <Stack.Screen name="fund" component={Fund} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='profiles' component={Profile} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
-	    <Stack.Screen name="giftcardslist" component="GiftCardsList" options={{headerShown:false}}/>
                 </Stack.Navigator>
             </NavigationContainer>
 
