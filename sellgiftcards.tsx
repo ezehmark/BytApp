@@ -6,22 +6,27 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import GiftCardsList from './giftcardslist.tsx';
 
 
-interface sellGiftCardProps{giftCardType:string;}
-const SellGiftCards: React.FC<sellGiftCardProps> = ({giftCardType}) => {
+const SellGiftCards: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
-  const toggleCardList= route.params?.toggleCardList;
 
-  
+const [giftCardType, setGiftCardType] = useState("Select Type");
+    const onSelectCard = (cardName) => {
+        setGiftCardType(cardName);                                            toggleCardList();
+    };
+  const [cardList, setCardList]=useState(false);
+  const toggleCardList=()=>{
+  setCardList(init=>!init);}
 
   const [quantity, setQuantity]=useState("");
 
   return ( 
 	  
     <>
-
+{cardList && (                                                            <GiftCardsList                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={handleGiftCardType}                                 />
+            )}
       <View style={styles.container}>
         <LinearGradient
           colors={['white', '#f5b857']}
