@@ -6,7 +6,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import GiftCardsList from './giftcardslist.tsx';
 
 
-const SellGiftCards: React.FC = () => {
+interface sellGiftCardProps{giftCardType:string;}
+const SellGiftCards: React.FC<sellGiftCardProps> = ({giftCardType}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
@@ -58,12 +59,12 @@ const SellGiftCards: React.FC = () => {
               <View style={styles.giftCardForm}>
                   <TouchableOpacity
                     style={styles.giftCardBox}>
-		    <Text style={styles.selectGiftCard}>giftCardType</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
+		    <Text style={styles.selectGiftCard}>Select Type</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>
               </TouchableOpacity>
 
 	      <TouchableOpacity
 	      onPress={toggleCardList}
-	 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>Select CardType</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
+	 style={styles.giftCardBox}>                                     <Text style={styles.selectGiftCard}>{giftCardType}</Text><Image source={{uri:'https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png'}} style={styles.dropDownIcon}/>                                                                          </TouchableOpacity>
 	      
 
 	      <TextInput style={styles.quantityInput} name='amount' value={quantity} placeholder='Quantity' color='black' placeholderTextColor='#999' onChangeText={setQuantity}/>

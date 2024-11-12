@@ -46,7 +46,7 @@ export default function App() {
                     <Stack.Screen name="home" component={Home} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='recents' component={Recents} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{ headerShown: false }} initialParams={{ toggleMenu }} />
-                    <Stack.Screen name='sellgiftcards' component={SellGiftCards} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg, toggleCardList }} />
+                    <Stack.Screen name='sellgiftcards' component={SellGiftCards} giftCardType={giftCardType} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg, toggleCardList }} />
                     <Stack.Screen name="fund" component={Fund} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='profiles' component={Profile} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                 </Stack.Navigator>
