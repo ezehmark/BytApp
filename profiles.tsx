@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
 import { BlurView } from 'expo-blur';
 import { useNavigation, useRoute} from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -120,7 +120,7 @@ style={styles.socialIcons}>
 
 const styles = StyleSheet.create({
 
-	mainContainer:{flex:1,position:'absolute',},
+	mainContainer:{flex:1,position:'absolute', zIndex:7,backgroundColor:'red',},
   menuCircle: {
     top: 6,
     left: 10,
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   container: {
-    flex: 1,
+    flex: 1,position:'absolute',
   },
   gradientContainer: {
     flex: 1,
