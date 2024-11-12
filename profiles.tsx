@@ -136,13 +136,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   container: {
-    flex: 1,position:'absolute',
+    flex: 1,
   },
   gradientContainer: {
     flex: 1,
   },
   userInfoArea: {
-    position: 'absolute',
     height: 105,
     width: '88%',
     left: '6%',
@@ -204,7 +203,6 @@ const styles = StyleSheet.create({
     right:17,
   },
   userInfo: {
-    position: 'absolute',
     height: 95,
     width: '65%',
     left: 2,
@@ -265,13 +263,11 @@ const styles = StyleSheet.create({
   moveable: {
     height: 400,
     width: '96%',
-    position: 'absolute',
     top: 400,
     left: '2%',
     backgroundColor: 'blue',
   },
   itemsZone: {
-    position: 'absolute',
     height: 400,
     width: '90%',
     justifyContent: 'space-around',
@@ -339,7 +335,6 @@ const styles = StyleSheet.create({
     width: 48,
   },
   bottomTab: {
-    position: 'absolute',
     bottom: 0,
     flexDirection: 'row',
     height: 70,

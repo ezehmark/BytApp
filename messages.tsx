@@ -10,7 +10,17 @@ interface messagesProps{
 }
 
 const Messages:React.FC<messagesProps>=({isMsg, toggleMsg})=>{
-    
+
+    const messages=[{message:"You are welcome to FLASH ⚡. The No. 1 Fintech App for all important services. Enjoy our fast service app."},
+	    
+
+	    {message:"You are welcome to FLASH ⚡. The No. 1 Fintech App for all important services. Enjoy our fast service app."},
+    {message:"You are welcome to FLASH ⚡. The No. 1 Fintech App for all important services. Enjoy our fast service app."},
+    {message:"You are welcome to FLASH ⚡. The No. 1 Fintech App for all important services. Enjoy our fast service app."},
+    {message:"You are welcome to FLASH ⚡. The No. 1 Fintech App for all important services. Enjoy our fast service app."},                                                                 
+    {message:"You are welcome to FLASH ⚡. The No. 1 Fintech App for all important services. Enjoy our fast service app."},         {message:"You are welcome to FLASH ⚡. The No. 1 Fintech App for all important services. Enjoy our fast service app."},
+    ]
+
     if(!isMsg) return null;
     return(
         
@@ -29,26 +39,8 @@ const Messages:React.FC<messagesProps>=({isMsg, toggleMsg})=>{
                     <ScrollView
 		    style={styles.scrollArea}>
                        <View style={styles.msgArea}> 
-                        <LinearGradient
-                        colors={['#3CB2CB', '#3CB2CB', '#fff']}
-                        start={{x:0, y:0}}
-                        end={{x:1,y:0}} style={styles.msgBox}>You are Welcome. Your notifications will appear here.</LinearGradient>
-                        <LinearGradient
-                        colors={['#3CB2CB', '#3CB2CB', '#fff']}
-                        start={{x:0, y:0}}
-                        end={{x:1,y:0}} style={styles.msgBox}>You are Welcome 💯 🎉. Your notifications will appear here.</LinearGradient>
-                        
-                        <LinearGradient
-                        colors={['#3CB2CB', '#3CB2CB', '#fff']}
-                        start={{x:0, y:0}}
-                        end={{x:1,y:0}} style={styles.msgBox}>You are Welcome. Your notifications will appear here.</LinearGradient>
-                        
-                        <LinearGradient
-                        colors={['#3CB2CB', '#3CB2CB', '#fff']}
-                        start={{x:0, y:0}}
-                        end={{x:1,y:0}}
-                         style={styles.msgBox}>You are Welcome. Your notifications will appear here.</LinearGradient>
-			 <LinearGradient                                       colors={['#3CB2CB', '#3CB2CB', '#fff']}                                                                         start={{x:0, y:0}}                                    end={{x:1,y:0}} style={styles.msgBox}>You are Welcome. Your notifications will appear here.</LinearGradient>                                                                                                            <LinearGradient                                       colors={['#3CB2CB', '#3CB2CB', '#fff']}                                                                         start={{x:0, y:0}}                                    end={{x:1,y:0}}                                        style={styles.msgBox}>You are Welcome. Your notifications will appear here.</LinearGradient>
+		       {messages.map((item, index)=>
+				    <View style={styles.msgArea}>                                    <View                                                           style={styles.msgBox}>{item.message}</View>                                                                                                             </View>)} 
                        </View> 
                         </ScrollView>
                     </View>
@@ -156,7 +148,12 @@ const styles =StyleSheet.create({
         alignItems:'center',
 	backgroundColor:'#3CB2CB',
 	color:'black',
-	fontSize:15,
+	fontSize:12,
+	shadowColor:'black',
+	shadowOpacity:0.6,
+	elevation:4,
+	shadowOffset:{height:1,width:0.5},
+	shadowRadius:5,
 
      
     },

@@ -82,9 +82,12 @@ const [giftCardType, setGiftCardType] = useState("Select Type");
 
 	      <View  
 	      style={styles.sellBox}>                                     <Text style={styles.sellText}> Sell Now</Text>                                                     </View>
+	      <Text style={styles.rate}>Rate:₦0.0</Text>
 
 
 	      </View>
+
+	      
 
 	      </ScrollView>
 
@@ -382,13 +385,33 @@ const styles = StyleSheet.create({
     fontSize:20,                                                    color:'#feb819',},
 
     
-    sellBox:{                                                           height:60,                                                      width:'85%',                                                    backgroundColor:'#040301',                                        borderRadius:20,                                                justifyContent:'center',                                  
-	    alignItems:'center',                                                                                                    },                                                                                                                              
+    sellBox:{                                                          
+	    height:60,                                                      
+	    width:'85%',                                                   
+	    backgroundColor:'white',                                        
+	    borderRadius:20,                                                
+	    justifyContent:'center',                                  
+	    alignItems:'center',
+	    shadowColor:'black',
+	    shadowRadius:6,
+	    shadowOffset:{height:0,width:0,},
+	    shadowOpacity:0.6,
+	    elevation:4,
+
+    },                                                                                                                              
     sellText:{                                                    fontSize:20,
 alignSelf:'center',
 
-color:'#feb819',
+color:'#3CB2CB',
     fontWeight:'bold',},
+
+    rate:{padding:10,
+	    borderRadius:10,
+	    color:'green',
+	    backgroundColor:'white',
+	    borderColor:'green',
+	    borderWidth:1,zIndex:12,},
+
 
     selectGiftCard:{
     fontSize:17,

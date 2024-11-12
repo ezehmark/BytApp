@@ -41,6 +41,7 @@ const GiftCardsList: React.FC<cardListProps> = ({ isList, toggleCardList, onSele
   if (!isList) return null;
 
   return (
+	  <BlurView style={styles.mainBodi}>
     <View style={styles.bodi}>
       <TouchableOpacity onPress={()=>toggleCardList()} style={styles.closeBtn}>❌</TouchableOpacity>
 
@@ -61,10 +62,12 @@ const GiftCardsList: React.FC<cardListProps> = ({ isList, toggleCardList, onSele
         </View>
       </View>
     </View>
+    </BlurView>
   );
 }
 
 const styles = StyleSheet.create({
+	mainBodi:{height:'100%', width:'100%',position:'absolute',zIndex:20,},
   bodi: {
     height: '85%',
     width: '90%',
@@ -180,3 +183,4 @@ const styles = StyleSheet.create({
 });
 
 export default GiftCardsList;
+
