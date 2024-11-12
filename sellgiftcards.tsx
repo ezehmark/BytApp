@@ -25,7 +25,7 @@ const [giftCardType, setGiftCardType] = useState("Select Type");
   return ( 
 	  
     <>
-{cardList && (                                                            <GiftCardsList                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={handleGiftCardType}                                 />
+{cardList && (                                                            <GiftCardsList                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />
             )}
       <View style={styles.container}>
         <LinearGradient
