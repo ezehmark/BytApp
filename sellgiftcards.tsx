@@ -372,6 +372,7 @@ const styles = StyleSheet.create({
 	    justifyContent:'space-around',
 	    flexDirection:'row',
 	    alignItems:'center',
+	    padding:10,
 
     },
 
@@ -386,11 +387,11 @@ const styles = StyleSheet.create({
     sellText:{                                                    fontSize:20,
 alignSelf:'center',
 
-color:'red',
+color:'#feb819',
     fontWeight:'bold',},
 
     selectGiftCard:{
-    fontSize:20,
+    fontSize:17,
     color:'#ccc',},
 
     quantityInput:{
