@@ -53,7 +53,7 @@ const AmazonCards: React.FC<cardListProps> = ({ isList, toggleCardList, onSelect
             <View style={styles.msgArea}>
               {amazonCards.map((amazon, index) => (
                 <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(amazon.name)}>
-                  <Image style={styles.giftCardLogo} source={{ uri: card.uri }} />
+                  <Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} />
                   <Text style={styles.giftCardName}>{amazon.name}</Text>
                 </TouchableOpacity>
               ))}

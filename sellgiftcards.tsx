@@ -35,13 +35,13 @@ const [cardType, setCardType]=useState("Please Select Card");
 
   const handleSelectCard=(cardName)=>{
 	  setCardType(cardName);
-	  toggleCardType();
+	  toggleCard();
   }
 
   return ( 
 	  
     <>
-    {card && (<GiftCardsList iscard ={isCard} toggleCard={toggleCard} handleSelectCard={handleSelectCard}/>)}
+    {isCard && (<GiftCardsList isCard ={isCard} toggleCard={toggleCard} handleSelectCard={handleSelectCard}/>)}
 {cardList && (                                                            <AmazonCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />
             )}
       <View style={styles.container}>
@@ -263,10 +263,10 @@ const styles = StyleSheet.create({
     },
 
     scrollView:{
-    height:500,
+    height:520,
     width:'100%',
     position:'absolute',
-    borderRadius:25,
+    borderRadius:20,
     marginBottom:200,
 
 

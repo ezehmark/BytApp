@@ -11,20 +11,20 @@ interface cardListProps {
 // Define an array of gift cards
 const giftCards = [
   { name: "Amazon", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "iTunes/Apple", uri: 'https://i.postimg.cc/GmtRgSGP/e887572719d664af959e82bb810a71a3-1.jpg' },
-  { name: "Google Play", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "Steam Wallet", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "Wallmart", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "eBay", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "Sephora", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "Nordstrom", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "Target", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "Nike", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "American Express(AMEX)", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "Best Buy", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "Vanilla Visa", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "Xbox", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "PlayStation", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
+  { name: "iTunes/Apple", uri: 'https://i.postimg.cc/L5HPcZt1/images-22-1.jpg'},
+  { name: "Google Play", uri: 'https://i.postimg.cc/8c55dddt/google-play-gift-card-online.png'},
+  { name: "Steam Wallet", uri: 'https://i.postimg.cc/hvLBdf6p/images-34-1.jpg'},
+  { name: "Wallmart", uri: 'https://i.postimg.cc/66LgCJTj/images-20.png'},
+  { name: "eBay", uri: 'https://i.postimg.cc/D0ygqNYH/ebay-icon-logo-EA65-D4-EEE0-seeklogo-com.png'},
+  { name: "Sephora", uri: 'https://i.postimg.cc/HxS5CkBv/images-34-2.jpg'},
+  { name: "Nordstrom", uri:'https://i.postimg.cc/15D0Y6LJ/images-22.png'}, 
+  { name: "Target", uri:'https://i.postimg.cc/ZY6n3ckY/images-24.png'}, 
+  { name: "Nike", uri: 'https://i.postimg.cc/8cwjvpFQ/Picsart-24-11-12-22-33-37-180.jpg'},
+  { name: "American Express(AMEX)", uri: 'https://i.postimg.cc/Zn0hf47h/American-Express-logo-2018-svg.png'},
+  { name: "Best Buy", uri: 'https://i.postimg.cc/gc59z9tn/images-25.png'},
+  { name: "Vanilla Visa", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+  { name: "Xbox", uri: 'https://i.postimg.cc/T3TvSVH9/xbox-logo-0-DAE30-CE6-A-seeklogo-com.png'},
+  { name: "PlayStation", uri: 'https://i.postimg.cc/rpz3XQGS/images-36-1.jpg'},
 
 ];
 
@@ -45,7 +45,7 @@ const GiftCardsList: React.FC<cardListProps> = ({ isCard, toggleCard, handleSele
             <View style={styles.msgArea}>
               {giftCards.map((card, index) => (
                 <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>handleSelectCard(card.name)}>
-                  <Image style={styles.giftCardLogo} source={{ uri: card.uri }} />
+                 <View style={styles.logoCover}> <Image style={styles.giftCardLogo} source={{ uri: card.uri }} /></View>
                   <Text style={styles.giftCardName}>{card.name}</Text>
                 </TouchableOpacity>
               ))}
@@ -164,14 +164,24 @@ const styles = StyleSheet.create({
     left: 40,
     fontWeight: 'bold',
   },
-  giftCardLogo: {
+  logoCover: {
     position: 'absolute',
-    height: 20,
+    height: 30,
     width: 30,
     alignSelf: 'center',
     left: 5,
-    borderRadius: 5,
-  }
+    borderRadius: 15,
+    overflow:'hidden',
+    backgroundColor:'black',
+    
+  },
+
+  giftCardLogo:{resizeMode:'cover', 
+  position:'absolute',
+  height:30,
+  width:35,
+  alignSelf:'center',
+  },
 });
 
 export default GiftCardsList;
