@@ -70,11 +70,13 @@ const styles =StyleSheet.create({
     left:'5%',
     shadowColor:'black',
 
-    shadowOffset:{height:6, width:3},                     shadowOpacity:0.6,
+    shadowOffset:{height:6, width:3},                     
+    shadowOpacity:0.6,
 
     shadowRadius:8,
 
     elevation:7,
+
     
     
         

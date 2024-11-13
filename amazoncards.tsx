@@ -53,7 +53,10 @@ const AmazonCards: React.FC<cardListProps> = ({ isList, toggleCardList, onSelect
             <View style={styles.msgArea}>
               {amazonCards.map((amazon, index) => (
                 <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(amazon.name)}>
-                  <Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} />
+
+		<View style={styles.logoCover}><Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} /></View>
+
+
                   <Text style={styles.giftCardName}>{amazon.name}</Text>
                 </TouchableOpacity>
               ))}
@@ -172,14 +175,7 @@ const styles = StyleSheet.create({
     left: 40,
     fontWeight: 'bold',
   },
-  giftCardLogo: {
-    position: 'absolute',
-    height: 20,
-    width: 30,
-    alignSelf: 'center',
-    left: 5,
-    borderRadius: 5,
-  }
+logoCover: {                                                      position: 'absolute',                                           height: 30,                                                     width: 30,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 15,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:30,                                                      width:35,                                                       alignSelf:'center',                                             },
 });
 
 export default AmazonCards;

@@ -8,6 +8,7 @@ const BuyGiftCard1: React.FC = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const toggleMenu = route.params?.toggleMenu;
+    const toggleMsg = route.params?.toggleMsg;
 
     const [giftCards, setGiftCards] = useState<string[]>([]);
     const[loading, setLoading] = useState<boolean>(false);
@@ -85,28 +86,12 @@ else{
                     style={styles.gradientContainer}>
                     <View style={styles.body}>
 
-		    {giftCards? ( <View style={styles.giftCardsList}>
-    {loading? (<ActivityIndicator/>) : (
-	    <FlatList
-	    data={giftCards}
-	    keyExtractor={(item)=>item.id.toString()}
-	    renderItem={({item})=>(
-		    <View style={{margin:10, position:'absolute', padding:10, borderWidth:1}}><Text>Name:{item.name}</Text>
-		    <Text> Description:{item.description}</Text></View>
-	    )} 
-
-	/>
-
-    )}
-
-
-    </View>) : null}
 
 		    <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
                             <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
                         </TouchableOpacity>
                         <Text style={styles.title}>Buy Gift Cards</Text>
-                        <TouchableOpacity style={styles.infoCircle}>
+                        <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
                             <Image style={styles.bellIcon} source={{ uri: 'https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png' }} />
                         </TouchableOpacity>
 
@@ -138,7 +123,6 @@ else{
                                 </View>
                             </ScrollView>
 			    {loading && <ActivityIndicator size="large" color="blue"/>}
-			    {giftCards.length===0 && !loading &&(<Text style={styles.noGiftCards}>No Gift Card Available for selected country</Text>)}
                         </View>
                     </View>
                 </LinearGradient>
@@ -185,17 +169,8 @@ const styles = StyleSheet.create({
 	color:'#002444',
 	},
 
-	giftCardsList:{
-		position:'absolute',
-		top:50,
-		height:60,
-		width:'80%',
-		borderRadius:20,
-		backgroundColor:'red',
-		zIndex:3,
-		
-		 
-	},
+	countries:{fontSize:17, fontWeight:'bold'},
+
 
 
 
@@ -210,7 +185,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: 'black',
 		overflow: 'hidden',
-		zIndex: 3,                                                        },
+		zIndex: 2,                                                        },
 
 	bellIcon: {
 		height: 25,
@@ -327,7 +302,8 @@ const styles = StyleSheet.create({
 	    borderRadius:20,
 	    margin:5,
     },
-    bottomTab: {                                                              position: 'absolute',                                                 bottom: 0,                                                            flexDirection: 'row',                                                 height: 70,                                                           width: '100%',                                                        justifyContent: 'space-around',                                       alignItems: 'center',                                                 backgroundColor: '#D3DEE8',                                           zIndex: 3,                                                            borderTopWidth: 0.5,                                                  borderColor: '#ddd',                                                  paddingBottom:5,                                                                                                                        },                                                                    tabArea: {                                                                                                                                          height: 60,                                                           width:60,                                                             padding:4,                                                            justifyContent: 'space-around',                                      flexDirection: 'column',                                      },                                                                    tab: {                                                                    height: 40,                                                           width: 50,                                                            borderRadius: 15,                                                     top:0,                                                                marginLeft: 'auto',                                                   marginRight: 'auto',                                                  paddingRight: 'auto',                                                 paddingLeft:'auto',                                                                                                                                                                                           },
+    bottomTab: {                                                              position: 'absolute',                                                 bottom: 0,                                                            flexDirection: 'row',                                                 height: 70,                                                           width: '100%',                                                        justifyContent: 'space-around',                                       alignItems: 'center',                                                 backgroundColor: '#D3DEE8',                                           zIndex: 3,                                                            borderTopWidth: 0.5,                                                  borderColor: '#ddd',                                                  paddingBottom:5,                                                                                                                        },                                                                    
+    tabArea: {                                                                                                                                          height: 60,                                                           width:60,                                                             padding:4,                                                            justifyContent: 'space-around',                                      flexDirection: 'column',                                      },                                                                    tab: {                                                                    height: 40,                                                           width: 50,                                                            borderRadius: 15,                                                     top:0,                                                                marginLeft: 'auto',                                                   marginRight: 'auto',                                                  paddingRight: 'auto',                                                 paddingLeft:'auto',                                                                                                                                                                                           },
 
     tabImage:{
 	    height: 40,

@@ -6,6 +6,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import GiftCardsList from './giftcardslist.tsx';
 import AmazonCards from './amazoncards.tsx';
 import AppleCards from './applecards.tsx';
+import AmxCards from './amxcards.tsx';
+import WalmartCards from './walmartcards.tsx';
 
 
 const SellGiftCards: React.FC = () => {
@@ -14,10 +16,6 @@ const SellGiftCards: React.FC = () => {
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
 
-const [giftCardType, setGiftCardType] = useState("Select Type");
-    const onSelectCard = (giftCard) => {
-        setGiftCardType(giftCard);                                            toggleCardList();
-    };
   const [cardList, setCardList]=useState(false);
   const toggleCardList=()=>{
   setCardList(init=>!init);}
@@ -32,12 +30,16 @@ const [giftCardType, setGiftCardType] = useState("Select Type");
   }
 
 
-const [cardType, setCardType]=useState("Please Select Card");
+const [cardType, setCardType]=useState("Choose Card");
 
   const handleSelectCard=(cardName)=>{
 	  setCardType(cardName);
+	  setGiftCardType("Select Type");
 	  toggleCard();
   }
+
+  const [giftCardType, setGiftCardType] = useState("Select Type");    const onSelectCard = (giftCard) => {                                setGiftCardType(giftCard);                                            toggleCardList();                                     };
+
 
   const[whichIsSelected, setWhichIsSelected]=useState("amazon");
 
@@ -55,8 +57,12 @@ const [cardType, setCardType]=useState("Please Select Card");
 	<AmazonCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
 
 
-	{cardList && whichIsSelected === 'Apple/iTunes' &&(
+	{cardList && whichIsSelected === "Apple/iTunes" &&(
         <AppleCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
+
+	{cardList && whichIsSelected === "American Express(AMEX)" &&(             <AmxCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
+
+	{cardList && whichIsSelected === "Walmart" &&(             <WalmartCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
 
 
 
@@ -382,7 +388,7 @@ const styles = StyleSheet.create({
 	    position:'absolute',
 	    top:130,
 	    
-	    height:450,
+	    height:500,
 	    width:'90%',
 	    justifyContent:'space-around',
 	    flexDirection:'column',
@@ -405,12 +411,14 @@ const styles = StyleSheet.create({
 	    width:'85%',
 	    backgroundColor:'black',
 	    borderRadius:20,
-	    justifyContent:'space-around',
+	    justifyContent:'space-between',
 	    flexDirection:'row',
 	    alignItems:'center',
-	    padding:10,
+	    padding:15,
 
     },
+
+    logoCover: {                                                      position: 'absolute',                                           height: 24,                                                     width: 24,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 12,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:24,                                                      width:30,                                                       alignSelf:'center',                                             },
 
     amountBox:{                                                           height:60,                                                      width:'85%',                                                    backgroundColor:'#374550',                                        borderRadius:20,                                                justifyContent:'space-around',                                  flexDirection:'row',                                            alignItems:'center',                                                                                                    },
 
