@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 interface cardListProps {
   isList: boolean;
   toggleCardList: () => void;
-  onSelectCard:(amazonCard:string)=> void;
+  onSelectCard:(giftCard:string)=> void;
 }
 
 // Define an array of gift cards

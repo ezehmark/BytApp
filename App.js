@@ -11,6 +11,7 @@ import BuyGiftCard1 from './buygiftcard1';
 import SellGiftCards from './sellgiftcards';
 import GiftCardsList from './giftcardslist.tsx';
 import AmazonCards from './amazoncards.tsx';
+import AppleCards from './applecards.tsx';
 
 const Stack = createStackNavigator();
 

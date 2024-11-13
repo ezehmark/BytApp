@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import GiftCardsList from './giftcardslist.tsx';
 import AmazonCards from './amazoncards.tsx';
+import AppleCards from './applecards.tsx';
 
 
 const SellGiftCards: React.FC = () => {
@@ -14,8 +15,8 @@ const SellGiftCards: React.FC = () => {
   const toggleMsg = route.params?.toggleMsg;
 
 const [giftCardType, setGiftCardType] = useState("Select Type");
-    const onSelectCard = (amazonCard) => {
-        setGiftCardType(amazonCard);                                            toggleCardList();
+    const onSelectCard = (giftCard) => {
+        setGiftCardType(giftCard);                                            toggleCardList();
     };
   const [cardList, setCardList]=useState(false);
   const toggleCardList=()=>{
@@ -38,12 +39,27 @@ const [cardType, setCardType]=useState("Please Select Card");
 	  toggleCard();
   }
 
+  const[whichIsSelected, setWhichIsSelected]=useState("amazon");
+
+  const handleWhichIsSelected=(cardName)=>{
+	  setWhichIsSelected(cardName);
+  }
   return ( 
 	  
     <>
-    {isCard && (<GiftCardsList isCard ={isCard} toggleCard={toggleCard} handleSelectCard={handleSelectCard}/>)}
-{cardList && (                                                            <AmazonCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />
-            )}
+    {isCard && (<GiftCardsList isCard ={isCard} toggleCard={toggleCard} handleSelectCard={handleSelectCard} 
+		handleWhich={handleWhichIsSelected}/>)}
+
+
+{cardList && whichIsSelected === 'Amazon' &&(                                                           
+	<AmazonCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
+
+
+	{cardList && whichIsSelected === 'Apple/iTunes' &&(
+        <AppleCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
+
+
+
       <View style={styles.container}>
         <LinearGradient
           colors={['white', '#f5b857']}

@@ -6,6 +6,7 @@ interface cardListProps {
   isCard: boolean;
   toggleCard: () => void;
   handleSelectCard:(cardName:string)=> void;
+  handleWhich:(cardName:string)=> void;
 }
 
 // Define an array of gift cards
@@ -29,7 +30,7 @@ const giftCards = [
 ];
 
 
-const GiftCardsList: React.FC<cardListProps> = ({ isCard, toggleCard, handleSelectCard }) => {
+const GiftCardsList: React.FC<cardListProps> = ({ isCard, toggleCard, handleWhich, handleSelectCard }) => {
   if (!isCard) return null;
 
   return (
@@ -44,7 +45,7 @@ const GiftCardsList: React.FC<cardListProps> = ({ isCard, toggleCard, handleSele
           <ScrollView style={styles.scrollArea}>
             <View style={styles.msgArea}>
               {giftCards.map((card, index) => (
-                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>handleSelectCard(card.name)}>
+                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>{handleWhich(card.name);handleSelectCard(card.name);}}>
                  <View style={styles.logoCover}> <Image style={styles.giftCardLogo} source={{ uri: card.uri }} /></View>
                   <Text style={styles.giftCardName}>{card.name}</Text>
                 </TouchableOpacity>
