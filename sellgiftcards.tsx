@@ -53,7 +53,7 @@ const [cardType, setCardType]=useState("Choose Card");
 	  setWhichIsSelected(cardName);
   }
 
-  const[imqge, setImage]=useState<string | null>(null);
+  const[image, setImage]=useState<string | null>(null);
 
 
 
@@ -73,10 +73,16 @@ const [cardType, setCardType]=useState("Choose Card");
 	  });
 	  
 if(!result.cancelled){
-	setImage(result.uri);
+	setImage(result.assets[0].uri);
+}
+
+const closeImage=()=>{
+	setImage(null);
 }
 
   };
+
+
   return ( 
 	  
     <>
@@ -160,16 +166,19 @@ if(!result.cancelled){
 	      style={styles.amountBox}>                                     <Text style={styles.amountText}>
 	      ₦ 00</Text>
 
-	      <TouchableOpacity style={styles.uploadBox} onPress={pickImage}>
-	{image? (<Image style={styles.uploadedImaged} source={{uri:image}}/>) :
-		(<Text style={styles.uploadText}>Click to Upload Photo</Text>)}
-
-	      </TouchableOpacity>
 	      </View>
+	      <View style={styles.imageBoxCover}>
+	      <TouchableOpacity style={styles.uploadBox} 
+	      onPress={pickImage}>
+        {image? (<Image style={styles.uploadedImage}
+                                                                                                                                                             source={{uri:image}}/>) :
+                                                                                               (<Text style={styles.uploadText}>Click to Upload Photo </Text>)}                                                                                                                                                 </TouchableOpacity>{image && (<TouchableOpacity onPress={()=>closeImage()} style={styles.closeImgBtn} >❌</TouchableOpacity>)}</View>
+
 
 	      <View  
 	      style={styles.sellBox}>                                     <Text style={styles.sellText}> Sell Now</Text>                                                     </View>
 	      <Text style={styles.rate}>Rate:₦0.0</Text>
+
 
 
 	      </View>
@@ -436,7 +445,7 @@ const styles = StyleSheet.create({
 	    position:'absolute',
 	    top:130,
 	    
-	    height:600,
+	    flex:1,
 	    width:'90%',
 	    justifyContent:'space-around',
 	    flexDirection:'column',
@@ -445,10 +454,11 @@ const styles = StyleSheet.create({
             elevation:5,
 	    backgroundColor:'#ccc',
 	    paddingTop:20,
-	    paddingBottom:20,
+	    paddingBottom:80,
 	    paddingVertical:30,
 	    alignSelf:'center',
 	    marginBottom:100,
+	    gap:20,
 	    
 	    
 
@@ -488,26 +498,45 @@ const styles = StyleSheet.create({
 	    elevation:4,
 
     },
+    imageBoxCover:{
+	    height:100,
+	    width:220,
+	    justifyContent:'space-between',
+	    flexDirection:'row',
+	    left:'3%',
+    },
 
     uploadBox:{
-	    height:200,
-	    width:250,
+	    height:100,
+	    width:200,
 	    overflow:'hidden',
-	    backgroundColor:'black',
+	    backgroundColor:'grey',
+	    borderRadius:20,
+	    borderWidth:1,
+	    borderColor:'#374550',
+	    elevation:6,
+	    justifyContent:'center',
+	    alignItems:'center',
+    },
+
+    closeImgBtn: {
+	    top:2,
+	    height:20,
+	    width:20,
     },
 
     uploadedImage:{
-	    height:200,
-	    width:200,
-	    position:'absolute',
-	    alignSelf:"center",
+	    height:'100%',
+	    width:'100%',
+	    resizeMode:'contain',
+	
 
     },
 
     uploadText:{
 	    fontSize:18,
 	    position:'absolute',
-	    alignSelf:'center'
+	    color:"#ccc",
     },
     sellText:{                                                  
 	    fontSize:20,

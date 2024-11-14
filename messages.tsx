@@ -129,8 +129,8 @@ const styles =StyleSheet.create({
     },
     scrollArea:{
         position:'absolute',
-        height:410,
-	width:270,
+        height:'95%',
+	width:'90%',
 	
 	alignSelf:'center',
 	top:4,
@@ -154,7 +154,7 @@ const styles =StyleSheet.create({
     },
     msgBox:{
         height:80,
-        width:250,
+        width:'90%',
         borderRadius:20,
         padding:15,
         justifyContent:'left',
@@ -167,6 +167,7 @@ const styles =StyleSheet.create({
 	elevation:4,
 	shadowOffset:{height:1,width:0.5},
 	shadowRadius:5,
+	alignSelf:'center',
 
      
     },
