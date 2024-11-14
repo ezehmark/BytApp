@@ -2,28 +2,43 @@ import { Image, Text, View, ScrollView, StyleSheet, TouchableOpacity } from 'rea
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 
-interface ebayProps {
+interface vanillaProps {
   isList: boolean;
   toggleCardList: () => void;
   onSelectCard:(giftCard:string)=> void;
 }
 
 // Define an array of gift cards
-const ebayCards = [
-  { name: "Canada eBay Gift Card  (100 and above)", uri:'https://i.postimg.cc/D0ygqNYH/ebay-icon-logo-EA65-D4-EEE0-seeklogo-com.png'},
+const vanillaCards = [
+  { name: "Australia OneVanilla Visa/Mastercard  (100 and above)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
 
-  { name: "USA  eBay Gift Card  (100 and above)", uri:'https://i.postimg.cc/D0ygqNYH/ebay-icon-logo-EA65-D4-EEE0-seeklogo-com.png'},
+  { name: "Australia OneVanilla Visa/Mastercard (50 to 99)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
 
-  { name: "USA  eBay Gift Card  (25 to 49)", uri:'https://i.postimg.cc/D0ygqNYH/ebay-icon-logo-EA65-D4-EEE0-seeklogo-com.png'},
+  { name: "Canada OneVanilla Visa/Mastercard (100 and 199)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
 
-  { name: "USA  eBay Gift Card  (50 to 99)", uri:'https://i.postimg.cc/D0ygqNYH/ebay-icon-logo-EA65-D4-EEE0-seeklogo-com.png'}
+  { name: "Canada OneVanilla Visa/Mastercard (200 and above)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+
+  { name: "Canada OneVanilla Visa/Mastercard (50 to 99)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+
+  { name: "UK OneVanilla Visa/Mastercard (100 and 150)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+
+  { name: "USA OneVanilla Visa/Mastercard (100 and 299)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+
+  { name: "USA OneVanilla Visa/Mastercard (25 to 49)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+
+  { name: "USA OneVanilla Visa/Mastercard (300 to 399)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+
+{ name: "USA OneVanilla Visa/Mastercard (400 and above)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+
+{ name: "USA OneVanilla Visa/Mastercard (50 to 99)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+
+{ name: "USA OneVanilla Visa/Mastercard E-card(100 and 299)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+
+{ name: "USA OneVanilla Visa/Mastercard E-card (300 and above)", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
+];
 
 
-
-]
-
-
-const EbayCards: React.FC<ebayProps> = ({ isList, toggleCardList, onSelectCard }) => {
+const VanillaCards: React.FC<vanillaProps> = ({ isList, toggleCardList, onSelectCard }) => {
   if (!isList) return null;
 
   return (
@@ -37,9 +52,12 @@ const EbayCards: React.FC<ebayProps> = ({ isList, toggleCardList, onSelectCard }
         <View style={styles.contentArea}>
           <ScrollView style={styles.scrollArea}>
             <View style={styles.msgArea}>
-              {ebayCards.map((amazon, index) => (
+              {vanillaCards.map((amazon, index) => (
                 <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(amazon.name)}>
-                  <View style={styles.logoCover}><Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} /></View>
+
+		<View style={styles.logoCover}><Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} /></View>
+
+
                   <Text style={styles.giftCardName}>{amazon.name}</Text>
                 </TouchableOpacity>
               ))}
@@ -124,7 +142,7 @@ const styles = StyleSheet.create({
   },
   msgArea: {
     position: 'absolute',
-    flex:1,
+    height: 1500,
     width: '98%',
     backgroundColor: '#5d6262',
     justifyContent: 'space-around',
@@ -158,10 +176,9 @@ const styles = StyleSheet.create({
     left: 40,
     fontWeight: 'bold',
   },
-  logoCover: {                                                      position: 'absolute',                                           height: 30,                                                     width: 30,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 15,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:30,                                                      width:35,                                                       alignSelf:'center',                                             },
+logoCover: {                                                      position: 'absolute',                                           height: 30,                                                     width: 30,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 15,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:30,                                                      width:35,                                                       alignSelf:'center',                                             },
 });
 
-export default EbayCards;
-
+export default VanillaCards;
 
 

@@ -8,6 +8,12 @@ import AmazonCards from './amazoncards.tsx';
 import AppleCards from './applecards.tsx';
 import AmxCards from './amxcards.tsx';
 import WalmartCards from './walmartcards.tsx';
+import EbayCards from './ebaycards.tsx';
+import SteamCards from './steamcards.tsx';
+import VanillaCards from './vanillacards.tsx';
+import GooglePlayCards from './googleplaycards.tsx';
+import * as ImagePicker from 'expo-image-picker';
+
 
 
 const SellGiftCards: React.FC = () => {
@@ -46,6 +52,31 @@ const [cardType, setCardType]=useState("Choose Card");
   const handleWhichIsSelected=(cardName)=>{
 	  setWhichIsSelected(cardName);
   }
+
+  const[imqge, setImage]=useState<string | null>(null);
+
+
+
+  const pickImage = async()=>{
+
+	  const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+	  if(!permissionResult.granted){
+	  alert("Grant Gallery permissions first");
+	  return;
+	  }
+
+
+	  const result = await ImagePicker.launchImageLibraryAsync({
+		mediaTypes: ImagePicker.MediaTypeOptions.Images,
+		allowsEditing:true,
+		quality:1,
+	  });
+	  
+if(!result.cancelled){
+	setImage(result.uri);
+}
+
+  };
   return ( 
 	  
     <>
@@ -63,6 +94,17 @@ const [cardType, setCardType]=useState("Choose Card");
 	{cardList && whichIsSelected === "American Express(AMEX)" &&(             <AmxCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
 
 	{cardList && whichIsSelected === "Walmart" &&(             <WalmartCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
+{cardList && whichIsSelected === "eBay" &&(
+   <EbayCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
+{cardList && whichIsSelected === "Steam Wallet" &&(                        <SteamCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
+
+{cardList && whichIsSelected === "Vanilla Cards" &&(                        <VanillaCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
+
+{cardList && whichIsSelected === "Google Play" &&(                        <GooglePlayCards                                                            isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard} />)}
+
+
+
+
 
 
 
@@ -117,6 +159,12 @@ const [cardType, setCardType]=useState("Choose Card");
 	      <View 
 	      style={styles.amountBox}>                                     <Text style={styles.amountText}>
 	      ₦ 00</Text>
+
+	      <TouchableOpacity style={styles.uploadBox} onPress={pickImage}>
+	{image? (<Image style={styles.uploadedImaged} source={{uri:image}}/>) :
+		(<Text style={styles.uploadText}>Click to Upload Photo</Text>)}
+
+	      </TouchableOpacity>
 	      </View>
 
 	      <View  
@@ -388,7 +436,7 @@ const styles = StyleSheet.create({
 	    position:'absolute',
 	    top:130,
 	    
-	    height:500,
+	    height:600,
 	    width:'90%',
 	    justifyContent:'space-around',
 	    flexDirection:'column',
@@ -439,8 +487,30 @@ const styles = StyleSheet.create({
 	    shadowOpacity:0.6,
 	    elevation:4,
 
-    },                                                                                                                              
-    sellText:{                                                    fontSize:20,
+    },
+
+    uploadBox:{
+	    height:200,
+	    width:250,
+	    overflow:'hidden',
+	    backgroundColor:'black',
+    },
+
+    uploadedImage:{
+	    height:200,
+	    width:200,
+	    position:'absolute',
+	    alignSelf:"center",
+
+    },
+
+    uploadText:{
+	    fontSize:18,
+	    position:'absolute',
+	    alignSelf:'center'
+    },
+    sellText:{                                                  
+	    fontSize:20,
 alignSelf:'center',
 
 color:'#3CB2CB',

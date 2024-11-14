@@ -2,52 +2,38 @@ import { Image, Text, View, ScrollView, StyleSheet, TouchableOpacity } from 'rea
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 
-interface cardListProps {
-  isCard: boolean;
-  toggleCard: () => void;
-  handleSelectCard:(cardName:string)=> void;
-  handleWhich:(cardName:string)=> void;
+interface playProps {
+  isList: boolean;
+  toggleCardList: () => void;
+  onSelectCard:(giftCard:string)=> void;
 }
 
 // Define an array of gift cards
-const giftCards = [
-  { name: "Amazon", uri: 'https://i.postimg.cc/pdBMKPrx/amazon-gift-card-1.png' },
-  { name: "American Express(AMEX)", uri: 'https://i.postimg.cc/Zn0hf47h/American-Express-logo-2018-svg.png'},
-  { name: "Apple/iTunes", uri: 'https://i.postimg.cc/L5HPcZt1/images-22-1.jpg'},
-  { name: "Google Play", uri: 'https://i.postimg.cc/8c55dddt/google-play-gift-card-online.png'},
-  { name: "Steam Wallet", uri: 'https://i.postimg.cc/hvLBdf6p/images-34-1.jpg'},
-  { name: "Walmart", uri: 'https://i.postimg.cc/66LgCJTj/images-20.png'},
-  { name: "eBay", uri: 'https://i.postimg.cc/D0ygqNYH/ebay-icon-logo-EA65-D4-EEE0-seeklogo-com.png'},
-  { name: "Sephora", uri: 'https://i.postimg.cc/HxS5CkBv/images-34-2.jpg'},
-  { name: "Nordstrom", uri:'https://i.postimg.cc/15D0Y6LJ/images-22.png'}, 
-  { name: "Target", uri:'https://i.postimg.cc/ZY6n3ckY/images-24.png'}, 
-  { name: "Nike", uri: 'https://i.postimg.cc/8cwjvpFQ/Picsart-24-11-12-22-33-37-180.jpg'},
-  { name: "Best Buy", uri: 'https://i.postimg.cc/gc59z9tn/images-25.png'},
-  { name: "Vanilla Cards", uri: 'https://i.postimg.cc/d1gKSgzk/images-35.jpg'},
-  { name: "Xbox", uri: 'https://i.postimg.cc/T3TvSVH9/xbox-logo-0-DAE30-CE6-A-seeklogo-com.png'},
-  { name: "PlayStation", uri: 'https://i.postimg.cc/rpz3XQGS/images-36-1.jpg'},
+const googleplayCards = [
+  { name: "GooglePlay E-code ", uri:'https://i.postimg.cc/8c55dddt/google-play-gift-card-online.png'},
 
-];
-
-
-const GiftCardsList: React.FC<cardListProps> = ({ isCard, toggleCard, handleWhich, handleSelectCard }) => {
-  if (!isCard) return null;
+]
+const GooglePlayCards: React.FC<playProps> = ({ isList, toggleCardList, onSelectCard }) => {
+  if (!isList) return null;
 
   return (
 	  <BlurView style={styles.mainBodi}>
     <View style={styles.bodi}>
-      <TouchableOpacity onPress={()=>toggleCard()} style={styles.closeBtn}>❌</TouchableOpacity>
+      <TouchableOpacity onPress={()=>toggleCardList()} style={styles.closeBtn}>❌</TouchableOpacity>
 
       <View style={styles.container}>
-        <Text style={styles.msg}>Choose Card Company</Text>
+        <Text style={styles.msg}>Gift Card Type</Text>
 
         <View style={styles.contentArea}>
           <ScrollView style={styles.scrollArea}>
             <View style={styles.msgArea}>
-              {giftCards.map((card, index) => (
-                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>{handleWhich(card.name);handleSelectCard(card.name);}}>
-                 <View style={styles.logoCover}> <Image style={styles.giftCardLogo} source={{ uri: card.uri }} /></View>
-                  <Text style={styles.giftCardName}>{card.name}</Text>
+              {googleplayCards.map((amazon, index) => (
+                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(amazon.name)}>
+
+		<View style={styles.logoCover}><Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} /></View>
+
+
+                  <Text style={styles.giftCardName}>{amazon.name}</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -165,26 +151,9 @@ const styles = StyleSheet.create({
     left: 40,
     fontWeight: 'bold',
   },
-  logoCover: {
-    position: 'absolute',
-    height: 30,
-    width: 30,
-    alignSelf: 'center',
-    left: 5,
-    borderRadius: 15,
-    overflow:'hidden',
-    backgroundColor:'black',
-    
-  },
-
-  giftCardLogo:{resizeMode:'cover', 
-  position:'absolute',
-  height:30,
-  width:35,
-  alignSelf:'center',
-  },
+logoCover: {                                                      position: 'absolute',                                           height: 30,                                                     width: 30,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 15,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:30,                                                      width:35,                                                       alignSelf:'center',                                             },
 });
 
-export default GiftCardsList;
+export default GooglePlayCards;
 
 
