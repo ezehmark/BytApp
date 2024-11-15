@@ -91,12 +91,12 @@ const isFocused = useIsFocused();
 		</View>
 	    </View>
 	    
-	    <View style={styles.buyAirtime}>
+	    <TouchableOpacity onPress={()=>navigation.navigate("buyairtime")} style={styles.buyAirtime}>
 	    <Text style={styles.recharge}>Top-Up</Text>                 <Text style={styles.topUp}>Airtime</Text>
 		<View style={styles.sellIcon}>
 		    <Image style={styles.sImage} source={{ uri: 'https://i.postimg.cc/850Bm5ZH/Picsart-24-10-31-22-10-12-892-1.jpg' }} />
 		</View>
-	    </View>
+	    </TouchableOpacity>
 	    
 	    <View style={styles.subscribeTv}>
 	    <Image style={styles.tvImage} source={{uri: 'https://i.postimg.cc/7LXTzX0b/TvSubs.png'}}/>
