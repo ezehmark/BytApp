@@ -13,7 +13,7 @@ const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
 
     return (
         <BlurView style={styles.mymenu}>
-            <TouchableOpacity onPress={toggleMenu}>
+            <TouchableOpacity onPress={toggleMenu} style={styles.btnCover}>
 	<Text style={styles.closeBtn}>Close ❌</Text>
             </TouchableOpacity>
             <Text style={styles.item1}>Exchange</Text>
@@ -44,16 +44,22 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#ccc",
     },
+    btnCover:{
+	    flex:1,
+	    left: '60%',
+	    top: 10,
+	    zIndex:3,
+    },
     closeBtn: {
-        flex:1,
-        textAlign: 'center',
-        padding: 10,
+        
+
+	    height:30, 
+	    width:90,
+	    textAlign: 'center',
+        padding: 5,
         color: 'white',
         backgroundColor: 'black',
         borderRadius: 10,
-        marginLeft: 170,
-        top: 10,
-        zIndex: 3,
 	whiteSpace:'nowrap'
     },
     item1: {
