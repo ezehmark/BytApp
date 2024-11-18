@@ -12,7 +12,7 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from './mobilenetworks';
-const BuyGiftCard1: React.FC = () => {
+const BuyAirtime: React.FC = () => {
  const navigation = useNavigation();
  const route = useRoute();
  const toggleMenu = route.params?.toggleMenu;
@@ -23,7 +23,9 @@ const BuyGiftCard1: React.FC = () => {
    setCardList((init) => !init);
  };
 
- const [quantity, setQuantity] = useState("");
+ const [pin, setPin] = useState("");
+ const[amount, setAmount]=useState("");
+ const[phone, setPhone]=useState("");
 
  const [isCard, setIsCard] = useState(false);
  const toggleCard = () => {
@@ -61,67 +63,7 @@ const BuyGiftCard1: React.FC = () => {
        />
      )}
 
-     {cardList && whichIsSelected === "Amazon" && (
-       <AmazonCards
-         isList={cardList}
-         toggleCardList={toggleCardList}
-         onSelectCard={onSelectCard}
-       />
-     )}
 
-     {cardList && whichIsSelected === "Apple/iTunes" && (
-       <AppleCards
-         isList={cardList}
-         toggleCardList={toggleCardList}
-         onSelectCard={onSelectCard}
-       />
-     )}
-
-     {cardList && whichIsSelected === "American Express(AMEX)" && (
-       <AmxCards
-         isList={cardList}
-         toggleCardList={toggleCardList}
-         onSelectCard={onSelectCard}
-       />
-     )}
-
-     {cardList && whichIsSelected === "Walmart" && (
-       <WalmartCards
-         isList={cardList}
-         toggleCardList={toggleCardList}
-         onSelectCard={onSelectCard}
-       />
-     )}
-     {cardList && whichIsSelected === "eBay" && (
-       <EbayCards
-         isList={cardList}
-         toggleCardList={toggleCardList}
-         onSelectCard={onSelectCard}
-       />
-     )}
-     {cardList && whichIsSelected === "Steam Wallet" && (
-       <SteamCards
-         isList={cardList}
-         toggleCardList={toggleCardList}
-         onSelectCard={onSelectCard}
-       />
-     )}
-
-     {cardList && whichIsSelected === "Vanilla Cards" && (
-       <VanillaCards
-         isList={cardList}
-         toggleCardList={toggleCardList}
-         onSelectCard={onSelectCard}
-       />
-     )}
-
-     {cardList && whichIsSelected === "Google Play" && (
-       <GooglePlayCards
-         isList={cardList}
-         toggleCardList={toggleCardList}
-         onSelectCard={onSelectCard}
-       />
-     )}
 
      <View style={styles.container}>
        <LinearGradient
@@ -153,7 +95,7 @@ const BuyGiftCard1: React.FC = () => {
            <View style={styles.contentArea}>
              <View style={styles.topCover} />
              <View style={styles.contentTitle}>
-               <Text style={styles.quickTitle}>Quick Recharge, All Networks</Text>
+               <Text style={styles.quickTitle}>Quick Recharge, All Networks            </Text>
                <Text style={styles.flash}>⚡</Text>
              </View>
 
@@ -172,15 +114,26 @@ const BuyGiftCard1: React.FC = () => {
                    />
                  </TouchableOpacity>
 
+		 <TextInput                                                        style={styles.pinInput}                                         value={phone}
+		 keyboardType='numeric'
+                    placeholder="Phone number"                                          color="black"                                                   placeholderTextColor="#999"                                     onChangeText={setPhone}
+                  />
+
                  <TextInput
-                   style={styles.quantityInput}
+                   style={styles.pinInput}
                   
-                   value={quantity}
+                   value={amount}
                    placeholder="₦100 to ₦5,000"
                    color="black"
+		   keyboardType='numeric'
                    placeholderTextColor="#999"
-                   onChangeText={setQuantity}
+                   onChangeText={setAmount}
                  />
+
+		 <TextInput                                                        style={styles.pinInput}                                         value={pin}
+		 keyboardType='numeric'
+                    placeholder="6 digits PIN"                                          color="black"                                                   placeholderTextColor="#999"                                     onChangeText={setPin}
+                  />
 
                  <TouchableOpacity style={styles.buyBox}>
                    {" "}
@@ -313,7 +266,7 @@ const styles = StyleSheet.create({
    position: "absolute",
    height: 60,
    width: "100%",
-   backgroundColor: "#20a385",
+   backgroundColor: "#6c969f",
    top: 0,
    borderTopLeftRadius: 25,
    borderTopRightRadius: 25,
@@ -385,7 +338,7 @@ const styles = StyleSheet.create({
 
  airtimeForm: {
    position: "absolute",
-   top: 65,
+   top: 50,
 
    flex:1,
    width: "90%",
@@ -395,12 +348,12 @@ const styles = StyleSheet.create({
    borderRadius: 30,
    elevation: 5,
    backgroundColor: "#d7e5d3",
-   paddingTop: 40,
-   paddingBottom: 45,
+   paddingTop: 30,
+   paddingBottom: 25,
    paddingVertical: 30,
    alignSelf: "center",
-   marginBottom: 100,
-   gap: 45,
+   marginBottom: 50,
+   gap: 35,
  },
 
  networkBox: {
@@ -440,9 +393,9 @@ const styles = StyleSheet.create({
    borderRadius: 20,
    justifyContent: "center",
    alignItems: "center",
-   shadowColor: "black",
-   shadowRadius: 6,
-   shadowOffset: { height: 0, width: 0 },
+   shadowColor: "#feb819",
+   shadowRadius: 8,
+   shadowOffset: { height: 3, width: 0 },
    shadowOpacity: 0.6,
    elevation: 4,
  },
@@ -468,20 +421,17 @@ const styles = StyleSheet.create({
    color: "#ddd",
  },
 
- quantityInput: {
+ pinInput: {
    height: 60,
    width: "85%",
    alignItems: "center",
    backgroundColor: "#f7fcf6",
    borderRadius: 20,
    borderWidth: 1,
-   borderColor: "blue",
+   borderColor: "#30b3bf",
    paddingLeft: 10,
  },
- dropDownIcon: {
-   height: 10,
-   width: 15,
- },
+
 
  bottomTab: {
    position: "absolute",
@@ -548,7 +498,7 @@ const styles = StyleSheet.create({
  },
 });
 
-export default BuyGiftCard1;
+export default BuyAirtime;
 
 
 

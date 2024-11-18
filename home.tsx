@@ -84,12 +84,12 @@ const isFocused = useIsFocused();
 		</View>
 	    </TouchableOpacity>
 
-	    <View style={styles.buyData}>
+	    <TouchableOpacity onPress={()=>navigation.navigate('buydata')} style={styles.buyData}>
 	    <Text style={styles.sBuy}>Buy</Text>                 <Text style={styles.sGiftCards}>Cheap Data</Text>
 		<View style={styles.buyIcon}>
 		    <Image style={styles.sImage} source={{ uri: 'https://i.postimg.cc/SNNkMxw5/Picsart-24-10-31-12-01-16-766.jpg' }} />
 		</View>
-	    </View>
+	    </TouchableOpacity>
 	    
 	    <TouchableOpacity onPress={()=>navigation.navigate("buyairtime")} style={styles.buyAirtime}>
 	    <Text style={styles.recharge}>Top-Up</Text>                 <Text style={styles.topUp}>Airtime</Text>
