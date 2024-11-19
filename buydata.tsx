@@ -12,6 +12,7 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from "./mobilenetworks";
+import MtnPlans from './mtnplans.tsx';
 const BuyData: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -61,77 +62,17 @@ const BuyData: React.FC = () => {
         />
       )}
 
-      {cardList && whichIsSelected === "Amazon" && (
-        <AmazonCards
+      {cardList && whichIsSelected === "MTN" && (
+        <MtnPlans
           isList={cardList}
           toggleCardList={toggleCardList}
           onSelectCard={onSelectCard}
         />
       )}
+      <View style={styles.container}>                         <LinearGradient                                         colors={["white", "#f5b857"]}                         start={{ x: 0, y: 0 }}                                end={{ x: 0, y: 1 }}                                  style={styles.gradientContainer}                    >
 
-      {cardList && whichIsSelected === "Apple/iTunes" && (
-        <AppleCards
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
-
-      {cardList && whichIsSelected === "American Express(AMEX)" && (
-        <AmxCards
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
-
-      {cardList && whichIsSelected === "Walmart" && (
-        <WalmartCards
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
-      {cardList && whichIsSelected === "eBay" && (
-        <EbayCards
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
-      {cardList && whichIsSelected === "Steam Wallet" && (
-        <SteamCards
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
-
-      {cardList && whichIsSelected === "Vanilla Cards" && (
-        <VanillaCards
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
-
-      {cardList && whichIsSelected === "Google Play" && (
-        <GooglePlayCards
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
-
-      <View style={styles.container}>
-        <LinearGradient
-          colors={["white", "#f5b857"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={styles.gradientContainer}
-        >
           <View style={styles.body}>
-            <Text style={styles.topTitle}>Airtime Top-Up</Text>
+            <Text style={styles.topTitle}>Data Purchase</Text>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
               <Image
                 style={styles.menuIcon}
@@ -176,8 +117,7 @@ const BuyData: React.FC = () => {
 
                   <TouchableOpacity
                     onPress={toggleCardList}
-                    style={styles.networkBox}
-                  >
+                    style={styles.networkBox}>
                     {" "}
                     <Text style={styles.selectNetwork}>
                       {giftCardType}
@@ -430,6 +370,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 15,
+    overflow:'visible',
   },
 
   logoCover: {
