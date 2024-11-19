@@ -13,6 +13,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from "./mobilenetworks";
 import MtnPlans from './mtnplans.tsx';
+import AirtelPlans from './airtelplans.tsx';
+import GloPlans from './gloplans.tsx';
+import NineMobilePlans from './ninemobileplans.tsx';
+
 const BuyData: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -69,6 +73,13 @@ const BuyData: React.FC = () => {
           onSelectCard={onSelectCard}
         />
       )}
+
+      {cardList && whichIsSelected === "AIRTEL" && (                             <AirtelPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
+
+      {cardList && whichIsSelected === "GLO" && (                             <GloPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
+
+
+      {cardList && whichIsSelected === "9MOBILE" && (                             <NineMobilePlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
       <View style={styles.container}>                         <LinearGradient                                         colors={["white", "#f5b857"]}                         start={{ x: 0, y: 0 }}                                end={{ x: 0, y: 1 }}                                  style={styles.gradientContainer}                    >
 
           <View style={styles.body}>
