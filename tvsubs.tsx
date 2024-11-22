@@ -16,8 +16,10 @@ import MtnPlans from './mtnplans.tsx';
 import AirtelPlans from './airtelplans.tsx';
 import GloPlans from './gloplans.tsx';
 import NineMobilePlans from './ninemobileplans.tsx';
+import TvComps from './tvcomps.tsx';
+import GoTvPlans from './gotvplans.tsx';
 
-const BuyData: React.FC = () => {
+const TvSub: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
@@ -35,7 +37,7 @@ const BuyData: React.FC = () => {
     setIsCard((prev) => !prev);
   };
 
-  const [cardType, setCardType] = useState("Which Network?");
+  const [cardType, setCardType] = useState("Choose Tv");
 
   const handleSelectCard = (cardName) => {
     setCardType(cardName);
@@ -43,7 +45,7 @@ const BuyData: React.FC = () => {
     toggleCard();
   };
 
-  const [giftCardType, setGiftCardType] = useState("Select Type");
+  const [giftCardType, setGiftCardType] = useState("Select Plan");
   const onSelectCard = (giftCard) => {
     setGiftCardType(giftCard);
     toggleCardList();
@@ -58,7 +60,7 @@ const BuyData: React.FC = () => {
   return (
     <>
       {isCard && (
-        <MobileNetworks
+        <TvComps
           isCard={isCard}
           toggleCard={toggleCard}
           handleSelectCard={handleSelectCard}
@@ -66,8 +68,8 @@ const BuyData: React.FC = () => {
         />
       )}
 
-      {cardList && whichIsSelected === "MTN" && (
-        <MtnPlans
+      {cardList && whichIsSelected === "GOTV" && (
+        <GoTvPlans
           isList={cardList}
           toggleCardList={toggleCardList}
           onSelectCard={onSelectCard}
@@ -83,7 +85,7 @@ const BuyData: React.FC = () => {
       <View style={styles.container}>                         <LinearGradient                                         colors={["white", "#f5b857"]}                         start={{ x: 0, y: 0 }}                                end={{ x: 0, y: 1 }}                                  style={styles.gradientContainer}                    >
 
           <View style={styles.body}>
-            <Text style={styles.topTitle}>Data Purchase</Text>
+            <Text style={styles.topTitle}>Cable Tv Subscription</Text>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
               <Image
                 style={styles.menuIcon}
@@ -106,7 +108,7 @@ const BuyData: React.FC = () => {
               <View style={styles.topCover} />
               <View style={styles.contentTitle}>
                 <Text style={styles.quickTitle}>
-                  Cheap Data Bundle
+                  Easy Tv Recharge
                 </Text>
                 <Text style={styles.flash}>⚡</Text>
               </View>
@@ -141,21 +143,21 @@ const BuyData: React.FC = () => {
                     />{" "}
                   </TouchableOpacity>
 		  <TextInput                                                        style={styles.pinInput}                                         value={pin}
-                    placeholder="Phone number"                                          color="black" keyboardType='numeric'                                                 placeholderTextColor="#999"                                     onChangeText={setPin}
+                    placeholder="Phone number"                                          color="black"                                                   placeholderTextColor="#999"                                     onChangeText={setPin}
                   />
 
                   <TextInput
                     style={styles.pinInput}
                     value={pin}
                     placeholder="6 digits pin"
-                    color="black" keyboardType='numeric'
+                    color="black"
                     placeholderTextColor="#999"
                     onChangeText={setPin}
                   />
 
                   <TouchableOpacity style={styles.buyBox}>
                     {" "}
-                    <Text style={styles.buyText}>Buy Data</Text>{" "}
+                    <Text style={styles.buyText}>Recharge Tv</Text>{" "}
                   </TouchableOpacity>
                 </View>
               </ScrollView>
@@ -246,6 +248,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
     overflow: "hidden",
+    backgroundColor: "#20a385",
     zIndex: 3,
   },
 
@@ -283,7 +286,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: 60,
     width: "100%",
-    backgroundColor: "#20a385",
     top: 0,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -315,10 +317,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "center",
     top: 50,
-    backgroundColor: "#30b3bf",
+    backgroundColor: "#f7fcf6",
     borderRadius: 30,
     marginBottom: 50,
     overflow: "hidden",
+    zIndex:15,
   },
 
   cardsType: {
@@ -339,7 +342,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderRadius: 20,
     marginBottom: 200,
-    top: 20,
+    top: 5,
   },
 
   addAccount: {
@@ -354,7 +357,7 @@ const styles = StyleSheet.create({
 
   airtimeForm: {
     position: "absolute",
-    top: 65,
+    top: 45,
 
     flex: 1,
     width: "90%",
@@ -363,9 +366,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 30,
     elevation: 5,
-    backgroundColor: "#d7e5d3",
+    backgroundColor: "#f7fcf6",
     paddingTop: 40,
-    paddingBottom: 45,
+    paddingBottom: 25,
     paddingVertical: 30,
     alignSelf: "center",
     marginBottom: 100,
@@ -375,7 +378,7 @@ const styles = StyleSheet.create({
   networkBox: {
     height: 60,
     width: "85%",
-    backgroundColor: "#20a385",
+    backgroundColor: "#8cd5cd",
     borderRadius: 20,
     justifyContent: "space-between",
     flexDirection: "row",
@@ -405,11 +408,11 @@ const styles = StyleSheet.create({
   buyBox: {
     height: 60,
     width: "60%",
-    backgroundColor: "#28272c",
+    backgroundColor: "#fff",
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "black",
+    shadowColor: "blue",
     shadowRadius: 6,
     shadowOffset: { height: 0, width: 0 },
     shadowOpacity: 0.6,
@@ -427,20 +430,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: "center",
 
-    color: "#20a385",
+    color: "#000",
     fontWeight: "bold",
   },
 
   selectNetwork: {
     fontSize: 17,
-    color: "#ddd",
+    color: "#000",
   },
 
   pinInput: {
     height: 50,
     width: "85%",
     alignItems: "center",
-    backgroundColor: "#f7fcf6",
+    backgroundColor: "#fff",
     borderRadius: 20,
     borderWidth: 1,
     borderColor: "blue",
@@ -516,4 +519,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BuyData;
+export default TvSub;
+

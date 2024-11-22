@@ -42,7 +42,7 @@ const ninemobilePlans = [
 
 
 
-const NineMobliePlans: React.FC<nineProps> = ({ isList, toggleCardList, onSelectCard }) => {
+const NineMobilePlans: React.FC<nineProps> = ({ isList, toggleCardList, onSelectCard }) => {
 
   if (!isList) return null;
 

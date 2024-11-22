@@ -14,6 +14,7 @@ import AmazonCards from './amazoncards.tsx';
 import AppleCards from './applecards.tsx';
 import BuyAirtime from './buyairtime.tsx';
 import BuyData from './buydata.tsx';
+import TvSub from './tvsubs.tsx';
 
 const Stack = createStackNavigator();
 
@@ -32,8 +33,10 @@ export default function App() {
 
             
             <NavigationContainer>
-                <Stack.Navigator initialRouteName='buydata'>
+                <Stack.Navigator initialRouteName='tvsub'>
                     <Stack.Screen name="home" component={Home} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
+	    <Stack.Screen name='tvsub' component={TvSub} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
+
                     <Stack.Screen name='recents' component={Recents} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{ headerShown: false }} initialParams={{ toggleMenu }} />
                     <Stack.Screen name='sellgiftcards' component={SellGiftCards} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />

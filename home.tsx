@@ -98,7 +98,7 @@ const isFocused = useIsFocused();
 		</View>
 	    </TouchableOpacity>
 	    
-	    <View style={styles.subscribeTv}>
+	    <TouchableOpacity onPress={()=>navigation.navigate('tvsub')} style={styles.subscribeTv}>
 	    <Image style={styles.tvImage} source={{uri: 'https://i.postimg.cc/7LXTzX0b/TvSubs.png'}}/>
 	    <Text style={styles.tvheading}>Fast Tv Subscriptions</Text>
 	    <View style={styles.TVs}>
@@ -116,7 +116,7 @@ const isFocused = useIsFocused();
 
 	    </View>
 
-	    </View>
+	    </TouchableOpacity>
 	</View>
 	
 <View style={styles.buyElectricity}>
@@ -648,7 +648,8 @@ fundImage:{
 	    backgroundColor:'#ccc',
 	    borderWidth:1,
 	    borderColor: 'white',
-	    shadowColor:'black',                                       shadowOffset:{width:0, height: 0},                         shadowRadius:3,                                            elevation: 2,                                              shadowOpacity: 0.5,
+	    
+	    shadowColor:'black',                                       shadowOffset:{width:6, height: 7},                         shadowRadius:8,                                            elevation: 7,                                              shadowOpacity: 0.7,
 
     },
 
