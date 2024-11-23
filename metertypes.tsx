@@ -2,31 +2,24 @@ import { Image, Text, View, ScrollView, StyleSheet, TouchableOpacity } from 'rea
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 
-interface gotvplansProps {
+interface meterProps {
   isList: boolean;
   toggleCardList: () => void;
   onSelectCard:(giftCard:string)=> void;
 }
 
 // Define an array of gift cards
-const gotvPlans = [
-  { name: "GOTV Smallie=N1,575", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+const meterTypes = [
+  { name: "Pre-Paid Meter", uri:'https://i.postimg.cc/90YFgqVL/images-29.png'}, 
 
-  { name: "GOTV Jinja = N3,300", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
-
-  { name: "GOTV Jolli = N4,850", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
-
-  { name: "GOTV Max = N7,200", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
-
-
-
+  { name: "Post-Paid Meter", uri:'https://i.postimg.cc/4N1mBjxX/images-39.jpg'},
 
 
 
 ]
 
 
-const GoTvPlans: React.FC<gotvplansProps> = ({ isList, toggleCardList, onSelectCard }) => {
+const MeterTypes: React.FC<meterProps> = ({ isList, toggleCardList, onSelectCard }) => {
   if (!isList) return null;
 
   return (
@@ -35,12 +28,12 @@ const GoTvPlans: React.FC<gotvplansProps> = ({ isList, toggleCardList, onSelectC
       <TouchableOpacity onPress={()=>toggleCardList()} style={styles.closeBtn}>❌</TouchableOpacity>
 
       <View style={styles.container}>
-        <Text style={styles.msg}>Choose Plan</Text>
+        <Text style={styles.msg}>Gift Card Type</Text>
 
         <View style={styles.contentArea}>
           <ScrollView style={styles.scrollArea}>
             <View style={styles.msgArea}>
-              {gotvPlans.map((amazon, index) => (
+              {meterTypes.map((amazon, index) => (
                 <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(amazon.name)}>
                   <View style={styles.logoCover}><Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} /></View>
                   <Text style={styles.giftCardName}>{amazon.name}</Text>
@@ -164,7 +157,7 @@ const styles = StyleSheet.create({
   logoCover: {                                                      position: 'absolute',                                           height: 30,                                                     width: 30,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 15,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:30,                                                      width:35,                                                       alignSelf:'center',                                             },
 });
 
-export default GoTvPlans;
+export default MeterTypes;
 
 
 

@@ -2,21 +2,34 @@ import { Image, Text, View, ScrollView, StyleSheet, TouchableOpacity } from 'rea
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 
-interface gotvplansProps {
+interface startimesplansProps {
   isList: boolean;
   toggleCardList: () => void;
   onSelectCard:(giftCard:string)=> void;
 }
 
 // Define an array of gift cards
-const gotvPlans = [
-  { name: "GOTV Smallie=N1,575", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+const startimesPlans = [
+  { name: "Nova Weekly = N600", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
 
-  { name: "GOTV Jinja = N3,300", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+  {name: "Nova Monthly = N1700", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
 
-  { name: "GOTV Jolli = N4,850", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+  {name: "Basic Monthly = N4,200", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
 
-  { name: "GOTV Max = N7,200", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+  {name: "Smart Weekly = N1,300", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+
+  {name: "Smart Monthly = N3,800", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+
+  {name: "Classic Weekly = N2100", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+
+  {name: "Classic Monthly = N6,200", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+
+  {name: "Super Weekly = N2800", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+
+  {name: "Smart Monthly = N8,200", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+
+
+
 
 
 
@@ -26,7 +39,7 @@ const gotvPlans = [
 ]
 
 
-const GoTvPlans: React.FC<gotvplansProps> = ({ isList, toggleCardList, onSelectCard }) => {
+const StarTimesPlans: React.FC<startimesplansProps> = ({ isList, toggleCardList, onSelectCard }) => {
   if (!isList) return null;
 
   return (
@@ -40,7 +53,7 @@ const GoTvPlans: React.FC<gotvplansProps> = ({ isList, toggleCardList, onSelectC
         <View style={styles.contentArea}>
           <ScrollView style={styles.scrollArea}>
             <View style={styles.msgArea}>
-              {gotvPlans.map((amazon, index) => (
+	    {startimesPlans.map((amazon, index) => (
                 <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(amazon.name)}>
                   <View style={styles.logoCover}><Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} /></View>
                   <Text style={styles.giftCardName}>{amazon.name}</Text>
@@ -164,7 +177,8 @@ const styles = StyleSheet.create({
   logoCover: {                                                      position: 'absolute',                                           height: 30,                                                     width: 30,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 15,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:30,                                                      width:35,                                                       alignSelf:'center',                                             },
 });
 
-export default GoTvPlans;
+export default StarTimesPlans;
+
 
 
 

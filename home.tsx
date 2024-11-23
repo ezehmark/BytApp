@@ -119,9 +119,9 @@ const isFocused = useIsFocused();
 	    </TouchableOpacity>
 	</View>
 	
-<View style={styles.buyElectricity}>
+<TouchableOpacity onPress={()=>navigation.navigate('electricity')} style={styles.buyElectricity}>
             <Text style={styles.PHCN}>PHCN</Text>                 <Text style={styles.electricityBills}>Electricity Bills</Text>
-                <View style={styles.electricIcon}>                                             <Image style={styles.electricImage} source={{ uri: 'https://i.postimg.cc/FH711vFn/Picsart-24-11-02-16-24-24-701.png' }} />                     </View>                                                           </View>                                                                                                                                     <View style={styles.fundBet}>
+                <View style={styles.electricIcon}>                                             <Image style={styles.electricImage} source={{ uri: 'https://i.postimg.cc/FH711vFn/Picsart-24-11-02-16-24-24-701.png' }} />                     </View>                                                           </TouchableOpacity>                                                                                                                                     <View style={styles.fundBet}>
             <Text style={styles.recharge}>FundBet</Text>                 <Text style={styles.topUp}>Coming Soon..</Text>                                           <View style={styles.sellIcon}>                                            <Image style={styles.sImage} source={{ uri: 'https://i.postimg.cc/h47r3pL1/Picsart-24-11-02-20-16-32-266.png' }} />                   </View>
             </View>
 

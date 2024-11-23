@@ -32,7 +32,7 @@ const BuyAirtime: React.FC = () => {
    setIsCard((prev) => !prev);
  };
 
- const [cardType, setCardType] = useState("Which Network?");
+ const [cardType, setCardType] = useState("Which Network?                     ⌄");
 
  const handleSelectCard = (cardName) => {
    setCardType(cardName);

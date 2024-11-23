@@ -2,31 +2,41 @@ import { Image, Text, View, ScrollView, StyleSheet, TouchableOpacity } from 'rea
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 
-interface gotvplansProps {
+interface dstvplansProps {
   isList: boolean;
   toggleCardList: () => void;
   onSelectCard:(giftCard:string)=> void;
 }
 
 // Define an array of gift cards
-const gotvPlans = [
-  { name: "GOTV Smallie=N1,575", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+const dstvPlans = [
+  { name: "DSTV Padi = N3,600", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
 
-  { name: "GOTV Jinja = N3,300", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+  { name: "DSTV Yanga = N5,100", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
 
-  { name: "GOTV Jolli = N4,850", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+  { name: "DSTV Confam = N9,300", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
 
-  { name: "GOTV Max = N7,200", uri:"https://i.postimg.cc/9Q8jMsHc/images-32.jpg"},
+  { name: "DSTV Padi Extra = N6,950", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
 
+  { name: "DSTV Asia = N9,900", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
 
+  { name: "DSTV Confam Extra = N14,300", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
 
+  { name: "DSTV Compact = N15,700", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
 
+  { name: "DSTV Compact Plus = N25,000", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
+
+  { name: "DSTV Compact ExtraView= N25,900", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
+
+  { name: "DSTV Premium= N33,800", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
+
+  { name: "DSTV Premium Asia = N43,400", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
 
 
 ]
 
 
-const GoTvPlans: React.FC<gotvplansProps> = ({ isList, toggleCardList, onSelectCard }) => {
+const DstvPlans: React.FC<dstvplansProps> = ({ isList, toggleCardList, onSelectCard }) => {
   if (!isList) return null;
 
   return (
@@ -40,7 +50,7 @@ const GoTvPlans: React.FC<gotvplansProps> = ({ isList, toggleCardList, onSelectC
         <View style={styles.contentArea}>
           <ScrollView style={styles.scrollArea}>
             <View style={styles.msgArea}>
-              {gotvPlans.map((amazon, index) => (
+              {dstvPlans.map((amazon, index) => (
                 <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(amazon.name)}>
                   <View style={styles.logoCover}><Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} /></View>
                   <Text style={styles.giftCardName}>{amazon.name}</Text>
@@ -164,7 +174,8 @@ const styles = StyleSheet.create({
   logoCover: {                                                      position: 'absolute',                                           height: 30,                                                     width: 30,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 15,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:30,                                                      width:35,                                                       alignSelf:'center',                                             },
 });
 
-export default GoTvPlans;
+export default DstvPlans;
+
 
 
 

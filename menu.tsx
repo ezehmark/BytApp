@@ -1,6 +1,8 @@
 import React from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { BlurView } from 'expo-blur';
+import Recents from './recents.tsx';
+import {useNavigation} from '@react-navigation/native';
 
 interface MenuProps {
     isOpen: boolean;
@@ -9,6 +11,9 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
     // Display the menu only when isOpen is true
+
+    const navigation = useNavigation();
+
     if (!isOpen) return null;
 
     return (
@@ -18,7 +23,9 @@ const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
             </TouchableOpacity>
             <Text style={styles.item1}>Exchange</Text>
             <Text style={styles.item1}>Referrals</Text>
-            <Text style={styles.item1}>History</Text>
+            <TouchableOpacity 
+	    onPress={()=>navigation.navigate('history')} 
+	    style={styles.item1}>History</TouchableOpacity>
             <Text style={styles.item1}>About Us</Text>
             <Text style={styles.item1}>Privacy Policy</Text>
         </BlurView>

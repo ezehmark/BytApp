@@ -18,10 +18,11 @@ import GloPlans from './gloplans.tsx';
 import NineMobilePlans from './ninemobileplans.tsx';
 import TvComps from './tvcomps.tsx';
 import GoTvPlans from './gotvplans.tsx';
-import DstvPlans from './dstvplans.tsx';
-import StarTimesPlans from './startimesplans.tsx';
+import PowerStates from './powerstates.tsx';
+import MeterTypes from './metertypes.tsx';
 
-const TvSub: React.FC = () => {
+
+const Electricity: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
@@ -34,20 +35,27 @@ const TvSub: React.FC = () => {
 
   const [pin, setPin] = useState("");
 
+  const [amount, setAmount] = useState("");
+
+  const[meter, setMeter] = useState("");
+
+  const[phone, setPhone] = useState("");
+
+
   const [isCard, setIsCard] = useState(false);
   const toggleCard = () => {
     setIsCard((prev) => !prev);
   };
 
-  const [cardType, setCardType] = useState("Choose Tv");
+  const [cardType, setCardType] = useState("Choose State");
 
   const handleSelectCard = (cardName) => {
     setCardType(cardName);
-    setGiftCardType("Select Plan");
+    setGiftCardType("Meter Type");
     toggleCard();
   };
 
-  const [giftCardType, setGiftCardType] = useState("Select Plan");
+  const [giftCardType, setGiftCardType] = useState("Metre Type");
   const onSelectCard = (giftCard) => {
     setGiftCardType(giftCard);
     toggleCardList();
@@ -62,7 +70,7 @@ const TvSub: React.FC = () => {
   return (
     <>
       {isCard && (
-        <TvComps
+        <PowerStates
           isCard={isCard}
           toggleCard={toggleCard}
           handleSelectCard={handleSelectCard}
@@ -70,24 +78,21 @@ const TvSub: React.FC = () => {
         />
       )}
 
-      {cardList && whichIsSelected === "GOTV" && (
-        <GoTvPlans
+      {(cardList && whichIsSelected === "AEDC" || 'IBEDC' || 'EKEDC' || 'IKEDC' || 'KADECO' || 'KEDCO' || 'JED' || 'PHED') && (
+        <MeterTypes
           isList={cardList}
           toggleCardList={toggleCardList}
           onSelectCard={onSelectCard}
         />
       )}
 
-      {cardList && whichIsSelected === "DSTV" && (                             <DstvPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
-
-      {cardList && whichIsSelected === "STARTIMES" && (                             <StarTimesPlans                                                             isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
 
 
-      {cardList && whichIsSelected === "9MOBILE" && (                             <NineMobilePlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
+
       <View style={styles.container}>                         <LinearGradient                                         colors={["white", "#f5b857"]}                         start={{ x: 0, y: 0 }}                                end={{ x: 0, y: 1 }}                                  style={styles.gradientContainer}                    >
 
           <View style={styles.body}>
-            <Text style={styles.topTitle}>Cable Tv Subscription</Text>
+            <Text style={styles.topTitle}>Pay Electricity Bills</Text>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
               <Image
                 style={styles.menuIcon}
@@ -107,10 +112,10 @@ const TvSub: React.FC = () => {
             </TouchableOpacity>
 
             <View style={styles.contentArea}>
-              <View style={styles.topCover} />
+              <BlurView style={styles.topCover} />
               <View style={styles.contentTitle}>
                 <Text style={styles.quickTitle}>
-                  Easy Tv Recharge
+                  Fast Reconnect to Power
                 </Text>
                 <Text style={styles.flash}>⚡</Text>
               </View>
@@ -144,14 +149,24 @@ const TvSub: React.FC = () => {
                       style={styles.dropDownIcon}
                     />{" "}
                   </TouchableOpacity>
-		  <TextInput                                                        style={styles.pinInput}                                         value={pin}
-                    placeholder="IUC Number"                                          color="black"                                                   placeholderTextColor="#999"                                     onChangeText={setPin}
+
+		  <TextInput                                                        style={styles.pinInput}                                         value={meter}                                                                       placeholder="Meter Number"                                          color="black"                                                   placeholderTextColor="#999"                                     onChangeText={setMeter}/>
+
+
+		  <TextInput                                                        style={styles.pinInput}                                         value={phone}
+                    placeholder="Phone number"                                          color="black"                                                   placeholderTextColor="#999"                                     onChangeText={setPhone}
+		    keyboardType="numeric"
                   />
+
+		  <TextInput                                                        style={styles.pinInput}                                         value={amount}                                                                       placeholder="Amount"                                          color="black"    
+		  keyboardType="numeric"
+		  placeholderTextColor="#999"                                     onChangeText={setAmount}/>
 
                   <TextInput
                     style={styles.pinInput}
                     value={pin}
-                    placeholder="6 Digits PIN"
+		    keyboardType="numeric"
+                    placeholder="6 digits pin"
                     color="black"
                     placeholderTextColor="#999"
                     onChangeText={setPin}
@@ -159,7 +174,7 @@ const TvSub: React.FC = () => {
 
                   <TouchableOpacity style={styles.buyBox}>
                     {" "}
-                    <Text style={styles.buyText}>Recharge Tv</Text>{" "}
+                    <Text style={styles.buyText}>Buy Power</Text>{" "}
                   </TouchableOpacity>
                 </View>
               </ScrollView>
@@ -319,7 +334,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "center",
     top: 50,
-    backgroundColor: "#f7fcf6",
+    backgroundColor: "#274647",
     borderRadius: 30,
     marginBottom: 50,
     overflow: "hidden",
@@ -368,7 +383,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 30,
     elevation: 5,
-    backgroundColor: "#f7fcf6",
+    backgroundColor: "#274647",
     paddingTop: 40,
     paddingBottom: 25,
     paddingVertical: 30,
@@ -380,7 +395,7 @@ const styles = StyleSheet.create({
   networkBox: {
     height: 60,
     width: "85%",
-    backgroundColor: "#8cd5cd",
+    backgroundColor: "#26da8b",
     borderRadius: 20,
     justifyContent: "space-between",
     flexDirection: "row",
@@ -410,11 +425,11 @@ const styles = StyleSheet.create({
   buyBox: {
     height: 60,
     width: "60%",
-    backgroundColor: "#fff",
+    backgroundColor: "#26da8b",
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "blue",
+    shadowColor: "#fbdc08",
     shadowRadius: 6,
     shadowOffset: { height: 0, width: 0 },
     shadowOpacity: 0.6,
@@ -429,10 +444,10 @@ const styles = StyleSheet.create({
   },
 
   buyText: {
-    fontSize: 17,
+    fontSize: 20,
     alignSelf: "center",
 
-    color: "#118da7",
+    color: "#000",
     fontWeight: "bold",
   },
 
@@ -445,10 +460,10 @@ const styles = StyleSheet.create({
     height: 50,
     width: "85%",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#e0e2d7",
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "blue",
+    borderColor: "#fbdc08",
     paddingLeft: 10,
   },
   dropDownIcon: {
@@ -521,5 +536,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TvSub;
+export default Electricity;
+
 
