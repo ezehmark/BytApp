@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
+import Tvsubs from './tvsubs.tsx';
 interface tvcompProps {
   isCard: boolean;
   toggleCard: () => void;
@@ -31,6 +32,26 @@ const TvComps: React.FC<tvcompProps> = ({
   handleWhich,
   handleSelectCard,
 }) => {
+
+	const[tvlist, setTvlist] = useState([]);
+
+	const fetchTv = async(deviceId:string)=>{
+		setLoadin(true);
+		try{
+			const uri = `https://sandbox.vtpass.com/api/service-variations?serviceID=${serviceID}`
+			const response = await fetch (uri,
+				
+	{method:'GET' headers:{'conyent-Type':'application/json'}
+		})
+
+		const data = await response.json();
+	}
+
+	if(data && datat.content && data.content.variations){setTvlist(data.content.variations)}
+
+	else{Alert.alert("Error fetching tv companies")}
+
+	finally{setLoadin(false);}
   if (!isCard) return null;
 
   return (
@@ -52,7 +73,7 @@ const TvComps: React.FC<tvcompProps> = ({
                     style={styles.giftCardBox}
                     onPress={() => {
                       handleWhich(network.name);
-                      handleSelectCard(network.name);
+                      handleSelectCard(network.name);fetchTv();	
                     }}
                   >
                     <View style={styles.logoCover}>

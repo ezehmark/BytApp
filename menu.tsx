@@ -10,7 +10,6 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
-    // Display the menu only when isOpen is true
 
     const navigation = useNavigation();
 
@@ -23,9 +22,9 @@ const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
             </TouchableOpacity>
             <Text style={styles.item1}>Exchange</Text>
             <Text style={styles.item1}>Referrals</Text>
-            <TouchableOpacity 
+            <Text 
 	    onPress={()=>navigation.navigate('history')} 
-	    style={styles.item1}>History</TouchableOpacity>
+	    style={styles.item1}>History</Text>
             <Text style={styles.item1}>About Us</Text>
             <Text style={styles.item1}>Privacy Policy</Text>
         </BlurView>
