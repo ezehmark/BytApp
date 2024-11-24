@@ -1,52 +1,59 @@
+import React from 'react';
 import { Image, Text, View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
 
 interface dstvplansProps {
   isList: boolean;
   toggleCardList: () => void;
-  onSelectCard:(giftCard:string)=> void;
-  plans:string[];
+  onSelectCard: (plan: string) => void;
+  plans: string[]; // Array of plan names
 }
-
-// Define an array of gift cards
-const dstvPlans = [
-  { name: {plans}, uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-]
-
 
 const DstvPlans: React.FC<dstvplansProps> = ({ isList, toggleCardList, onSelectCard, plans }) => {
   if (!isList) return null;
 
+  // Dynamically create plans array with images
+  const dstvPlans = plans.map((plan) => ({
+    name: plan,
+    uri: "https://i.postimg.cc/T2VMmKv7/images-33.jpg", // Static image for each plan
+  }));
+
   return (
-	  <BlurView style={styles.mainBodi}>
-    <View style={styles.bodi}>
-      <TouchableOpacity onPress={()=>toggleCardList()} style={styles.closeBtn}>❌</TouchableOpacity>
+    <BlurView style={styles.mainBodi}>
+      <View style={styles.bodi}>
+        <TouchableOpacity onPress={toggleCardList} style={styles.closeBtn}>
+          ❌
+        </TouchableOpacity>
 
-      <View style={styles.container}>
-        <Text style={styles.msg}>Choose Plan</Text>
+        <View style={styles.container}>
+          <Text style={styles.msg}>Choose Plan</Text>
 
-        <View style={styles.contentArea}>
-          <ScrollView style={styles.scrollArea}>
-            <View style={styles.msgArea}>
-              {dstvPlans.map((amazon, index) => (
-                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(amazon.name)}>
-                  <View style={styles.logoCover}><Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} /></View>
-                  <Text style={styles.giftCardName}>{amazon.name}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
+          <View style={styles.contentArea}>
+            <ScrollView style={styles.scrollArea}>
+              <View style={styles.msgArea}>
+                {dstvPlans.map((plan, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.giftCardBox}
+                    onPress={() => onSelectCard(plan.name)}
+                  >
+                    <View style={styles.logoCover}>
+                      <Image style={styles.giftCardLogo} source={{ uri: plan.uri }} />
+                    </View>
+                    <Text style={styles.giftCardName}>{plan.name}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+          </View>
         </View>
       </View>
-    </View>
     </BlurView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-	mainBodi:{height:'100%', width:'100%',position:'absolute',zIndex:20,},
+  mainBodi: { height: '100%', width: '100%', position: 'absolute', zIndex: 20 },
   bodi: {
     height: '85%',
     width: '90%',
@@ -61,8 +68,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.6,
     shadowRadius: 8,
     elevation: 7,
-    position:'absolute',
-    zIndex:10,
+    position: 'absolute',
+    zIndex: 10,
   },
   msg: {
     fontSize: 17,
@@ -105,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#5d6262',
     borderRadius: 25,
     left: '2.5%',
-    overflow:'hidden',
+    overflow: 'hidden',
   },
   scrollArea: {
     position: 'absolute',
@@ -117,7 +124,7 @@ const styles = StyleSheet.create({
   },
   msgArea: {
     position: 'absolute',
-    flex:1,
+    flex: 1,
     width: '98%',
     backgroundColor: '#5d6262',
     justifyContent: 'space-around',
@@ -127,7 +134,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
     alignItems: 'center',
-    gap:10,
+    gap: 10,
   },
   giftCardBox: {
     height: 70,
@@ -138,10 +145,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#3CB2CB',
     shadowColor: 'black',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.25,
-  shadowRadius: 3.84,
-  elevation: 5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   giftCardName: {
     color: 'black',
@@ -151,11 +158,23 @@ const styles = StyleSheet.create({
     left: 40,
     fontWeight: 'bold',
   },
-  logoCover: {                                                      position: 'absolute',                                           height: 30,                                                     width: 30,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 15,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:30,                                                      width:35,                                                       alignSelf:'center',                                             },
+  logoCover: {
+    position: 'absolute',
+    height: 30,
+    width: 30,
+    alignSelf: 'center',
+    left: 5,
+    borderRadius: 15,
+    overflow: 'hidden',
+    backgroundColor: 'black',
+  },
+  giftCardLogo: {
+    resizeMode: 'cover',
+    position: 'absolute',
+    height: 30,
+    width: 35,
+    alignSelf: 'center',
+  },
 });
 
 export default DstvPlans;
-
-
-
-

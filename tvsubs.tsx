@@ -81,9 +81,8 @@ const TvSub: React.FC<tvsubsProps> = (plans) => {
         />
       )}
 
-      {cardList && whichIsSelected === "DSTV" && (                             <DstvPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCardi} 
-
-	plans={plans}/>                                                                  )}
+      {cardList && whichIsSelected === "DSTV" && (                             <DstvPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                	                       onSelectCard={onSelectCardi} 
+	    plans={plans}/>                                                                  )}
 
       {cardList && whichIsSelected === "STARTIMES" && (                             <StarTimesPlans                                                             isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
 
