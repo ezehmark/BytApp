@@ -6,37 +6,17 @@ interface dstvplansProps {
   isList: boolean;
   toggleCardList: () => void;
   onSelectCard:(giftCard:string)=> void;
+  plans:string[];
 }
 
 // Define an array of gift cards
 const dstvPlans = [
-  { name: "DSTV Padi = N3,600", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Yanga = N5,100", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Confam = N9,300", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Padi Extra = N6,950", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Asia = N9,900", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Confam Extra = N14,300", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Compact = N15,700", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Compact Plus = N25,000", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Compact ExtraView= N25,900", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Premium= N33,800", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
-  { name: "DSTV Premium Asia = N43,400", uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
-
+  { name: {plans}, uri:"https://i.postimg.cc/T2VMmKv7/images-33.jpg"},
 
 ]
 
 
-const DstvPlans: React.FC<dstvplansProps> = ({ isList, toggleCardList, onSelectCard }) => {
+const DstvPlans: React.FC<dstvplansProps> = ({ isList, toggleCardList, onSelectCard, plans }) => {
   if (!isList) return null;
 
   return (

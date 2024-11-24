@@ -21,7 +21,7 @@ import GoTvPlans from './gotvplans.tsx';
 import DstvPlans from './dstvplans.tsx';
 import StarTimesPlans from './startimesplans.tsx';
 
-interface tvsubsProps{plans:string}
+interface tvsubsProps{plans:string[]}
 
 const TvSub: React.FC<tvsubsProps> = (plans) => {
   const navigation = useNavigation();
@@ -77,11 +77,13 @@ const TvSub: React.FC<tvsubsProps> = (plans) => {
           isList={cardList}
           toggleCardList={toggleCardList}
           onSelectCard={onSelectCard}
-	  plans
+	  
         />
       )}
 
-      {cardList && whichIsSelected === "DSTV" && (                             <DstvPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
+      {cardList && whichIsSelected === "DSTV" && (                             <DstvPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCardi} 
+
+	plans={plans}/>                                                                  )}
 
       {cardList && whichIsSelected === "STARTIMES" && (                             <StarTimesPlans                                                             isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
 
