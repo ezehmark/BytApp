@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Image,
   Text,
@@ -5,18 +6,12 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
-import Tvsubs from './tvsubs.tsx';
-interface tvcompProps {
-  isCard: boolean;
-  toggleCard: () => void;
-  handleSelectCard: (cardName: string) => void;
-  handleWhich: (cardName: string) => void;
-}
+import { useNavigation } from "@react-navigation/native";
 
-// Define an array of gift cards
 const tvComps = [
   { name: "GOTV", uri: "https://i.postimg.cc/9Q8jMsHc/images-32.jpg" },
   { name: "DSTV", uri: "https://i.postimg.cc/T2VMmKv7/images-33.jpg" },
@@ -26,32 +21,35 @@ const tvComps = [
   },
 ];
 
-const TvComps: React.FC<tvcompProps> = ({
-  isCard,
-  toggleCard,
-  handleWhich,
-  handleSelectCard,
-}) => {
+const TvComps = ({ isCard, toggleCard, handleWhich, handleSelectCard }) => {
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
-	const[tvlist, setTvlist] = useState([]);
+  const fetchPlans = async (serviceID) => {
+    setLoading(true);
+    try {
+      const uri = `https://sandbox.vtpass.com/api/service-variations?serviceID=${serviceID}`;
+      const response = await fetch(uri, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
 
-	const fetchTv = async(deviceId:string)=>{
-		setLoadin(true);
-		try{
-			const uri = `https://sandbox.vtpass.com/api/service-variations?serviceID=${serviceID}`
-			const response = await fetch (uri,
-				
-	{method:'GET' headers:{'conyent-Type':'application/json'}
-		})
+      const data = await response.json();
 
-		const data = await response.json();
-	}
+      if (data && data.content && data.content.variations) {
+        setPlans(data.content.variations);
+        navigation.navigate("Tvsubs", { plans: data.content.variations });
+      } else {
+        Alert.alert("Error fetching TV variations");
+      }
+    } catch (error) {
+      Alert.alert("Network error", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-	if(data && datat.content && data.content.variations){setTvlist(data.content.variations)}
-
-	else{Alert.alert("Error fetching tv companies")}
-
-	finally{setLoadin(false);}
   if (!isCard) return null;
 
   return (
@@ -73,7 +71,8 @@ const TvComps: React.FC<tvcompProps> = ({
                     style={styles.giftCardBox}
                     onPress={() => {
                       handleWhich(network.name);
-                      handleSelectCard(network.name);fetchTv();	
+                      handleSelectCard(network.name);
+                      fetchPlans(network.name); // Pass the selected network's name as the serviceID
                     }}
                   >
                     <View style={styles.logoCover}>

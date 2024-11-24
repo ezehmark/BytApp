@@ -21,7 +21,9 @@ import GoTvPlans from './gotvplans.tsx';
 import DstvPlans from './dstvplans.tsx';
 import StarTimesPlans from './startimesplans.tsx';
 
-const TvSub: React.FC = () => {
+interface tvsubsProps{plans:string}
+
+const TvSub: React.FC<tvsubsProps> = (plans) => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
@@ -75,6 +77,7 @@ const TvSub: React.FC = () => {
           isList={cardList}
           toggleCardList={toggleCardList}
           onSelectCard={onSelectCard}
+	  plans
         />
       )}
 
