@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,121 +19,102 @@ import {
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  withTiming, withSequence
+  withTiming,
+  withSequence,
 } from "react-native-reanimated";
-const[clicked, setClicked]=useState(false);
+const [clicked, setClicked] = useState(false);
 
-const toggleClicked = ()=>{
-    setClicked(x=>!x);
-}
-
-
+const toggleClicked = () => {
+  setClicked((x) => !x);
+};
 
 const Home: React.FC = () => {
-const widthA = useSharedValue(270);
-const colorA = useSharedValue("#2f7378");
-const boxAnime = useAnimatedStyle(()=>{
-    return{width:widthA.value, backgroundColor:colorA.value}
-});
+  const widthA = useSharedValue(270);
+  const colorA = useSharedValue("#2f7378");
+  const boxAnime = useAnimatedStyle(() => {
+    return { width: widthA.value, backgroundColor: colorA.value };
+  });
 
-useEffect(()=>{
-	setTimeout(()=>{
-		const myInterval = setInterval(()=>{
-	    
-widthA.value = withSequence(
-withTiming(300,{duration:1000}),
-withTiming(240, {duration:700}),
-withTiming(300, {duration:800}),
-withTiming(270, {duration:700}),
+  useEffect(() => {
+    setTimeout(() => {
+      const myInterval = setInterval(() => {
+        widthA.value = withSequence(
+          withTiming(300, { duration: 1000 }),
+          withTiming(240, { duration: 700 }),
+          withTiming(300, { duration: 800 }),
+          withTiming(270, { duration: 700 }),
+        );
 
-);
+        colorA.value = withSequence(
+          withTiming("#2f7378", { duration: 1000 }),
+          withTiming("#4A6163", { duration: 700 }),
+          withTiming("#2f7378", { duration: 800 }),
+          withTiming("#4A6163", { duration: 700 }),
+        );
+      }, 15000);
+      return () => clearInterval(myInterval);
+    }, 6000);
+  }, []);
 
-colorA.value = withSequence(                                          withTiming("#2f7378",{duration:1000}),
-withTiming("#4A6163", {duration:700}),
-withTiming("#2f7378", {duration:800}),
-withTiming("#4A6163", {duration:700}),
-);
-		},15000);
-		return ()=> clearInterval(myInterval);
-	}, 6000);
-    },[]);
+  const rotateA = useSharedValue("0deg");
 
-const rotateA = useSharedValue("0deg");
+  const animA = useAnimatedStyle(() => {
+    return { transform: [{ rotate: rotateA.value }] };
+  });
 
-const animA = useAnimatedStyle(()=>{
-    return{transform:[{rotate:rotateA.value}]}
-});
+  useEffect(() => {
+    setTimeout(() => {
+      const myInterval2 = setInterval(() => {
+        rotateA.value = withSequence(
+          withTiming("-80deg", { duration: 700 }),
+          withTiming("80deg", { duration: 700 }),
+        );
+      }, 1200);
+      return () => clearInterval(myInterval2);
+    }, 5000);
+  }, []);
 
-useEffect(()=>{
-    setTimeout(()=>{
-    
-    const myInterval2 = setInterval(()=>{
-    
-    rotateA.value = withSequence(
-        withTiming("-80deg", {duration:700}),
-        withTiming("80deg", {duration:700}),
-    )
-        
-    },1200);
-    return ()=> clearInterval(myInterval2);
-        
-    },5000);
-}, []);
+  const textOpacity = useSharedValue("");
 
+  const animOpacity = useAnimatedStyle(() => {
+    return { opacity: textOpacity.value };
+  });
 
-	
-const textOpacity = useSharedValue("");
+  useEffect(() => {
+    setTimeout(() => {
+      const opacityInterval = setInterval(() => {
+        textOpacity.value = withSequence(
+          withTiming(0, { duration: 600 }),
+          withTiming(1, { duration: 1200 }),
+        );
+      }, 1800);
+      return () => clearInterval(opacityInterval);
+    }, 3500);
+  }, []);
 
-const animOpacity = useAnimatedStyle(()=>{
-    return{opacity:textOpacity.value}
-});
+  const [text, setText] = useState("Welcome to Flash");
 
-useEffect(()=>{
-
-    setTimeout(()=>{
-        const opacityInterval = setInterval(()=>{
-        textOpacity.value =
-        withSequence(
-        withTiming(0,{duration:600}),
-        withTiming(1, {duration:1200}),
-       );
-       
-        },1800);
-        return ()=> clearInterval(opacityInterval)
-        
-    },3500);
-},[])
-
-
-
-
-const[text, setText]= useState("Welcome to Flash");
-
-var texts = [
+  var texts = [
     "We are the best!",
     "Fast transactions always",
     "Quick and Easy Funding",
     "Funds are Safe",
-   
-]
+  ];
 
-useEffect(()=>{
-    setTimeout(()=>{
-        
-        var myIndex = 0;
-        
-        const myInterval5 = setInterval(()=>{
-          myIndex = (myIndex + 1) % texts.length;
-          setText(texts[myIndex])
-           
-          
-        },2000)
-         return 
-            ()=>{
-                clearInterval(myInterval5)
-            }
-    },4000)
-},[]);
+  useEffect(() => {
+    setTimeout(() => {
+      var myIndex = 0;
+
+      const myInterval5 = setInterval(() => {
+        myIndex = (myIndex + 1) % texts.length;
+        setText(texts[myIndex]);
+      }, 2000);
+      return;
+      () => {
+        clearInterval(myInterval5);
+      };
+    }, 4000);
+  }, []);
 
   const [click, setClick] = useState(false);
 
@@ -147,12 +128,22 @@ useEffect(()=>{
 
   const isFocused = useIsFocused();
   return (
-
     <View style={styles.container}>
+      <TouchableOpacity
+        onPress={toggleClicked}
+        style={clicked ? styles.showButton : styles.hiddenButton}
+      >
+        Follow
+      </TouchableOpacity>
 
-<TouchableOpacity onPress={toggleClicked}style={clicked? (styles.showButton) : (styles.hiddenButton)}>Follow</TouchableOpacity>
-
-    <TouchableOpacity onPress={()=>Alert.alert("You will have to pay $20 per month for subscription")}style={styles.subscribe}>Subscribe</TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          Alert.alert("You will have to pay $20 per month for subscription")
+        }
+        style={styles.subscribe}
+      >
+        Subscribe
+      </TouchableOpacity>
 
       <BlurView style={styles.topContainer}>
         <Image
@@ -208,7 +199,7 @@ useEffect(()=>{
         <View style={styles.headingContainer}>
           <Text style={styles.heading1}>Buy and Sell</Text>
           <Animated.Text style={[styles.heading2, animOpacity]}>
-	  {text}
+            {text}
           </Animated.Text>
         </View>
         <View style={styles.services}>
@@ -405,41 +396,41 @@ useEffect(()=>{
   );
 };
 const styles = StyleSheet.create({
-
-showButton: {
-  height: 30,
-  width: 100,
-  top: 20,
-  right: 20,
-  borderRadius: 15,
-  backgroundColor: "black",
-  color: "white",
-  display: "flex",
-  justifyContent: "center",
-  fontSize: 13,
-},
-hiddenButton: {
-  top: 20,
-  right: 20,
-  borderRadius: 15,
-  backgroundColor: "black",
-  color: "white",
-  display: "flex",
-  justifyContent: "center",
-  fontSize: 13,
-opacity:0},
-subscribe: {
-  height: 30,
-  width: 100,
-  top: 20,
-  right: 20,
-  borderRadius: 15,
-  backgroundColor: "#c936cc",
-  color: "white",
-  display: "flex",
-  justifyContent: "center",
-  fontSize: 13,
-},
+  showButton: {
+    height: 30,
+    width: 100,
+    top: 20,
+    right: 20,
+    borderRadius: 15,
+    backgroundColor: "black",
+    color: "white",
+    display: "flex",
+    justifyContent: "center",
+    fontSize: 13,
+  },
+  hiddenButton: {
+    top: 20,
+    right: 20,
+    borderRadius: 15,
+    backgroundColor: "black",
+    color: "white",
+    display: "flex",
+    justifyContent: "center",
+    fontSize: 13,
+    opacity: 0,
+  },
+  subscribe: {
+    height: 30,
+    width: 100,
+    top: 20,
+    right: 20,
+    borderRadius: 15,
+    backgroundColor: "#c936cc",
+    color: "white",
+    display: "flex",
+    justifyContent: "center",
+    fontSize: 13,
+  },
 
   icon: {
     height: 32,
