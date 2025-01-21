@@ -11,7 +11,6 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
 
-    const navigation = useNavigation();
 
     if (!isOpen) return null;
 
@@ -23,7 +22,6 @@ const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
             <Text style={styles.item1}>Exchange</Text>
             <Text style={styles.item1}>Referrals</Text>
             <Text 
-	    onPress={()=>navigation.navigate('history')} 
 	    style={styles.item1}>History</Text>
             <Text style={styles.item1}>About Us</Text>
             <Text style={styles.item1}>Privacy Policy</Text>

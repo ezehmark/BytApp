@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "MyApp",
+    "name": "Flash by Ocean",
     "slug": "MyApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/AppIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/mySplash.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -27,16 +27,20 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 1,
+      "minSdkVersion": 21,
+      "targetSdkVersion": 30,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/AppIcon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ezehmark.MyApp"
+      "package": "com.flash.ocean"
     },
     "extra": {
       "eas": {
         "projectId": "1ba72b9f-37fe-4fd8-9404-f093331f35f8"
       }
-    }
+    },
+    "owner": "ezehmark"
   }
 }

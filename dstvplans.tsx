@@ -15,7 +15,7 @@ const DstvPlans: React.FC<dstvplansProps> = ({ isList, toggleCardList, onSelectC
   // Dynamically create plans array with images
   const dstvPlans = plans.map((plan) => ({
     name: plan,
-    uri: "https://i.postimg.cc/T2VMmKv7/images-33.jpg", // Static image for each plan
+    uri: "https://i.postimg.cc/T2VMmKv7/images-33.jpg", 
   }));
 
   return (

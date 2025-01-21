@@ -23,7 +23,7 @@ import StarTimesPlans from './startimesplans.tsx';
 
 interface tvsubsProps{plans:string[]}
 
-const TvSub: React.FC<tvsubsProps> = (plans) => {
+const TvSub: React.FC<tvsubsProps> = ({plans}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
@@ -82,7 +82,7 @@ const TvSub: React.FC<tvsubsProps> = (plans) => {
       )}
 
       {cardList && whichIsSelected === "DSTV" && (                             <DstvPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                	                       onSelectCard={onSelectCardi} 
-	    plans={plans}/>                                                                  )}
+	    plans={plans} />                                                                  )}
 
       {cardList && whichIsSelected === "STARTIMES" && (                             <StarTimesPlans                                                             isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
 
