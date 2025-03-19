@@ -33,7 +33,19 @@ const BuyGiftCard1: React.FC = () => {
    setCardList((init) => !init);
  };
 
+ const[amount,setAmount]=useState("0.00")
+
  const [quantity, setQuantity] = useState("");
+
+ const handleRate = (text:string)=>{
+const amountFinal = Number(text) * 1520;
+setAmount(amountFinal)
+if(isNaN(amountFinal)){setAmount("Enter numbers only")}
+else{setAmount(amountFinal)}
+
+
+
+ }
 
  const [isCard, setIsCard] = useState(false);
  const toggleCard = () => {
@@ -188,17 +200,17 @@ const BuyGiftCard1: React.FC = () => {
 
                  <TextInput
                    style={styles.quantityInput}
-                   name="amount"
-                   value={quantity}
+		   returnKeyType={"Done"}
+                   
                    placeholder="Quantity"
                    color="black"
                    placeholderTextColor="#999"
-                   onChangeText={setQuantity}
+                   onChangeText={(text)=>{handleRate(text)}}
                  />
 
                  <View style={styles.amountBox}>
                    {" "}
-                   <Text style={styles.amountText}>₦ 00</Text>
+                   <Text style={styles.amountText}>₦{amount.toLocaleString("en-US")}</Text>
                  </View>
                 
 
@@ -543,7 +555,7 @@ const styles = StyleSheet.create({
  },
 
  buyBox: {
-   height: 60,
+   height: 40,
    width: "85%",
    backgroundColor: "#8413f5",
    borderRadius: 20,
@@ -594,21 +606,23 @@ const styles = StyleSheet.create({
    color: "#ccc",
  },
  buyText: {
-   fontSize: 20,
+   fontSize: 18,
    alignSelf: "center",
 
-   color: "black",
+   color: "#ccc",
    fontWeight: "bold",
  },
 
  rate: {
-   padding: 10,
+	 bottom:-20,
+   padding: 5,
    borderRadius: 10,
    color: "green",
    backgroundColor: "white",
    borderColor: "green",
    borderWidth: 1,
    zIndex: 12,
+   width:100,
  },
 
  selectGiftCard: {

@@ -22,11 +22,9 @@ import Animated, {
   withTiming,
   withSequence,
 } from "react-native-reanimated";
-const [clicked, setClicked] = useState(false);
+import BuyGiftCard1 from "./buygiftcard1.tsx";
 
-const toggleClicked = () => {
-  setClicked((x) => !x);
-};
+
 
 const Home: React.FC = () => {
   const widthA = useSharedValue(270);
@@ -129,21 +127,6 @@ const Home: React.FC = () => {
   const isFocused = useIsFocused();
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={toggleClicked}
-        style={clicked ? styles.showButton : styles.hiddenButton}
-      >
-        Follow
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() =>
-          Alert.alert("You will have to pay $20 per month for subscription")
-        }
-        style={styles.subscribe}
-      >
-        Subscribe
-      </TouchableOpacity>
 
       <BlurView style={styles.topContainer}>
         <Image
@@ -159,9 +142,9 @@ const Home: React.FC = () => {
             <Text style={styles.flag}>🇳🇬</Text>
           </View>
           <View style={styles.hide}>
-            <Text style={styles.hideAndSee} onPress={toggleClick}>
+            <TouchableOpacity style={{flex:1,alignItems:"center",justifyContent:"center"}} onPress={()=>toggleClick()}><Text style={styles.hideAndSee}>
               {click ? "Hide" : "See"}
-            </Text>
+            </Text></TouchableOpacity>
           </View>
 
           <Text style={styles.naira}></Text>
@@ -202,7 +185,8 @@ const Home: React.FC = () => {
             {text}
           </Animated.Text>
         </View>
-        <View style={styles.services}>
+        <TouchableOpacity
+	onPress ={()=>navigation.navigate("buygiftcard1")}style={styles.services}>
           <View style={styles.buyGiftCard}>
             <Text style={styles.Buy}>Buy</Text>
             <Text style={styles.GiftCards}>Gift Cards</Text>
@@ -214,7 +198,8 @@ const Home: React.FC = () => {
                 }}
               />
             </View>
-          </View>
+	    </View>
+          </TouchableOpacity>
 
           <View style={styles.sellGiftCard}>
             <Text style={styles.Sell}>Sell</Text>
@@ -292,7 +277,7 @@ const Home: React.FC = () => {
               </View>
             </View>
           </View>
-        </View>
+        
         <View style={styles.buyElectricity}>
           <Text style={styles.PHCN}>PHCN</Text>{" "}
           <Text style={styles.electricityBills}>Electricity Bills</Text>
@@ -758,6 +743,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     position: "absolute",
     top: 215,
+    marginLeft:15,
   },
   buyAirtime: {
     height: 120,

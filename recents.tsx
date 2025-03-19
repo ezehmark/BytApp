@@ -9,6 +9,8 @@ import Menu from './menu';
 
 const Recents: React.FC = () => {
 
+	const fadeBox =(
+
 	const navigation=useNavigation();
 
 	const route =useRoute();
@@ -21,7 +23,7 @@ const Recents: React.FC = () => {
 	<LinearGradient
 	colors={['white', '#f5b857']}
 	start={{x:0, y:0}}
-	end={{x:0, y:1}}
+	end={{x:1, y:1}}
 	style={styles.gradientContainer}>
 	<View style={styles.body}>
 	<TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>                                                     <Image style={styles.menuIcon} source={{ uri: 'https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png' }} />
