@@ -30,14 +30,14 @@ jobs:
           yarn install  
 
       # Step 4: Install Expo CLI  
-      #- name: Install Expo CLI  
-        #run: npm install -g expo-cli  
+      # - name: Install Expo CLI  
+      #   run: npm install -g expo-cli  
 
       # Step 5: Ensure metro.config.js is correctly set up  
       - name: Setup Metro Config  
         run: |  
           echo "Ensuring metro.config.js is set correctly..."  
-          cat <<EOT > metro.config.js  
+          cat <<'EOT' > metro.config.js  
           const { getDefaultConfig } = require('@react-native/metro-config');  
           module.exports = getDefaultConfig(__dirname);  
           EOT  
