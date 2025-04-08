@@ -1,5 +1,3 @@
-// Top-level build.gradle
-
 buildscript {
     ext {
         buildToolsVersion = findProperty('android.buildToolsVersion') ?: '35.0.0'
@@ -16,30 +14,33 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.1' // specify version explicitly if needed
-        classpath 'com.facebook.react:react-native-gradle-plugin'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath('com.android.tools.build:gradle')
+        classpath('com.facebook.react:react-native-gradle-plugin')
+        classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
     }
 }
 
 apply plugin: "com.facebook.react.rootproject"
 
+// >>> Added ext block here for submodules like expo-linear-gradient to access <<<
+ext {
+    compileSdkVersion = 35
+    targetSdkVersion = 34
+    minSdkVersion = 24
+    kotlinVersion = '1.9.25'
+}
+
 allprojects {
     repositories {
-        // React Native from npm
         maven {
-            url(new File([
-                'node', '--print', 
-                "require.resolve('react-native/package.json')"
-            ].execute(null, rootDir).text.trim(), '../android'))
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url(new File(['node', '--print', "require.resolve('react-native/package.json')"]
+                .execute(null, rootDir).text.trim(), '../android'))
         }
-
-        // JSC from npm
         maven {
-            url(new File([
-                'node', '--print', 
-                "require.resolve('jsc-android/package.json', { paths: [require.resolve('react-native/package.json')] })"
-            ].execute(null, rootDir).text.trim(), '../dist'))
+            // Android JSC is installed from npm
+            url(new File(['node', '--print', "require.resolve('jsc-android/package.json', { paths: [require.resolve('react-native/package.json')] })"]
+                .execute(null, rootDir).text.trim(), '../dist'))
         }
 
         google()
