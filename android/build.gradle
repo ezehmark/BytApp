@@ -1,13 +1,14 @@
-buildscript {
-    ext {
-        buildToolsVersion = findProperty('android.buildToolsVersion') ?: '35.0.0'
-        minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '24')
-        compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '35')
-        targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '34')
-        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.25'
-        ndkVersion = "26.1.10909125"
-    }
+// >>> Moved ext block to the top so submodules can access it early <<<
+ext {
+    buildToolsVersion = findProperty('android.buildToolsVersion') ?: '35.0.0'
+    minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '24')
+    compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '35')
+    targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '34')
+    kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.25'
+    ndkVersion = "26.1.10909125"
+}
 
+buildscript {
     repositories {
         google()
         mavenCentral()
@@ -22,7 +23,7 @@ buildscript {
 
 apply plugin: "com.facebook.react.rootproject"
 
-// >>> Added ext block here for submodules like expo-linear-gradient to access <<<
+// Optional: Redefine for clarity (though already defined above)
 ext {
     compileSdkVersion = 35
     targetSdkVersion = 34
