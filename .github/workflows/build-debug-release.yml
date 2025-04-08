@@ -27,43 +27,54 @@ jobs:
       - name: Install Dependencies
         run: |
           rm -rf node_modules
-          npm install
+          yarn install
 
-      # Step 4: Bundle React Native JavaScript
+      # Step 4: Create Metro Config if it doesn't exist
+      - name: Setup Metro Config
+        run: |
+          if [ ! -f metro.config.js ]; then
+            echo "Creating metro.config.js..."
+            cat <<EOT > metro.config.js
+            const { getDefaultConfig } = require('@react-native/metro-config');
+            module.exports = getDefaultConfig(__dirname);
+            EOT
+          fi
+
+      # Step 5: Bundle React Native JavaScript
       - name: Bundle React Native JavaScript
         run: |
           npx react-native bundle --platform android --dev false \
             --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle \
             --assets-dest android/app/src/main/res/
 
-      # Step 5: Stop Gradle Daemon (if any)
+      # Step 6: Stop Gradle Daemon (if any)
       - name: Stop Gradle Daemon (if any)
         run: cd android && ./gradlew --stop
 
-      # Step 6: Clean Gradle Build
+      # Step 7: Clean Gradle Build
       - name: Clean Gradle Build
         run: cd android && ./gradlew clean --no-build-cache --stacktrace
 
-      # Step 7: Grant Execution Permission to Gradle
+      # Step 8: Grant Execution Permission to Gradle
       - name: Grant Execution Permission to Gradle
         run: chmod +x android/gradlew
 
-      # Step 8: Build Debug APK with Gradle
+      # Step 9: Build Debug APK with Gradle
       - name: Build Debug APK with Gradle
         run: cd android && ./gradlew assembleDebug --stacktrace --info
 
-      # Step 9: Verify Latest Commit Hash
+      # Step 10: Verify Latest Commit Hash
       - name: Verify Latest Commit Hash
         run: |
           echo "Latest commit hash: $(git rev-parse HEAD)"
 
-      # Step 10: Ensure APK Exists
+      # Step 11: Ensure APK Exists
       - name: Ensure APK Exists
         run: |
           echo "Checking if APK exists..."
           ls -lah android/app/build/outputs/apk/debug/
 
-      # Step 11: Upload APK as Artifact
+      # Step 12: Upload APK as Artifact
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
