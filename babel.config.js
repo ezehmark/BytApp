@@ -3,14 +3,14 @@ module.exports = function (api) {
   return {
     presets: [
       [
-        'babel-preset-expo',
+        "babel-preset-expo",
         {
-          runtime: 'automatic', // Enable automatic JSX runtime
+          runtime: "automatic", // Enable automatic JSX runtime
         },
       ],
     ],
     plugins: [
-      'react-native-reanimated/plugin', // Required for react-native-reanimated
+      "react-native-reanimated/plugin", // Required for react-native-reanimated
     ],
   };
 };

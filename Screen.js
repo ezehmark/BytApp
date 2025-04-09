@@ -1,35 +1,43 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 
 const SignupScreen = () => {
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
-  const [error, setError] = useState('');
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState("");
 
   const showAlert = (message) => {
     Alert.alert(message);
   };
 
   const formvalid = () => {
-    if (firstname === '' || lastname === '') {
-      showAlert('Enter your names to proceed');
+    if (firstname === "" || lastname === "") {
+      showAlert("Enter your names to proceed");
       return;
     }
 
-    if (password === '' || confirm === '') {
-      showAlert('Put in password, please.');
+    if (password === "" || confirm === "") {
+      showAlert("Put in password, please.");
       return;
     }
 
     if (password !== confirm) {
-      showAlert('Check that passwords match');
+      showAlert("Check that passwords match");
       return;
     } else {
-      showAlert('Successfully registered');
+      showAlert("Successfully registered");
       // Here you can add code to submit the data to your backend
     }
   };
@@ -89,7 +97,11 @@ const SignupScreen = () => {
 
         <View style={styles.signin}>
           <Text>Have an account? </Text>
-          <TouchableOpacity onPress={() => {/* Navigate to sign-in screen */}}>
+          <TouchableOpacity
+            onPress={() => {
+              /* Navigate to sign-in screen */
+            }}
+          >
             <Text style={styles.signinText}>Sign in</Text>
           </TouchableOpacity>
         </View>
@@ -101,59 +113,59 @@ const SignupScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f8ff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#f0f8ff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
-    color: '#84de02',
-    textDecorationLine: 'underline',
+    color: "#84de02",
+    textDecorationLine: "underline",
   },
   formarea: {
-    backgroundColor: '#f5e9d3',
+    backgroundColor: "#f5e9d3",
     padding: 20,
     borderRadius: 10,
-    width: '80%',
-    alignItems: 'center',
+    width: "80%",
+    alignItems: "center",
   },
   signup: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   input: {
     borderRadius: 10,
-    backgroundColor: '#f0f8ff',
+    backgroundColor: "#f0f8ff",
     paddingHorizontal: 10,
     height: 40,
     marginBottom: 15,
-    width: '100%',
+    width: "100%",
   },
   button: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
     borderRadius: 10,
     paddingVertical: 10,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     marginBottom: 20,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   signin: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   signinText: {
-    color: 'green',
+    color: "green",
     fontSize: 12,
   },
   error: {
-    color: 'red',
+    color: "red",
     marginBottom: 10,
   },
 });

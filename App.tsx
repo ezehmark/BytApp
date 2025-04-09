@@ -69,7 +69,7 @@ export default function App() {
   const tabs = [
     { id: 1, name: "Home", route: "MyApp" },
     { id: 2, name: "Profile", route: "ImgComp" },
-    {id:3,name:"Chats",route:"chat"}
+    { id: 3, name: "Chats", route: "chat" },
   ];
 
   const [clickedTab, setClickedTab] = useState(null);
@@ -81,21 +81,20 @@ export default function App() {
         <View
           style={{
             zIndex: 150,
-	    alignSelf:"center",
-	    top:"40%",
-            flexGrow:1,
-	    alignItems: "center",
+            alignSelf: "center",
+            top: "40%",
+            flexGrow: 1,
+            alignItems: "center",
             backgroundColor: "rgba(46,74,95,0.0)",
             justifyContent: "center",
             position: "absolute",
-
           }}
         >
           <BlurView
             style={{
               zIndex: 155,
-              padding:15,
-	      borderRadius: 10,
+              padding: 15,
+              borderRadius: 10,
               shadowColor: "rgba(0,0,0,0.3)",
               justifyContent: "space-between",
               gap: 5,
@@ -106,19 +105,30 @@ export default function App() {
               alignSelf: "center",
               shadowOffset: { height: 2, width: 1 },
               shadowRadius: 4,
-	      alignItems:"center"
+              alignItems: "center",
             }}
           >
-            <ActivityIndicator style={{shadowColor:"rgba(0,0,0,0.2)",shadowOffset:{width:0,height:0},shadowRadius:1,borderRadius:20}}size={40} color={"#feb819"} />
-            <Text style={{ color: "#feb819",whiteSpace:"noWrap" }}>{loadingTxt}</Text>
+            <ActivityIndicator
+              style={{
+                shadowColor: "rgba(0,0,0,0.2)",
+                shadowOffset: { width: 0, height: 0 },
+                shadowRadius: 1,
+                borderRadius: 20,
+              }}
+              size={40}
+              color={"#feb819"}
+            />
+            <Text style={{ color: "#feb819", whiteSpace: "noWrap" }}>
+              {loadingTxt}
+            </Text>
           </BlurView>
         </View>
       )}
       <Animated.View
         style={[
           {
-            width:"80%",
-	    position: "absolute",
+            width: "80%",
+            position: "absolute",
             borderRadius: 10,
             top: -40,
             backgroundColor: "#feb819",
@@ -127,16 +137,32 @@ export default function App() {
             zIndex: 160,
             paddingVertical: 5,
             paddingHorizontal: 5,
-	    height:40,
+            height: 40,
             alignSelf: "center",
-	    alignItems:"center",
-	    justfyContent:"center",
+            alignItems: "center",
+            justfyContent: "center",
           },
           backendActive && notifyBoxAnim,
         ]}
       >
-        <Text style={{ position:"absolute",left:2,fontSize: 16, fill: "blue" }}>📢</Text>
-        <Text style={{ position:"absolute",alignSelf:"center",alignItems:"center",justifyContent:"center",left:40,textAlign:"center",color: "black", fontSize: 14, whiteSpace: "wrap" }}>
+        <Text
+          style={{ position: "absolute", left: 2, fontSize: 16, fill: "blue" }}
+        >
+          📢
+        </Text>
+        <Text
+          style={{
+            position: "absolute",
+            alignSelf: "center",
+            alignItems: "center",
+            justifyContent: "center",
+            left: 40,
+            textAlign: "center",
+            color: "black",
+            fontSize: 14,
+            whiteSpace: "wrap",
+          }}
+        >
           {notifyMsg}
         </Text>
       </Animated.View>
@@ -188,21 +214,20 @@ export default function App() {
               />
             )}
           </Stack.Screen>
-	  <Stack.Screen
-	  name={"chat"}
-	  options={{headerShown:false}}>
-	  {(props)=>(
-		  <Chat
-		  {...props}
-	  loading={loading}
-	  loadingTxt={loadingTxt}
-        dropDownChanger={dropDownChanger}                                     notifyMsg={notifyMsg}
-        setNotifyMsg={setNotifyMsg}
-	setLoadingTxt={setLoadingTxt}
-	  setLoading={setLoading}
-	  />
-  )}
-	  </Stack.Screen>
+          <Stack.Screen name={"chat"} options={{ headerShown: false }}>
+            {(props) => (
+              <Chat
+                {...props}
+                loading={loading}
+                loadingTxt={loadingTxt}
+                dropDownChanger={dropDownChanger}
+                notifyMsg={notifyMsg}
+                setNotifyMsg={setNotifyMsg}
+                setLoadingTxt={setLoadingTxt}
+                setLoading={setLoading}
+              />
+            )}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
       <BlurView style={styles.tabBar}>

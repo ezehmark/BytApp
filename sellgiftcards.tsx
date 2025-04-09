@@ -23,8 +23,8 @@ import GooglePlayCards from "./googleplaycards.tsx";
 import * as ImagePicker from "expo-image-picker";
 import XboxCards from "./xboxcards.tsx";
 import NikeCards from "./nikecards.tsx";
-import TargetCards from './targetcards.tsx';
-import NordstromCards from './nordstromcards.tsx';
+import TargetCards from "./targetcards.tsx";
+import NordstromCards from "./nordstromcards.tsx";
 
 const SellGiftCards: React.FC = () => {
   const navigation = useNavigation();
@@ -177,9 +177,21 @@ const SellGiftCards: React.FC = () => {
         />
       )}
 
-      {cardList && whichIsSelected === "Target" && (                            <TargetCards                                                              isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
+      {cardList && whichIsSelected === "Target" && (
+        <TargetCards
+          isList={cardList}
+          toggleCardList={toggleCardList}
+          onSelectCard={onSelectCard}
+        />
+      )}
 
-      {cardList && whichIsSelected === "Nordstrom" && (                            <NordstromCards                                                              isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
+      {cardList && whichIsSelected === "Nordstrom" && (
+        <NordstromCards
+          isList={cardList}
+          toggleCardList={toggleCardList}
+          onSelectCard={onSelectCard}
+        />
+      )}
 
       <View style={styles.container}>
         <LinearGradient

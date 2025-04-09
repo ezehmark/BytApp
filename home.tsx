@@ -24,8 +24,6 @@ import Animated, {
 } from "react-native-reanimated";
 import BuyGiftCard1 from "./buygiftcard1.tsx";
 
-
-
 const Home: React.FC = () => {
   const widthA = useSharedValue(270);
   const colorA = useSharedValue("#2f7378");
@@ -99,20 +97,20 @@ const Home: React.FC = () => {
     "Funds are Safe",
   ];
 
-useEffect(() => {
-  const timeoutId = setTimeout(() => {
-    let myIndex = 0;
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      let myIndex = 0;
 
-    const myInterval5 = setInterval(() => {
-      myIndex = (myIndex + 1) % texts.length;
-      setText(texts[myIndex]);
-    }, 2000);
+      const myInterval5 = setInterval(() => {
+        myIndex = (myIndex + 1) % texts.length;
+        setText(texts[myIndex]);
+      }, 2000);
 
-    return () => clearInterval(myInterval5);
-  }, 4000);
+      return () => clearInterval(myInterval5);
+    }, 4000);
 
-  return () => clearTimeout(timeoutId);
-}, []);
+    return () => clearTimeout(timeoutId);
+  }, []);
   const [click, setClick] = useState(false);
 
   const toggleClick = () => {
@@ -127,7 +125,6 @@ useEffect(() => {
   const isFocused = useIsFocused();
   return (
     <View style={styles.container}>
-
       <BlurView style={styles.topContainer}>
         <Image
           source={{
@@ -142,9 +139,16 @@ useEffect(() => {
             <Text style={styles.flag}>🇳🇬</Text>
           </View>
           <View style={styles.hide}>
-            <TouchableOpacity style={{flex:1,alignItems:"center",justifyContent:"center"}} onPress={()=>toggleClick()}><Text style={styles.hideAndSee}>
-              {click ? "Hide" : "See"}
-            </Text></TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => toggleClick()}
+            >
+              <Text style={styles.hideAndSee}>{click ? "Hide" : "See"}</Text>
+            </TouchableOpacity>
           </View>
 
           <Text style={styles.naira}></Text>
@@ -186,7 +190,9 @@ useEffect(() => {
           </Animated.Text>
         </View>
         <TouchableOpacity
-	onPress ={()=>navigation.navigate("buygiftcard1")}style={styles.services}>
+          onPress={() => navigation.navigate("buygiftcard1")}
+          style={styles.services}
+        >
           <View style={styles.buyGiftCard}>
             <Text style={styles.Buy}>Buy</Text>
             <Text style={styles.GiftCards}>Gift Cards</Text>
@@ -198,10 +204,13 @@ useEffect(() => {
                 }}
               />
             </View>
-	    </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress ={()=>navigation.navigate("sellgiftcards")} style={{flex:1}}><View style={styles.sellGiftCard}>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("sellgiftcards")}
+          style={{ flex: 1 }}
+        >
+          <View style={styles.sellGiftCard}>
             <Text style={styles.Sell}>Sell</Text>
             <Text style={styles.GiftCardSell}>Gift Cards</Text>
             <View style={styles.sellIcon}>
@@ -213,9 +222,12 @@ useEffect(() => {
               />
             </View>
           </View>
-	  </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>navigation.navigate("buydata")} style={{flex:1}}><View style={styles.buyData}>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("buydata")}
+          style={{ flex: 1 }}
+        >
+          <View style={styles.buyData}>
             <Text style={styles.sBuy}>Buy</Text>{" "}
             <Text style={styles.sGiftCards}>Cheap Data</Text>
             <View style={styles.buyIcon}>
@@ -227,9 +239,12 @@ useEffect(() => {
               />
             </View>
           </View>
-	  </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>navigation.navigate("buyairtime")} style={{flex:1}}><View style={styles.buyAirtime}>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("buyairtime")}
+          style={{ flex: 1 }}
+        >
+          <View style={styles.buyAirtime}>
             <Text style={styles.recharge}>Top-Up</Text>{" "}
             <Text style={styles.topUp}>Airtime</Text>
             <View style={styles.sellIcon}>
@@ -241,10 +256,12 @@ useEffect(() => {
               />
             </View>
           </View>
-	  </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>navigation.navigate("tvsub"
-)} style={{flex:1}}><View style={styles.subscribeTv}>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("tvsub")}
+          style={{ flex: 1 }}
+        >
+          <View style={styles.subscribeTv}>
             <Image
               style={styles.tvImage}
               source={{ uri: "https://i.postimg.cc/7LXTzX0b/TvSubs.png" }}
@@ -259,7 +276,6 @@ useEffect(() => {
                   }}
                 />
               </View>
-	
 
               <View style={styles.TV}>
                 {" "}
@@ -282,8 +298,7 @@ useEffect(() => {
               </View>
             </View>
           </View>
-	  </TouchableOpacity>
-        
+        </TouchableOpacity>
         <View style={styles.buyElectricity}>
           <Text style={styles.PHCN}>PHCN</Text>{" "}
           <Text style={styles.electricityBills}>Electricity Bills</Text>
@@ -348,7 +363,7 @@ useEffect(() => {
         >
           {" "}
           <View
-            style={[styles.tab2, isFocused ? styles.focusBackground2 : null]}
+            style={[styles.tab]}
           >
             <Image
               style={styles.fundImage}
@@ -370,7 +385,7 @@ useEffect(() => {
           </View>
           <Text style={styles.tabText}>Recents</Text>
         </View>
-        <View style={styles.tabArea}>
+        <TouchableOpacity onPress={()=>navigation?.navigate("profiles")} style={styles.tabArea}>
           <View style={styles.tab}>
             {" "}
             <Image
@@ -381,7 +396,7 @@ useEffect(() => {
             />{" "}
           </View>
           <Text style={styles.tabText}>Profile</Text>
-        </View>
+        </TouchableOpacity>
       </BlurView>
     </View>
   );
@@ -749,7 +764,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     position: "absolute",
     top: 215,
-    marginLeft:15,
+    marginLeft: 15,
   },
   buyAirtime: {
     height: 120,

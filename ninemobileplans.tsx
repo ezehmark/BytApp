@@ -1,318 +1,322 @@
-import { Image, Text, View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 
-import { BlurView } from 'expo-blur';
+import { BlurView } from "expo-blur";
 
-import { LinearGradient } from 'expo-linear-gradient';
-
+import { LinearGradient } from "expo-linear-gradient";
 
 interface nineProps {
+  isList: boolean;
 
-  isList: boolean;
+  toggleCardList: () => void;
 
-  toggleCardList: () => void;
-
-  onSelectCard:(giftCard:string)=> void;
-
+  onSelectCard: (giftCard: string) => void;
 }
-
 
 // Define an array of gift cards
 
 const ninemobilePlans = [
+  { name: "500MB = ₦130", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
 
-  { name: "500MB = ₦130",uri:'https://i.postimg.cc/rwM8d5ZP/images-18.jpg'},
+  { name: "1GB = ₦285", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
 
- { name: "1GB = ₦285",uri:'https://i.postimg.cc/rwM8d5ZP/images-18.jpg'},
+  { name: "2GB = ₦380", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
 
- { name: "2GB = ₦380",uri:'https://i.postimg.cc/rwM8d5ZP/images-18.jpg'},
+  { name: "3GBB = ₦570", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
 
- { name: "3GBB = ₦570",uri:'https://i.postimg.cc/rwM8d5ZP/images-18.jpg'},
+  { name: "4.5GB = ₦855", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
 
- { name: "4.5GB = ₦855",uri:'https://i.postimg.cc/rwM8d5ZP/images-18.jpg'},
+  { name: "11GB = ₦2,090", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
 
- { name: "11GB = ₦2,090",uri:'https://i.postimg.cc/rwM8d5ZP/images-18.jpg'},
+  {
+    name: "15.5B = ₦2,945",
+    uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg",
+  },
 
- { name: "15.5B = ₦2,945",uri:'https://i.postimg.cc/rwM8d5ZP/images-18.jpg'},
+  { name: "40GB = ₦7,600", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
 
- { name: "40GB = ₦7,600",uri:'https://i.postimg.cc/rwM8d5ZP/images-18.jpg'},
+  {
+    name: "75GB = ₦14,250",
+    uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg",
+  },
+];
 
- { name: "75GB = ₦14,250",uri:'https://i.postimg.cc/rwM8d5ZP/images-18.jpg'},
+const NineMobilePlans: React.FC<nineProps> = ({
+  isList,
+  toggleCardList,
+  onSelectCard,
+}) => {
+  if (!isList) return null;
 
-]
-
-
-
-const NineMobilePlans: React.FC<nineProps> = ({ isList, toggleCardList, onSelectCard }) => {
-
-  if (!isList) return null;
-
-
-  return (
-
-	  <BlurView style={styles.mainBodi}>
-
-    <View style={styles.bodi}>
-
-      <TouchableOpacity onPress={()=>toggleCardList()} style={styles.closeBtn}>❌</TouchableOpacity>
-
-
-      <View style={styles.container}>
-
-        <Text style={styles.msg}>Gift Card Type</Text>
-
-
-        <View style={styles.contentArea}>
-
-          <ScrollView style={styles.scrollArea}>
-
-            <View style={styles.msgArea}>
-
-              {ninemobilePlans.map((amazon, index) => (
-
-                <TouchableOpacity key={index} style={styles.giftCardBox} onPress={()=>onSelectCard(amazon.name)}>
-
-		<View style={styles.logoCover}><Image style={styles.giftCardLogo} source={{ uri: amazon.uri }} /></View>
-
-                  <Text style={styles.giftCardName}>{amazon.name}</Text>
-
-                </TouchableOpacity>
-
-              ))}
-
-            </View>
-
-          </ScrollView>
-
-        </View>
-
-      </View>
-
-    </View>
-
-    </BlurView>
-
-  );
-
-}
-
+  return (
+    <BlurView style={styles.mainBodi}>
+          
+      <View style={styles.bodi}>
+              
+        <TouchableOpacity
+          onPress={() => toggleCardList()}
+          style={styles.closeBtn}
+        >
+          ❌
+        </TouchableOpacity>
+              
+        <View style={styles.container}>
+                  <Text style={styles.msg}>Gift Card Type</Text>
+                  
+          <View style={styles.contentArea}>
+                      
+            <ScrollView style={styles.scrollArea}>
+                          
+              <View style={styles.msgArea}>
+                              
+                {ninemobilePlans.map((amazon, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.giftCardBox}
+                    onPress={() => onSelectCard(amazon.name)}
+                  >
+                    <View style={styles.logoCover}>
+                      <Image
+                        style={styles.giftCardLogo}
+                        source={{ uri: amazon.uri }}
+                      />
+                    </View>
+                                      
+                    <Text style={styles.giftCardName}>{amazon.name}</Text>
+                                    
+                  </TouchableOpacity>
+                ))}
+                            
+              </View>
+                        
+            </ScrollView>
+                    
+          </View>
+                
+        </View>
+            
+      </View>
+          
+    </BlurView>
+  );
+};
 
 const styles = StyleSheet.create({
+  mainBodi: { height: "100%", width: "100%", position: "absolute", zIndex: 20 },
 
-	mainBodi:{height:'100%', width:'100%',position:'absolute',zIndex:20,},
+  bodi: {
+    height: "85%",
 
-  bodi: {
+    width: "90%",
 
-    height: '85%',
+    alignSelf: "center",
 
-    width: '90%',
+    borderRadius: 30,
 
-    alignSelf: 'center',
+    top: 25,
 
-    borderRadius: 30,
+    padding: 10,
 
-    top: 25,
+    backgroundColor: "#28272c",
 
-    padding: 10,
+    left: "5%",
 
-    backgroundColor: '#28272c',
+    shadowColor: "black",
 
-    left: '5%',
+    shadowOffset: { height: 6, width: 3 },
 
-    shadowColor: 'black',
+    shadowOpacity: 0.6,
 
-    shadowOffset: { height: 6, width: 3 },
+    shadowRadius: 8,
 
-    shadowOpacity: 0.6,
+    elevation: 7,
 
-    shadowRadius: 8,
+    position: "absolute",
 
-    elevation: 7,
+    zIndex: 10,
+  },
 
-    position:'absolute',
+  msg: {
+    fontSize: 17,
 
-    zIndex:10,
+    fontWeight: "bold",
 
-  },
+    position: "absolute",
 
-  msg: {
+    top: 7,
 
-    fontSize: 17,
+    alignSelf: "center",
 
-    fontWeight: 'bold',
+    color: "#3CB2CB",
+  },
 
-    position: 'absolute',
+  closeBtn: {
+    height: 25,
 
-    top: 7,
+    width: 45,
 
-    alignSelf: 'center',
+    textAlign: "center",
 
-    color: '#3CB2CB',
+    color: "white",
 
-  },
+    backgroundColor: "black",
 
-  closeBtn: {
+    borderRadius: 10,
 
-    height: 25,
+    marginLeft: "75%",
 
-    width: 45,
+    top: -2.5,
 
-    textAlign: 'center',
+    zIndex: 3,
 
-    color: 'white',
+    fontSize: 10,
 
-    backgroundColor: 'black',
+    justifyContent: "center",
 
-    borderRadius: 10,
+    alignItems: "center",
+  },
 
-    marginLeft: '75%',
+  container: {
+    position: "absolute",
 
-    top: -2.5,
+    borderRadius: 25,
 
-    zIndex: 3,
+    height: "90%",
 
-    fontSize: 10,
+    width: "95%",
 
-    justifyContent: 'center',
+    justifyContent: "center",
 
-    alignItems: 'center',
+    backgroundColor: "black",
 
-  },
+    left: "2.5%",
 
-  container: {
+    top: 35,
+  },
 
-    position: 'absolute',
+  contentArea: {
+    position: "absolute",
 
-    borderRadius: 25,
+    width: "95%",
 
-    height: '90%',
+    height: "90%",
 
-    width: '95%',
+    padding: 20,
 
-    justifyContent: 'center',
+    top: 30,
 
-    backgroundColor: 'black',
+    backgroundColor: "#5d6262",
 
-    left: '2.5%',
+    borderRadius: 25,
 
-    top: 35,
+    left: "2.5%",
 
-  },
+    overflow: "hidden",
+  },
 
-  contentArea: {
+  scrollArea: {
+    position: "absolute",
 
-    position: 'absolute',
+    height: "95%",
 
-    width: '95%',
+    width: "95%",
 
-    height: '90%',
+    alignSelf: "center",
 
-    padding: 20,
+    top: 4,
 
-    top: 30,
+    paddingBottom: 40,
+  },
 
-    backgroundColor: '#5d6262',
+  msgArea: {
+    position: "absolute",
 
-    borderRadius: 25,
+    flex: 1,
 
-    left: '2.5%',
+    width: "98%",
 
-    overflow:'hidden',
+    backgroundColor: "#5d6262",
 
-  },
+    justifyContent: "space-around",
 
-  scrollArea: {
+    flexDirection: "column",
 
-    position: 'absolute',
+    alignSelf: "center",
 
-    height: '95%',
+    top: 2,
 
-    width: '95%',
+    borderTopRightRadius: 15,
 
-    alignSelf: 'center',
+    borderTopLeftRadius: 15,
 
-    top: 4,
+    alignItems: "center",
 
-    paddingBottom: 40,
+    gap: 10,
+  },
 
-  },
+  giftCardBox: {
+    height: 70,
 
-  msgArea: {
+    width: "90%",
 
-    position: 'absolute',
+    borderRadius: 20,
 
-    flex:1,
+    padding: 15,
 
-    width: '98%',
+    justifyContent: "center",
 
-    backgroundColor: '#5d6262',
+    alignItems: "center",
 
-    justifyContent: 'space-around',
+    backgroundColor: "#3CB2CB",
 
-    flexDirection: 'column',
+    shadowColor: "black",
 
-    alignSelf: 'center',
+    shadowOffset: { width: 0, height: 2 },
 
-    top: 2,
+    shadowOpacity: 0.25,
 
-    borderTopRightRadius: 15,
+    shadowRadius: 3.84,
 
-    borderTopLeftRadius: 15,
+    elevation: 5,
+  },
 
-    alignItems: 'center',
+  giftCardName: {
+    color: "black",
 
-    gap:10,
+    fontSize: 15,
 
-  },
+    alignSelf: "center",
 
-  giftCardBox: {
+    position: "absolute",
 
-    height: 70,
+    left: 40,
 
-    width: '90%',
+    fontWeight: "bold",
+  },
 
-    borderRadius: 20,
-
-    padding: 15,
-
-    justifyContent: 'center',
-
-    alignItems: 'center',
-
-    backgroundColor: '#3CB2CB',
-
-    shadowColor: 'black',
-
-  shadowOffset: { width: 0, height: 2 },
-
-  shadowOpacity: 0.25,
-
-  shadowRadius: 3.84,
-
-  elevation: 5,
-
-  },
-
-  giftCardName: {
-
-    color: 'black',
-
-    fontSize: 15,
-
-    alignSelf: 'center',
-
-    position: 'absolute',
-
-    left: 40,
-
-    fontWeight: 'bold',
-
-  },
-
-  logoCover: {                                                      position: 'absolute',                                           height: 30,                                                     width: 30,                                                      alignSelf: 'center',                                            left: 5,                                                        borderRadius: 15,                                               overflow:'hidden',                                              backgroundColor:'black',                                                                                                      },                                                                                                                              giftCardLogo:{resizeMode:'cover',                               position:'absolute',                                            height:30,                                                      width:35,                                                       alignSelf:'center',                                             },
-
+  logoCover: {
+    position: "absolute",
+    height: 30,
+    width: 30,
+    alignSelf: "center",
+    left: 5,
+    borderRadius: 15,
+    overflow: "hidden",
+    backgroundColor: "black",
+  },
+  giftCardLogo: {
+    resizeMode: "cover",
+    position: "absolute",
+    height: 30,
+    width: 35,
+    alignSelf: "center",
+  },
 });
 
-
 export default NineMobilePlans;
-
-

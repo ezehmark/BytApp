@@ -12,10 +12,10 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from "./mobilenetworks";
-import MtnPlans from './mtnplans.tsx';
-import AirtelPlans from './airtelplans.tsx';
-import GloPlans from './gloplans.tsx';
-import NineMobilePlans from './ninemobileplans.tsx';
+import MtnPlans from "./mtnplans.tsx";
+import AirtelPlans from "./airtelplans.tsx";
+import GloPlans from "./gloplans.tsx";
+import NineMobilePlans from "./ninemobileplans.tsx";
 
 const BuyData: React.FC = () => {
   const navigation = useNavigation();
@@ -74,14 +74,37 @@ const BuyData: React.FC = () => {
         />
       )}
 
-      {cardList && whichIsSelected === "AIRTEL" && (                             <AirtelPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
+      {cardList && whichIsSelected === "AIRTEL" && (
+        <AirtelPlans
+          isList={cardList}
+          toggleCardList={toggleCardList}
+          onSelectCard={onSelectCard}
+        />
+      )}
 
-      {cardList && whichIsSelected === "GLO" && (                             <GloPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
+      {cardList && whichIsSelected === "GLO" && (
+        <GloPlans
+          isList={cardList}
+          toggleCardList={toggleCardList}
+          onSelectCard={onSelectCard}
+        />
+      )}
 
-
-      {cardList && whichIsSelected === "9MOBILE" && (                             <NineMobilePlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
-      <View style={styles.container}>                         <LinearGradient                                         colors={["white", "#f5b857"]}                         start={{ x: 0, y: 0 }}                                end={{ x: 0, y: 1 }}                                  style={styles.gradientContainer}                    >
-
+      {cardList && whichIsSelected === "9MOBILE" && (
+        <NineMobilePlans
+          isList={cardList}
+          toggleCardList={toggleCardList}
+          onSelectCard={onSelectCard}
+        />
+      )}
+      <View style={styles.container}>
+        {" "}
+        <LinearGradient
+          colors={["white", "#f5b857"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={styles.gradientContainer}
+        >
           <View style={styles.body}>
             <Text style={styles.topTitle}>Data Purchase</Text>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
@@ -105,9 +128,7 @@ const BuyData: React.FC = () => {
             <View style={styles.contentArea}>
               <View style={styles.topCover} />
               <View style={styles.contentTitle}>
-                <Text style={styles.quickTitle}>
-                  Cheap Data Bundle
-                </Text>
+                <Text style={styles.quickTitle}>Cheap Data Bundle</Text>
                 <Text style={styles.flash}>⚡</Text>
               </View>
 
@@ -120,15 +141,16 @@ const BuyData: React.FC = () => {
                     <Text style={styles.selectNetwork}>{cardType}</Text>
                     <Image
                       source={{
-                        uri: 
-"https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png" }}
+                        uri: "https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png",
+                      }}
                       style={styles.dropDownIcon}
                     />
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={toggleCardList}
-                    style={styles.networkBox}>
+                    style={styles.networkBox}
+                  >
                     {" "}
                     <Text style={styles.selectNetwork}>
                       {giftCardType}
@@ -140,15 +162,22 @@ const BuyData: React.FC = () => {
                       style={styles.dropDownIcon}
                     />{" "}
                   </TouchableOpacity>
-		  <TextInput                                                        style={styles.pinInput}                                         value={pin}
-                    placeholder="Phone number"                                          color="black" keyboardType='numeric'                                                 placeholderTextColor="#999"                                     onChangeText={setPin}
+                  <TextInput
+                    style={styles.pinInput}
+                    value={pin}
+                    placeholder="Phone number"
+                    color="black"
+                    keyboardType="numeric"
+                    placeholderTextColor="#999"
+                    onChangeText={setPin}
                   />
 
                   <TextInput
                     style={styles.pinInput}
                     value={pin}
                     placeholder="6 digits pin"
-                    color="black" keyboardType='numeric'
+                    color="black"
+                    keyboardType="numeric"
                     placeholderTextColor="#999"
                     onChangeText={setPin}
                   />
@@ -381,7 +410,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 15,
-    overflow:'visible',
+    overflow: "visible",
   },
 
   logoCover: {

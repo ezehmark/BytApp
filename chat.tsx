@@ -10,7 +10,7 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import { BlurView } from "expo-blur";
 import axios from "axios";
 
@@ -32,17 +32,19 @@ const Chat = ({
     setMsg(text);
   };
 
-  const socket = io("https://mybackend-oftz.onrender.com",{transports:["websocket"]});
+  const socket = io("https://mybackend-oftz.onrender.com", {
+    transports: ["websocket"],
+  });
 
   const sendChat = () => {
-    if ( msg !== "") {
+    if (msg !== "") {
       setLoading(true);
       setLoadingTxt("Chatting...");
       socket.emit("send-chats", msg, (response) => {
-	      console.log(response);
+        console.log(response);
         setNotifyMsg(response.info);
         dropDownChanger();
-	setLoading(false);
+        setLoading(false);
       });
       setMsg("");
     }
@@ -55,12 +57,15 @@ const Chat = ({
   };
 
   useEffect(() => {
-	  socket.on("connect",()=>console.log("connected"));
+    socket.on("connect", () => console.log("connected"));
 
     socket.on("receive-chats", (messages) => {
       setChats((prev) => [...prev, messages]);
     });
-    return()=>socket.off("receive-chats",(messages)=>{setChats((prev)=>[...prev,messages])});
+    return () =>
+      socket.off("receive-chats", (messages) => {
+        setChats((prev) => [...prev, messages]);
+      });
   }, []);
 
   const flatListRef = useRef(null);

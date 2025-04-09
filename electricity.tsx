@@ -12,15 +12,14 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from "./mobilenetworks";
-import MtnPlans from './mtnplans.tsx';
-import AirtelPlans from './airtelplans.tsx';
-import GloPlans from './gloplans.tsx';
-import NineMobilePlans from './ninemobileplans.tsx';
-import TvComps from './tvcomps.tsx';
-import GoTvPlans from './gotvplans.tsx';
-import PowerStates from './powerstates.tsx';
-import MeterTypes from './metertypes.tsx';
-
+import MtnPlans from "./mtnplans.tsx";
+import AirtelPlans from "./airtelplans.tsx";
+import GloPlans from "./gloplans.tsx";
+import NineMobilePlans from "./ninemobileplans.tsx";
+import TvComps from "./tvcomps.tsx";
+import GoTvPlans from "./gotvplans.tsx";
+import PowerStates from "./powerstates.tsx";
+import MeterTypes from "./metertypes.tsx";
 
 const Electricity: React.FC = () => {
   const navigation = useNavigation();
@@ -37,10 +36,9 @@ const Electricity: React.FC = () => {
 
   const [amount, setAmount] = useState("");
 
-  const[meter, setMeter] = useState("");
+  const [meter, setMeter] = useState("");
 
-  const[phone, setPhone] = useState("");
-
+  const [phone, setPhone] = useState("");
 
   const [isCard, setIsCard] = useState(false);
   const toggleCard = () => {
@@ -78,7 +76,14 @@ const Electricity: React.FC = () => {
         />
       )}
 
-      {(cardList && whichIsSelected === "AEDC" || 'IBEDC' || 'EKEDC' || 'IKEDC' || 'KADECO' || 'KEDCO' || 'JED' || 'PHED') && (
+      {((cardList && whichIsSelected === "AEDC") ||
+        "IBEDC" ||
+        "EKEDC" ||
+        "IKEDC" ||
+        "KADECO" ||
+        "KEDCO" ||
+        "JED" ||
+        "PHED") && (
         <MeterTypes
           isList={cardList}
           toggleCardList={toggleCardList}
@@ -86,11 +91,14 @@ const Electricity: React.FC = () => {
         />
       )}
 
-
-
-
-      <View style={styles.container}>                         <LinearGradient                                         colors={["white", "#f5b857"]}                         start={{ x: 0, y: 0 }}                                end={{ x: 0, y: 1 }}                                  style={styles.gradientContainer}                    >
-
+      <View style={styles.container}>
+        {" "}
+        <LinearGradient
+          colors={["white", "#f5b857"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={styles.gradientContainer}
+        >
           <View style={styles.body}>
             <Text style={styles.topTitle}>Pay Electricity Bills</Text>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
@@ -114,9 +122,7 @@ const Electricity: React.FC = () => {
             <View style={styles.contentArea}>
               <BlurView style={styles.topCover} />
               <View style={styles.contentTitle}>
-                <Text style={styles.quickTitle}>
-                  Fast Reconnect to Power
-                </Text>
+                <Text style={styles.quickTitle}>Fast Reconnect to Power</Text>
                 <Text style={styles.flash}>⚡</Text>
               </View>
 
@@ -129,15 +135,16 @@ const Electricity: React.FC = () => {
                     <Text style={styles.selectNetwork}>{cardType}</Text>
                     <Image
                       source={{
-                        uri: 
-"https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png" }}
+                        uri: "https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png",
+                      }}
                       style={styles.dropDownIcon}
                     />
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={toggleCardList}
-                    style={styles.networkBox}>
+                    style={styles.networkBox}
+                  >
                     {" "}
                     <Text style={styles.selectNetwork}>
                       {giftCardType}
@@ -150,22 +157,39 @@ const Electricity: React.FC = () => {
                     />{" "}
                   </TouchableOpacity>
 
-		  <TextInput                                                        style={styles.pinInput}                                         value={meter}                                                                       placeholder="Meter Number"                                          color="black"                                                   placeholderTextColor="#999"                                     onChangeText={setMeter}/>
-
-
-		  <TextInput                                                        style={styles.pinInput}                                         value={phone}
-                    placeholder="Phone number"                                          color="black"                                                   placeholderTextColor="#999"                                     onChangeText={setPhone}
-		    keyboardType="numeric"
+                  <TextInput
+                    style={styles.pinInput}
+                    value={meter}
+                    placeholder="Meter Number"
+                    color="black"
+                    placeholderTextColor="#999"
+                    onChangeText={setMeter}
                   />
 
-		  <TextInput                                                        style={styles.pinInput}                                         value={amount}                                                                       placeholder="Amount"                                          color="black"    
-		  keyboardType="numeric"
-		  placeholderTextColor="#999"                                     onChangeText={setAmount}/>
+                  <TextInput
+                    style={styles.pinInput}
+                    value={phone}
+                    placeholder="Phone number"
+                    color="black"
+                    placeholderTextColor="#999"
+                    onChangeText={setPhone}
+                    keyboardType="numeric"
+                  />
+
+                  <TextInput
+                    style={styles.pinInput}
+                    value={amount}
+                    placeholder="Amount"
+                    color="black"
+                    keyboardType="numeric"
+                    placeholderTextColor="#999"
+                    onChangeText={setAmount}
+                  />
 
                   <TextInput
                     style={styles.pinInput}
                     value={pin}
-		    keyboardType="numeric"
+                    keyboardType="numeric"
                     placeholder="6 digits pin"
                     color="black"
                     placeholderTextColor="#999"
@@ -338,7 +362,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom: 50,
     overflow: "hidden",
-    zIndex:15,
+    zIndex: 15,
   },
 
   cardsType: {
@@ -401,7 +425,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 15,
-    overflow:'visible',
+    overflow: "visible",
   },
 
   logoCover: {
@@ -537,5 +561,3 @@ const styles = StyleSheet.create({
 });
 
 export default Electricity;
-
-

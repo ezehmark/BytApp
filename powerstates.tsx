@@ -19,19 +19,19 @@ interface powerProps {
 const powerStates = [
   { name: "AEDC", uri: "https://i.postimg.cc/LsCWTQj5/images-37.jpg" },
 
-{ name: "IBEDC", uri: "https://i.postimg.cc/GmbS1nQ9/images-26.png"},
+  { name: "IBEDC", uri: "https://i.postimg.cc/GmbS1nQ9/images-26.png" },
 
-{ name: "EKDC", uri: "https://i.postimg.cc/fWxKWgkd/images-38.jpg"},
+  { name: "EKDC", uri: "https://i.postimg.cc/fWxKWgkd/images-38.jpg" },
 
-{ name: "IKEDC", uri: "https://i.postimg.cc/9XtdHRNt/images-27.png"},
+  { name: "IKEDC", uri: "https://i.postimg.cc/9XtdHRNt/images-27.png" },
 
-{ name: "KEDCO", uri: "https://i.postimg.cc/HLXJ0Rq4/images-28.png"},
+  { name: "KEDCO", uri: "https://i.postimg.cc/HLXJ0Rq4/images-28.png" },
 
-{ name: "KADECO", uri: "https://i.postimg.cc/Hk2WpH1N/download-2.png"},
+  { name: "KADECO", uri: "https://i.postimg.cc/Hk2WpH1N/download-2.png" },
 
-{ name: "JED", uri: "https://i.postimg.cc/wTY9L36P/download-1.jpg"},
+  { name: "JED", uri: "https://i.postimg.cc/wTY9L36P/download-1.jpg" },
 
-{ name: "PHED", uri: "https://i.postimg.cc/wTY9L36P/download-1.jpg"},
+  { name: "PHED", uri: "https://i.postimg.cc/wTY9L36P/download-1.jpg" },
 ];
 
 const PowerStates: React.FC<powerProps> = ({
@@ -209,4 +209,3 @@ const styles = StyleSheet.create({
 });
 
 export default PowerStates;
-

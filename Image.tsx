@@ -99,11 +99,10 @@ export default function ImgComp({
   });
 
   const handlePicMove = () => {
-	  
-boxTranslate.value = 0;
-boxHeight.value = 300;
-boxOpacity.value = 1
-boxMargin.value =10;
+    boxTranslate.value = 0;
+    boxHeight.value = 300;
+    boxOpacity.value = 1;
+    boxMargin.value = 10;
     boxTranslate.value = withSequence(
       withTiming(500, { duration: 2000 }),
       withTiming(600, { duration: 2000 }),
@@ -132,11 +131,11 @@ boxMargin.value =10;
         <ScrollView style={styles.imageContainer}>
           <View style={styles.innerBox}>
             <FlatList
-	    numColumns ={1}
-	    showsVerticalScrollIndicator={false}
+              numColumns={1}
+              showsVerticalScrollIndicator={false}
               data={Array(4).fill(null)}
               horizontal={false}
-	      extraData={name}
+              extraData={name}
               keyExtractor={(_, index) => index.toString()}
               renderItem={({ index }) => {
                 const isTouched = touched.includes(index);
@@ -168,7 +167,7 @@ boxMargin.value =10;
                       >
                         <Text style={{ color: "black" }}>{profile}</Text>
                       </BlurView>
-		      <Text>{name}</Text>
+                      <Text>{name}</Text>
                     </TouchableOpacity>
                   </Animated.View>
                 );
@@ -181,7 +180,7 @@ boxMargin.value =10;
   );
 }
 
-const screenWidth= Dimensions.get("window").width;
+const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
@@ -203,17 +202,17 @@ const styles = StyleSheet.create({
   innerBox: {
     backgroundColor: "transparent",
     display: "flex",
-    padding:20,
+    padding: 20,
     alignItems: "center",
   },
   imageWrapper: {
     height: 250,
-    width:200,
+    width: 200,
     borderRadius: 10,
     backgroundColor: "grey",
     justifyContent: "center",
     alignItems: "center",
-    margin:10,
+    margin: 10,
   },
   image: {
     height: "100%",

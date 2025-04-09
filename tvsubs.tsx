@@ -12,18 +12,20 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from "./mobilenetworks";
-import MtnPlans from './mtnplans.tsx';
-import AirtelPlans from './airtelplans.tsx';
-import GloPlans from './gloplans.tsx';
-import NineMobilePlans from './ninemobileplans.tsx';
-import TvComps from './tvcomps.tsx';
-import GoTvPlans from './gotvplans.tsx';
-import DstvPlans from './dstvplans.tsx';
-import StarTimesPlans from './startimesplans.tsx';
+import MtnPlans from "./mtnplans.tsx";
+import AirtelPlans from "./airtelplans.tsx";
+import GloPlans from "./gloplans.tsx";
+import NineMobilePlans from "./ninemobileplans.tsx";
+import TvComps from "./tvcomps.tsx";
+import GoTvPlans from "./gotvplans.tsx";
+import DstvPlans from "./dstvplans.tsx";
+import StarTimesPlans from "./startimesplans.tsx";
 
-interface tvsubsProps{plans:string[]}
+interface tvsubsProps {
+  plans: string[];
+}
 
-const TvSub: React.FC<tvsubsProps> = ({plans}) => {
+const TvSub: React.FC<tvsubsProps> = ({ plans }) => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
@@ -77,19 +79,41 @@ const TvSub: React.FC<tvsubsProps> = ({plans}) => {
           isList={cardList}
           toggleCardList={toggleCardList}
           onSelectCard={onSelectCard}
-	  
         />
       )}
 
-      {cardList && whichIsSelected === "DSTV" && (                             <DstvPlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                	                       onSelectCard={onSelectCardi} 
-	    plans={plans} />                                                                  )}
+      {cardList && whichIsSelected === "DSTV" && (
+        <DstvPlans
+          isList={cardList}
+          toggleCardList={toggleCardList}
+          onSelectCard={onSelectCardi}
+          plans={plans}
+        />
+      )}
 
-      {cardList && whichIsSelected === "STARTIMES" && (                             <StarTimesPlans                                                             isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
+      {cardList && whichIsSelected === "STARTIMES" && (
+        <StarTimesPlans
+          isList={cardList}
+          toggleCardList={toggleCardList}
+          onSelectCard={onSelectCard}
+        />
+      )}
 
-
-      {cardList && whichIsSelected === "9MOBILE" && (                             <NineMobilePlans                                                               isList={cardList}                                                     toggleCardList={toggleCardList}                                       onSelectCard={onSelectCard}                                         />                                                                  )}
-      <View style={styles.container}>                         <LinearGradient                                         colors={["white", "#f5b857"]}                         start={{ x: 0, y: 0 }}                                end={{ x: 0, y: 1 }}                                  style={styles.gradientContainer}                    >
-
+      {cardList && whichIsSelected === "9MOBILE" && (
+        <NineMobilePlans
+          isList={cardList}
+          toggleCardList={toggleCardList}
+          onSelectCard={onSelectCard}
+        />
+      )}
+      <View style={styles.container}>
+        {" "}
+        <LinearGradient
+          colors={["white", "#f5b857"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={styles.gradientContainer}
+        >
           <View style={styles.body}>
             <Text style={styles.topTitle}>Cable Tv Subscription</Text>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
@@ -113,9 +137,7 @@ const TvSub: React.FC<tvsubsProps> = ({plans}) => {
             <View style={styles.contentArea}>
               <View style={styles.topCover} />
               <View style={styles.contentTitle}>
-                <Text style={styles.quickTitle}>
-                  Easy Tv Recharge
-                </Text>
+                <Text style={styles.quickTitle}>Easy Tv Recharge</Text>
                 <Text style={styles.flash}>⚡</Text>
               </View>
 
@@ -128,15 +150,16 @@ const TvSub: React.FC<tvsubsProps> = ({plans}) => {
                     <Text style={styles.selectNetwork}>{cardType}</Text>
                     <Image
                       source={{
-                        uri: 
-"https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png" }}
+                        uri: "https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png",
+                      }}
                       style={styles.dropDownIcon}
                     />
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     onPress={toggleCardList}
-                    style={styles.networkBox}>
+                    style={styles.networkBox}
+                  >
                     {" "}
                     <Text style={styles.selectNetwork}>
                       {giftCardType}
@@ -148,8 +171,13 @@ const TvSub: React.FC<tvsubsProps> = ({plans}) => {
                       style={styles.dropDownIcon}
                     />{" "}
                   </TouchableOpacity>
-		  <TextInput                                                        style={styles.pinInput}                                         value={pin}
-                    placeholder="IUC Number"                                          color="black"                                                   placeholderTextColor="#999"                                     onChangeText={setPin}
+                  <TextInput
+                    style={styles.pinInput}
+                    value={pin}
+                    placeholder="IUC Number"
+                    color="black"
+                    placeholderTextColor="#999"
+                    onChangeText={setPin}
                   />
 
                   <TextInput
@@ -327,7 +355,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginBottom: 50,
     overflow: "hidden",
-    zIndex:15,
+    zIndex: 15,
   },
 
   cardsType: {
@@ -390,7 +418,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 15,
-    overflow:'visible',
+    overflow: "visible",
   },
 
   logoCover: {
@@ -526,4 +554,3 @@ const styles = StyleSheet.create({
 });
 
 export default TvSub;
-
