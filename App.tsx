@@ -12,7 +12,6 @@ import {
   ActivityIndicator,
   Text,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import * as NavigationBar from "expo-navigation-bar";
 import MyApp from "./comp.tsx";
 import ImgComp from "./Image.tsx";

@@ -24,13 +24,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { WebView } from "react-native-webview";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
-import {
-  PanGestureHandler,
-  GestureHandlerRootView,
-  State,
-} from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import NetInfo from "@react-native-community/netinfo";
