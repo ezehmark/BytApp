@@ -201,7 +201,7 @@ const Home: React.FC = () => {
 	    </View>
           </TouchableOpacity>
 
-          <View style={styles.sellGiftCard}>
+          <TouchableOpacity onPress ={()=>navigation.navigate("sellgiftcards")} style={{flex:1}}><View style={styles.sellGiftCard}>
             <Text style={styles.Sell}>Sell</Text>
             <Text style={styles.GiftCardSell}>Gift Cards</Text>
             <View style={styles.sellIcon}>
@@ -213,8 +213,9 @@ const Home: React.FC = () => {
               />
             </View>
           </View>
+	  </TouchableOpacity>
 
-          <View style={styles.buyData}>
+          <TouchableOpacity onPress={()=>navigation.navigate("buydata")} style={{flex:1}}><View style={styles.buyData}>
             <Text style={styles.sBuy}>Buy</Text>{" "}
             <Text style={styles.sGiftCards}>Cheap Data</Text>
             <View style={styles.buyIcon}>
@@ -226,8 +227,10 @@ const Home: React.FC = () => {
               />
             </View>
           </View>
+	  </TouchableOpacity>
 
-          <View style={styles.buyAirtime}>
+          <TouchableOpacity onPress={()=>navigation.navigate("buyairtime"
+)} style={{flex:1}}><View style={styles.buyAirtime}>
             <Text style={styles.recharge}>Top-Up</Text>{" "}
             <Text style={styles.topUp}>Airtime</Text>
             <View style={styles.sellIcon}>
@@ -239,8 +242,10 @@ const Home: React.FC = () => {
               />
             </View>
           </View>
+	  </TouchableOpacity>
 
-          <View style={styles.subscribeTv}>
+          <TouchableOpacity onPress={()=>navigation.navigate("buydata"
+)} style={{flex:1}}><View style={styles.subscribeTv}>
             <Image
               style={styles.tvImage}
               source={{ uri: "https://i.postimg.cc/7LXTzX0b/TvSubs.png" }}
@@ -255,6 +260,7 @@ const Home: React.FC = () => {
                   }}
                 />
               </View>
+	
 
               <View style={styles.TV}>
                 {" "}
@@ -277,6 +283,7 @@ const Home: React.FC = () => {
               </View>
             </View>
           </View>
+	  </TouchableOpacity>
         
         <View style={styles.buyElectricity}>
           <Text style={styles.PHCN}>PHCN</Text>{" "}

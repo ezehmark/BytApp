@@ -36,12 +36,12 @@ export default function App() {
 
             
             <NavigationContainer>
-                <Stack.Navigator screenOptions={{gestureEnabled:true,animation:"simple_push",headerMode:"screen"}} initialRouteName='home'>
+                <Stack.Navigator  initialRouteName='home'>
                     <Stack.Screen name="home" component={Home} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
 	    <Stack.Screen name='tvsub' component={TvSub} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
 
-                    <Stack.Screen name='recents' component={Recents} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
 	    <Stack.Screen name='electricity' component={Electricity} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
+	    <Stack.Screen name='recents' component={Recents} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name='buygiftcard1' component={BuyGiftCard1} options={{ headerShown: false}} initialParams={{ toggleMenu }} />
                     <Stack.Screen name='sellgiftcards' component={SellGiftCards} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
                     <Stack.Screen name="fund" component={Fund} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />

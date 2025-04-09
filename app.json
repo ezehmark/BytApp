@@ -1,45 +1,34 @@
 {
   "expo": {
-    "name": "Flash by Ocean",
-    "slug": "MyApp",
+    "name": "BytApp",
+    "slug": "BytApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/AppIcon.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
     "splash": {
-      "image": "./assets/mySplash.jpg",
+      "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "web": {
-      "favicon": "./assets/favicon.png",
-      "manifest": {
-        "short_name": "YourApp",
-        "name": "Your App Full Name",
-        "start_url": "/",
-        "display": "standalone",
-        "background_color": "#FFFFFF",
-        "description": "A description of your app",
-        "theme_color": "#000000"
-      }
-    },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.flash.ocean"
+      "bundleIdentifier": "com.ezehmark.BytApp"
     },
     "android": {
-      "versionCode": 1,
-      "minSdkVersion": 21,
-      "targetSdkVersion": 30,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/AppIcon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.flash.ocean"
+      "package": "com.ezehmark.BytApp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "1ba72b9f-37fe-4fd8-9404-f093331f35f8"
+        "projectId": "426c636f-b7ae-401b-9b3d-af6364917788"
       }
     },
     "owner": "ezehmark"

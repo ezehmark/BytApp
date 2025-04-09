@@ -9,7 +9,6 @@ import Menu from './menu';
 
 const Recents: React.FC = () => {
 
-	const fadeBox =(
 
 	const navigation=useNavigation();
 
