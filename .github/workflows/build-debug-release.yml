@@ -59,12 +59,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-metro-
 
-      # Step 8: Clear Metro and Gradle Cache (if needed)
-      - name: Clear Metro and Gradle Cache
-        run: |
-          rm -rf ~/.metro-cache
-          rm -rf ~/.gradle/caches
-
       # Step 9: Bundle React Native JavaScript
       - name: Bundle React Native JavaScript
         run: |

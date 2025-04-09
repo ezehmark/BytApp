@@ -99,21 +99,20 @@ const Home: React.FC = () => {
     "Funds are Safe",
   ];
 
-  useEffect(() => {
-    setTimeout(() => {
-      var myIndex = 0;
+useEffect(() => {
+  const timeoutId = setTimeout(() => {
+    let myIndex = 0;
 
-      const myInterval5 = setInterval(() => {
-        myIndex = (myIndex + 1) % texts.length;
-        setText(texts[myIndex]);
-      }, 2000);
-      return;
-      () => {
-        clearInterval(myInterval5);
-      };
-    }, 4000);
-  }, []);
+    const myInterval5 = setInterval(() => {
+      myIndex = (myIndex + 1) % texts.length;
+      setText(texts[myIndex]);
+    }, 2000);
 
+    return () => clearInterval(myInterval5);
+  }, 4000);
+
+  return () => clearTimeout(timeoutId);
+}, []);
   const [click, setClick] = useState(false);
 
   const toggleClick = () => {
@@ -122,7 +121,8 @@ const Home: React.FC = () => {
 
   const navigation = useNavigation();
   const route = useRoute();
-  const toggleMenu = route.params.toggleMenu;
+  const toggleMenu = route.params?.toggleMenu;
+  const toggleMsg = route.params?.toggleMsg;
 
   const isFocused = useIsFocused();
   return (
@@ -229,8 +229,7 @@ const Home: React.FC = () => {
           </View>
 	  </TouchableOpacity>
 
-          <TouchableOpacity onPress={()=>navigation.navigate("buyairtime"
-)} style={{flex:1}}><View style={styles.buyAirtime}>
+          <TouchableOpacity onPress={()=>navigation.navigate("buyairtime")} style={{flex:1}}><View style={styles.buyAirtime}>
             <Text style={styles.recharge}>Top-Up</Text>{" "}
             <Text style={styles.topUp}>Airtime</Text>
             <View style={styles.sellIcon}>
@@ -244,7 +243,7 @@ const Home: React.FC = () => {
           </View>
 	  </TouchableOpacity>
 
-          <TouchableOpacity onPress={()=>navigation.navigate("buydata"
+          <TouchableOpacity onPress={()=>navigation.navigate("tvsub"
 )} style={{flex:1}}><View style={styles.subscribeTv}>
             <Image
               style={styles.tvImage}

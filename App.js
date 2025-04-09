@@ -32,10 +32,7 @@ export default function App() {
 
     return (
         <>
-
-
-            
-            <NavigationContainer>
+	    <NavigationContainer>
                 <Stack.Navigator  initialRouteName='home'>
                     <Stack.Screen name="home" component={Home} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
 	    <Stack.Screen name='tvsub' component={TvSub} options={{ headerShown: false }} initialParams={{ toggleMenu, toggleMsg }} />
@@ -53,5 +50,4 @@ export default function App() {
 
             {menuOpen && <Menu isOpen={menuOpen} toggleMenu={toggleMenu} />}
             {openMsg && <Messages isMsg={openMsg} toggleMsg={toggleMsg} />}
-        </>
-    );
+        </>);}
