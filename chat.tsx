@@ -8,6 +8,7 @@ import {
   onFocus,
   onBlur,
   TextInput,
+  Image,
   ScrollView,
 } from "react-native";
 import { io } from "socket.io-client";
@@ -74,7 +75,7 @@ const Chat = ({
       flatListRef.current.scrollToEnd({ animated: true });
     }
   }, [chats]);
-  const [focused, seFocused] = useState(false);
+  const [focused, setFocused] = useState(false);
   const [push, setPush] = useState("Send");
   const sendToBackend = async () => {
     if (msg !== "") {
@@ -103,7 +104,7 @@ const Chat = ({
 
   return (
     <React.Fragment>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.outer}>
           <Text
             style={{
@@ -118,7 +119,32 @@ const Chat = ({
             Chatance
           </Text>
           <View style={styles.pushArea}>
-            <TouchableOpacity
+              <TextInput
+                onChangeText={(text) => {
+                  updateMsg(text);
+                }}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                value={msg}
+                multiline={true}
+                returnKeyType="Enter"
+                placeholder={"Chat here"}
+                style={{
+                  width: focused ? "80%" : "70%",
+                  height: focused && msg.length >0 ? "140%":"100%",
+                  textAlign: "left",
+                  color: "black",
+                  zIndex:150,
+		  justifyContent: "flex-start",
+                  padding: 10,
+		  textAlignVertical:msg.length>0?"top":"center",
+                  outlineWidth: 0,
+                  caretColor: "red",
+		  borderRadius:15,
+		  backgroundColor:"#ccc",
+                }}
+              />
+	      <TouchableOpacity
               onPress={() => {
                 sendChat();
               }}
@@ -131,7 +157,8 @@ const Chat = ({
                 justifyContent: "center",
               }}
             >
-              <Text
+	    { msg.length >0? <Image source={{uri:"https://i.postimg.cc/BbPZn9kX/send-Icon-1.png"}}style={{resizeMode:"contain",position:"absolute",height:"55%",width:"55%"}}/> : 
+		    <Text
                 style={{
                   alignSelf: "center",
                   fontWeight: "bold",
@@ -140,38 +167,9 @@ const Chat = ({
                 }}
               >
                 {push}
-              </Text>
+              </Text>}
             </TouchableOpacity>
-            <BlurView
-              style={{
-                width: focused ? "80%" : "80%",
-                height: "100%",
-                borderRadius: 20,
-                backgroundColor: "#ccc",
-              }}
-            >
-              <TextInput
-                onChangeText={(text) => {
-                  updateMsg(text);
-                }}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                value={msg}
-                multiline={true}
-                returnKeyType="Enter"
-                placeholder={"Chat here"}
-                style={{
-                  width: focused ? "110%" : "100%",
-                  height: "100%",
-                  textAlign: "left",
-                  color: "#ccc",
-                  justifyContent: "flex-start",
-                  padding: 10,
-                  outlineWidth: 0,
-                  caratColor: "red",
-                }}
-              />
-            </BlurView>
+
           </View>
 
           <View style={styles.listContainer}>
@@ -192,7 +190,7 @@ const Chat = ({
             />
           </View>
         </View>
-      </ScrollView>
+      </View>
     </React.Fragment>
   );
 };
@@ -217,15 +215,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   listContainer: {
-    height: "100%",
+    height: "85%",
     width: "60%",
+    borderWidth:0,
     shadowRadius: 4,
-    shadowOffset: { height: 0, width: 0 },
-    shadowColor: "rgba(255,255,255,0.5)",
+    shadowColor: "#feb819",
     borderRadius: 20,
-    backgroundColor: "transparent",
+    borderTopRightRadius:5,
+    borderTopBottomRadius:5,
+    backgroundColor: "#2e4a5f",
     position: "absolute",
     right: 0,
+    elevation:4,
     top: 0,
     padding: 20,
     paddingBottom: 80,

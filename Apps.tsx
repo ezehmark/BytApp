@@ -1,7 +1,7 @@
 import "react-native-reanimated";
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
 import {
   StatusBar,
   StyleSheet,
@@ -76,49 +76,47 @@ export default function App() {
 
   return (
     <View style={{ flex: 1 }}>
-      {" "}
       {loading && (
         <View
           style={{
             zIndex: 150,
             alignSelf: "center",
             top: "40%",
-            flexGrow: 1,
-            alignItems: "center",
-            backgroundColor: "rgba(46,74,95,0.0)",
+            position:"absolute",
+	    height:100,
+	    width:120,
+	    alignSelf:"center",
+	    alignItems: "center",
+            backgroundColor: "rgba(46,74,95,1)",
             justifyContent: "center",
             position: "absolute",
+	    borderRadius:15,
+	    overflow:"hidden",
+	    elevation:7,
+	    shadowColor:"black",
           }}
         >
           <BlurView
             style={{
               zIndex: 155,
               padding: 15,
-              borderRadius: 10,
-              shadowColor: "rgba(0,0,0,0.3)",
+	      height:"100%",
+	      width:"100%",
               justifyContent: "space-between",
               gap: 5,
               flexDirection: "column",
               alignItems: "center",
-              elevation: 5,
               position: "absolute",
               alignSelf: "center",
-              shadowOffset: { height: 2, width: 1 },
-              shadowRadius: 4,
               alignItems: "center",
             }}
+	    intensity={60}
           >
             <ActivityIndicator
-              style={{
-                shadowColor: "rgba(0,0,0,0.2)",
-                shadowOffset: { width: 0, height: 0 },
-                shadowRadius: 1,
-                borderRadius: 20,
-              }}
               size={40}
               color={"#feb819"}
             />
-            <Text style={{ color: "#feb819", whiteSpace: "noWrap" }}>
+            <Text style={{ fontSize:12,color: "#feb819", whiteSpace: "noWrap" }}>
               {loadingTxt}
             </Text>
           </BlurView>
@@ -168,7 +166,8 @@ export default function App() {
       </Animated.View>
       <StatusBar barStyle="light-content" backgroundColor="#2e4a5f" />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MyApp">
+        <Stack.Navigator initialRouteName="MyApp" 
+	screenOptions={{gestureEnabled:true,gestureDirection:"horizontal",cardStyleInterpolator:CardStyleInterpolators.forVerticalIOS}}>
           <Stack.Screen
             name="MyApp"
             options={{ headerShown: false, unmountOnBlur: false }}
@@ -230,7 +229,7 @@ export default function App() {
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
-      <BlurView style={styles.tabBar}>
+      <View style={styles.tabBar}>
         <FlatList
           data={tabs}
           horizontal={true}
@@ -255,18 +254,16 @@ export default function App() {
                     width: screenWidth / 3,
                     borderRightWidth: 0,
                     borderColor: isTab ? "#ccc" : "transparent",
-                    backgroundColor: isTab ? "white" : "transparent",
-                    borderTopRightRadius: item.id == 1 && 0,
-                    borderTopLeftRadius: item.id == 1 && 15,
-                    borderWidth: 0,
-                    borderColor: isTab ? "#ccc" : "transparent",
+                    backgroundColor: isTab ? "#feb819" : "transparent",
+                    borderRadius:20,
+		    borderWidth: 0,
                   },
                 ]}
               >
                 <Text
                   style={{
                     borderRadius: 25,
-                    color: isTab ? "#2e4a5f" : "white",
+                    color: isTab ? "black" : "white",
                     fontWeight: "bold",
                   }}
                 >
@@ -276,7 +273,7 @@ export default function App() {
             );
           }}
         />
-      </BlurView>
+      </View>
     </View>
   );
 }
@@ -286,10 +283,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     bottom: 0,
+    height:45,
+    alignItems:"center",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderColor: "#ccc",
+    borderWidth:0,
+    borderBottomWidth:0,
     overflow: "hidden",
+    elevation:20,
+    shadowColor:"white",
+    backgroundColor:"#2e4a5f",
 
     flexDirection: "row",
   },

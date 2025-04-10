@@ -8,7 +8,7 @@ import Animated, {
   runOnJS,
   cancelAnimation,
 } from "react-native-reanimated";
-import React, { useState, useEffect } from "react";
+import React, { useRef,useState, useCallback,useEffect } from "react";
 import {
   Text,
   View,
@@ -21,7 +21,7 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useRoute,useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { BlurView } from "expo-blur";
 
@@ -49,15 +49,20 @@ export default function ImgComp({
 }) {
   const [image, setImage] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (setNav) {
-      setNav(navigation);
-    }
-  }, [navigation]);
 
-  useEffect(() => {
-    getImage();
-  }, []);
+
+let imageLoadRef = useRef(false);
+
+useFocusEffect(
+  useCallback(() => {
+    if (!imageLoadRef.current) {
+      setTimeout(() => getImage(), 4000);
+      imageLoadRef.current = true;
+    }
+    // No need for cleanup unless you want to reset imageLoadRef when screen loses focus
+    return () => {};
+  }, [])
+);
   const [profile, setProfile] = useState("");
 
   const getImage = async () => {
@@ -128,7 +133,7 @@ export default function ImgComp({
   return (
     <>
       <View style={styles.container}>
-        <ScrollView style={styles.imageContainer}>
+        <View style={styles.imageContainer}>
           <View style={styles.innerBox}>
             <FlatList
               numColumns={1}
@@ -160,21 +165,21 @@ export default function ImgComp({
                         style={{
                           position: "absolute",
                           backgroundColor: "#feb819",
-                          bottom: 20,
+                          bottom: 15,
                           right: 20,
+			  borderRadius:5,
                           padding: 5,
                         }}
                       >
                         <Text style={{ color: "black" }}>{profile}</Text>
                       </BlurView>
-                      <Text>{name}</Text>
                     </TouchableOpacity>
                   </Animated.View>
                 );
               }}
             />
           </View>
-        </ScrollView>
+        </View>
       </View>
     </>
   );
@@ -213,6 +218,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: 10,
+    overflow:"hidden",
   },
   image: {
     height: "100%",

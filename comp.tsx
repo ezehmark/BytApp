@@ -28,7 +28,24 @@ import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import NetInfo from "@react-native-community/netinfo";
-const MyApp: React.FC = ({
+  
+interface MyAppProps {
+  name: string;
+  setName: (value: string) => void;
+  myEmail: string;
+  isEmail: boolean;
+  loadingTxt: string;
+  setLoadingTxt: (value: string) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => void;
+  navigation: any; // or proper NavigationProp type
+  setNav: (value: any) => void;
+  dropDownChanger: (value: any) => void;
+  notifyMsg: string;
+  setNotifyMsg: (value: string) => void;
+}
+
+const MyApp: React.FC<MyAppProps> = ({
   name,
   setName,
   myEmail,
@@ -43,7 +60,13 @@ const MyApp: React.FC = ({
   setNotifyMsg,
   notifyMsg,
 }) => {
-  const [userDetails, setUserDetails] = useState("");
+	useEffect(() => {
+    if (setNav) {
+      setNav(navigation);
+    }
+  }, [navigation]);
+
+const [userDetails, setUserDetails] = useState("");
   const [visible, setVisible] = useState(false);
   const [feedback, setFeedback] = useState(null);
 
@@ -477,7 +500,7 @@ const MyApp: React.FC = ({
           {typing}
         </Text>
 
-        <ScrollView
+        <View
           style={{
             height: "95%",
             alignSelf: "center",
@@ -633,6 +656,7 @@ const MyApp: React.FC = ({
                     horizontal={true}
                     showsHorizontalScrollIndicator={true}
                     data={myPeople}
+		    nestedScrollEnabled={true}
                     extraData={selected}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => {
@@ -720,32 +744,6 @@ const MyApp: React.FC = ({
                 bottom: 130,
               }}
             >
-              {Platform.OS === "web" ? (
-                (loading || !connected) && (
-                  <iframe
-                    srcDoc={conicHTML}
-                    style={{
-                      zIndex: 51,
-                      height: "115%",
-                      width: "115%",
-                      position: "absolute",
-                      flex: 1,
-                      alignSelf: "center",
-                    }}
-                  />
-                )
-              ) : (
-                <WebView
-                  source={conicHTML}
-                  originWhitelist={["*"]}
-                  style={{
-                    zIndex: 49,
-                    position: "absolute",
-                    flex: 1,
-                    alignSelf: "center",
-                  }}
-                />
-              )}
 
               <Text
                 style={{
@@ -842,7 +840,7 @@ const MyApp: React.FC = ({
               ref={emailRef}
             />
           </View>
-        </ScrollView>
+        </View>
       </View>
     </LinearGradient>
   );
