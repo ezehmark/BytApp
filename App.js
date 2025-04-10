@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {FlatList} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./home";
@@ -17,85 +18,120 @@ import BuyData from "./buydata.tsx";
 import TvSub from "./tvsubs.tsx";
 import Electricity from "./electricity.tsx";
 
-const Stack = createStackNavigator();
 
-export default function App() {
+export default function App(){
+
+	const[nav,setNav]=useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
   const [openMsg, setOpenMsg] = useState(false);
   const toggleMsg = () => setOpenMsg((msg) => !msg);
 
+const tabs = [{name:"Home",route:"home",id:1,uri:"https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png"},
+
+	{name:"Fund",route:"fund",id:1,uri:"https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png"},
+
+	{name:"Recents",route:"recents",id:1,uri:"https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png"},
+
+	{name:"Profile",route:"profile",id:1,uri:"https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png"}
+
+
+
+
+]
+
   return (
     <>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="home">
+
+<NavigationContainer>                                             <Stack.Navigator initialRouteName="home">
           <Stack.Screen
             name="home"
-            component={Home}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMenu, toggleMsg }}
-          />
-          <Stack.Screen
-            name="tvsub"
-            component={TvSub}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMenu, toggleMsg }}
-          />
+	  options={{headerShown:false}}>
+	  {(props)=><Home {...props} toggleMenu={toggleMenu} toggleMsg={toggleMsg}/>}
 
-          <Stack.Screen
-            name="electricity"
-            component={Electricity}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMenu, toggleMsg }}
-          />
-          <Stack.Screen
-            name="recents"
-            component={Recents}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMenu, toggleMsg }}
-          />
-          <Stack.Screen
-            name="buygiftcard1"
-            component={BuyGiftCard1}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMenu }}
-          />
-          <Stack.Screen
-            name="sellgiftcards"
-            component={SellGiftCards}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMenu, toggleMsg }}
-          />
-          <Stack.Screen
-            name="fund"
-            component={Fund}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMenu, toggleMsg }}
-          />
-          <Stack.Screen
-            name="buyairtime"
-            component={BuyAirtime}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMsg, toggleMenu }}
-          />
-          <Stack.Screen
-            name="buydata"
-            component={BuyData}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMsg, toggleMenu }}
-          />
-          <Stack.Screen
-            name="profiles"
-            component={Profile}
-            options={{ headerShown: false }}
-            initialParams={{ toggleMenu, toggleMsg }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+	  </Stack.Screen>
+
+	  <Stack.Screen                                                     name="tvsub"
+          options={{headerShown:false}}>                                  {(props)=><TvSub {...props} toggleMenu={toggleMenu} tog
+gleMsg={toggleMsg}/>}
+                                                                          </Stack.Screen>
+
+	  <Stack.Screen                                                     name="electricity"
+          options={{headerShown:false}}>                                  {(props)=><Electricity {...props} toggleMenu={toggleMenu} tog
+gleMsg={toggleMsg}/>}
+                                                                          </Stack.Screen>
+
+	  <Stack.Screen                                                     name="recents"
+          options={{headerShown:false}}>                                  {(props)=><Recents {...props} toggleMenu={toggleMenu} tog
+gleMsg={toggleMsg}/>}
+                                                                          </Stack.Screen>
+
+
+	  <Stack.Screen                                                     name="buygiftcard1"
+          options={{headerShown:false}}>                                  {(props)=><BuyGiftCard1 {...props} toggleMenu={toggleMenu} tog
+gleMsg={toggleMsg}/>}
+                                                                          </Stack.Screen>
+
+	  <Stack.Screen                                                     name="sellgiftcards"
+          options={{headerShown:false}}>                                  {(props)=><SellGiftCards {...props} toggleMenu={toggleMenu} tog
+gleMsg={toggleMsg}/>}
+                                                                          </Stack.Screen>
+
+	  <Stack.Screen                                                     name="fund"
+          options={{headerShown:false}}>                                  {(props)=><Fund {...props} toggleMenu={toggleMenu} tog
+gleMsg={toggleMsg}/>}
+                                                                          </Stack.Screen>
+
+	  <Stack.Screen                                                     name="buyairtime"
+          options={{headerShown:false}}>                                  {(props)=><BuyAirtime {...props} toggleMenu={toggleMenu} tog
+gleMsg={toggleMsg}/>}
+                                                                          </Stack.Screen>
+
+
+<Stack.Screen 
+	  name="buydata"
+          options={{headerShown:false}}>                                  {(props)=><BuyData {...props} toggleMenu={toggleMenu} tog
+gleMsg={toggleMsg}/>}
+                                                                          </Stack.Screen>
+
+	  <Stack.Screen                                                     name="profiles"
+          options={{headerShown:false}}>                                  {(props)=><Profiles {...props} toggleMenu={toggleMenu} tog
+gleMsg={toggleMsg}/>}
+                                                                          </Stack.Screen>
+
+
+
+
+	  </Stack.Navigator>
+	  </NavigationContainer>
+
 
       {menuOpen && <Menu isOpen={menuOpen} toggleMenu={toggleMenu} />}
       {openMsg && <Messages isMsg={openMsg} toggleMsg={toggleMsg} />}
-    </>
-  );
+
+
+    
+
+	  <BlurView style={styles.bottomTab}>
+
+	  <FlatList
+		  data={tabs}
+		  horizontal={true}
+		  showsHorizontalScrollIndicator={false}
+		  keyExtractor={(item)=>item.id}
+		  renderItem={({item})=>{
+			  const isTab = pressedTab === item.id;
+	
+			  
+		return(
+			<TouchableOpacity style={styles.tabArea} onPress={()=>{setPressedTab(item.id);nav?.navigate(item.route)}}>
+          <View style={styles.tab}>
+			<View style={styles.tab}>                                                                              {" "}                                                                                                <Image                                                                                                 style={styles.tabImage}                                                                              source={{                                                                                              uri: "https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png",                            }}                                                                                                 />                                                                                                 </View>                                                                                              <Text style={styles.tabText}>Recents</Text>                                                        </TouchableOpacity>
+		)
+
+
+		  }}/>
+	  </BlurView>
+<>)
 }

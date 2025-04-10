@@ -24,9 +24,11 @@ import Animated, {
 } from "react-native-reanimated";
 import BuyGiftCard1 from "./buygiftcard1.tsx";
 
-const Home: React.FC = () => {
+const Home = ({navigation,toggleMenu,toggleMsg}) => {
   const widthA = useSharedValue(270);
   const colorA = useSharedValue("#2f7378");
+  useEffect(()=>{if(setNav){
+  setNav(navigation)}},[navigation]);
   const boxAnime = useAnimatedStyle(() => {
     return { width: widthA.value, backgroundColor: colorA.value };
   });
