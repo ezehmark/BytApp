@@ -3,7 +3,7 @@ name: Build Debug APK
 on:
   push:
     branches:
-      - main  # Change if needed
+      - main  # Adjust if using another branch
 
 jobs:
   build:
@@ -11,38 +11,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout Repository
+      # Step 1: Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Full clone to support Git-based operations
 
       # Step 2: Set up Node.js with Yarn cache
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'yarn'
+          cache: yarn
 
-      # Step 3: Install Dependencies
+      # Step 3: Install dependencies
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      # Step 4: Setup Metro Config
+      # Step 4: Ensure Metro config exists
       - name: Setup Metro Config
         run: |
-          echo "Ensuring metro.config.js is set correctly..."
           cat <<EOT > metro.config.js
           const { getDefaultConfig } = require('@react-native/metro-config');
           module.exports = getDefaultConfig(__dirname);
           EOT
 
-      # Step 5: Ensure Assets Directory Exists
-      - name: Ensure Assets Directory Exists
+      # Step 5: Ensure Assets directory exists
+      - name: Create Assets Directory
         run: mkdir -p android/app/src/main/assets
 
-      # Step 6: Cache Metro & Gradle
-      - name: Cache Metro & Gradle
+      # Step 6: Cache Gradle & Metro
+      - name: Cache Gradle and Metro
         uses: actions/cache@v3
         with:
           path: |
@@ -54,42 +53,29 @@ jobs:
             ${{ runner.os }}-gradle-metro-
 
       # Step 7: Bundle React Native JavaScript
-      - name: Bundle React Native JavaScript
+      - name: Bundle React Native JS
         run: |
-          npx react-native start --reset-cache &
-          npx react-native bundle --platform android --dev false \
-          --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle \
-          --assets-dest android/app/src/main/res/
+          npx react-native bundle \
+            --platform android \
+            --dev false \
+            --entry-file index.js \
+            --bundle-output android/app/src/main/assets/index.android.bundle \
+            --assets-dest android/app/src/main/res/
 
-      # Step 8: Debug - List res folder contents
-      - name: List res folder contents
-        run: ls -R android/app/src/main/res
-
-      # Step 9: Clean Gradle Build
-      - name: Clean Gradle Build
+      # Step 8: Clean Gradle build
+      - name: Clean Gradle
         run: cd android && ./gradlew clean
 
-      # Step 10: Grant Execution Permission to Gradle
-      - name: Grant Execution Permission to Gradle
+      # Step 9: Give permission to Gradle wrapper
+      - name: Make Gradle Executable
         run: chmod +x android/gradlew
 
-      # Step 11: Build Debug APK with Gradle
-      - name: Build Debug APK with Gradle
-        run: cd android && ./gradlew assembleDebug --no-daemon --stacktrace --info
+      # Step 10: Build the Debug APK
+      - name: Build Debug APK
+        run: cd android && ./gradlew assembleDebug --no-daemon --stacktrace
 
-      # Step 12: Verify Latest Commit Hash
-      - name: Verify Latest Commit Hash
-        run: echo "Latest commit hash: $(git rev-parse HEAD)"
-
-      # Step 13: Ensure APK Exists
-      - name: Ensure APK Exists
-        run: |
-          echo "Checking if APK exists..."
-          ls -lah android/app/build/outputs/apk/debug/
-        continue-on-error: true
-
-      # Step 14: Upload APK as Artifact
-      - name: Upload APK as Artifact
+      # Step 11: Upload APK as artifact
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: debug-app
