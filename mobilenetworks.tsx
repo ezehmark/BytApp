@@ -38,8 +38,7 @@ const MobileNetworks: React.FC<networkProps> = ({
   return (
     <BlurView style={styles.mainBodi}>
       <View style={styles.bodi}>
-        <TouchableOpacity onPress={() => toggleCard()} style={styles.closeBtn}>
-          ❌
+        <TouchableOpacity onPress={() => toggleCard()} style={styles.closeBtn}><Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

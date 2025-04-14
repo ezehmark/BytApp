@@ -36,7 +36,7 @@ const GooglePlayCards: React.FC<playProps> = ({
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
         >
-          ❌
+          <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

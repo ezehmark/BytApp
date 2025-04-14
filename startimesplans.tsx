@@ -77,7 +77,7 @@ const StarTimesPlans: React.FC<startimesplansProps> = ({
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
         >
-          ❌
+          <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

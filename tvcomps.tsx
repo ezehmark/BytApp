@@ -56,7 +56,7 @@ const TvComps = ({ isCard, toggleCard, handleWhich, handleSelectCard }) => {
     <BlurView style={styles.mainBodi}>
       <View style={styles.bodi}>
         <TouchableOpacity onPress={() => toggleCard()} style={styles.closeBtn}>
-          ❌
+          <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

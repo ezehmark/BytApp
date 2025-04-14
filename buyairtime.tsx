@@ -12,16 +12,69 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from "./mobilenetworks";
-const BuyAirtime: React.FC = () => {
+const BuyAirtime = ({toggleMenu,toggleMsg}) => {
   const navigation = useNavigation();
   const route = useRoute();
-  const toggleMenu = route.params?.toggleMenu;
-  const toggleMsg = route.params?.toggleMsg;
 
   const [cardList, setCardList] = useState(false);
   const toggleCardList = () => {
     setCardList((init) => !init);
   };
+
+  const mtnIdentity = [
+  '0803', '0806', '0703', '0706', 
+  '0810', '0813', '0814', '0816', 
+  '0903', '0906', '0913', '0916'
+];
+
+const airtelIdentity = [
+  '0802', '0808', '0708', 
+  '0812', '0902', '0907', 
+  '0901', '0912'
+];
+
+const gloIdentity = [
+  '0805', '0807', '0705', 
+  '0811', '0815', '0905', 
+  '0915'
+];
+
+const nineMobileIdentity = [
+  '0809', '0817', '0818',
+  '0909', '0908'
+];
+
+const[inputNotice,setInputNotice]=useState("");
+const[isNotice,setIsNotice]=useState(false);
+
+const checkNetwork = (txt)=>{
+	var firstFour;
+if(txt.length >=4){
+	firstFour = txt.slice(0,4);
+
+
+
+if(firstFour && mtnIdentity.includes(firstFour)){
+setInputNotice("MTN Nigeria");
+setIsNotice(true)}
+
+if(firstFour && airtelIdentity.includes(firstFour)){
+setInputNotice("Airtel Nigeria");                                  setIsNotice(true)}
+
+if(firstFour && gloIdentity.includes(firstFour)){
+setInputNotice("Glo Nigeria");                                  setIsNotice(true)}
+
+if(firstFour && nineMobileIdentity.includes(firstFour)){
+setInputNotice("9 Mobile");                                  
+setIsNotice(true)}
+
+
+}
+
+
+
+else{setIsNotice(false)}
+}
 
   const [pin, setPin] = useState("");
   const [amount, setAmount] = useState("");
@@ -65,14 +118,12 @@ const BuyAirtime: React.FC = () => {
         />
       )}
 
-      <View style={styles.container}>
         <LinearGradient
-          colors={["white", "#f5b857"]}
+          colors={["white","white", "#f5b857"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
-          style={styles.gradientContainer}
+          style={{flex:1,padding:10,backgroundColor:"black"}}
         >
-          <View style={styles.body}>
             <Text style={styles.topTitle}>Airtime Top-Up</Text>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
               <Image
@@ -92,17 +143,16 @@ const BuyAirtime: React.FC = () => {
               />
             </TouchableOpacity>
 
-            <View style={styles.contentArea}>
-              <View style={styles.topCover} />
+            <View style={{elevation:5,shadowColor:"black",position:"absolute",alignSelf:"center",top:70,backgroundColor:"transparent",width:"95%",borderRadius:20,overflow:"hidden",height:500,padding:0}}>
               <View style={styles.contentTitle}>
-                <Text style={styles.quickTitle}>
-                  Quick Recharge, All Networks{" "}
+                <Text style={{fontSize:17,textDecorationLine:"underline",color:"white",fontWeight:"bold"}}>
+                  Quick Recharge, All Networks
                 </Text>
                 <Text style={styles.flash}>⚡</Text>
               </View>
 
-              <ScrollView style={styles.scrollView}>
-                <View style={styles.airtimeForm}>
+              <ScrollView contentContainerStyle={{backgroundColor:"white",padding:0}}>
+                <View style={{height:700,padding:5, marginTop:50,backgroundColor:"transparent"}}>
                   <TouchableOpacity
                     onPress={() => toggleCard()}
                     style={styles.networkBox}
@@ -116,6 +166,8 @@ const BuyAirtime: React.FC = () => {
                     />
                   </TouchableOpacity>
 
+		  {isNotice &&<Text style={{color:(inputNotice=="Glo Nigeria" && "white" ||inputNotice=="Airtel Nigeria"&&"white") ||inputNotice=="MTN Nigeria"&&"black" || inputNotice == "9 Mobile"&&"black",fontSize:12,paddingVertical:5,paddingHorizontal:10,borderRadius:5,backgroundColor:inputNotice =="MTN Nigeria"&&"yellow"|| inputNotice =="Airtel Nigeria"&&"red" || inputNotice =="Glo Nigeria"&&"green"||inputNotice =="9 Mobile"&&"#c7ea46",alignSelf:"center",marginLeft:"50%",marginBottom:5,marginTop:-15,}}>{inputNotice}</Text>}
+
                   <TextInput
                     style={styles.pinInput}
                     value={phone}
@@ -123,7 +175,7 @@ const BuyAirtime: React.FC = () => {
                     placeholder="Phone number"
                     color="black"
                     placeholderTextColor="#999"
-                    onChangeText={setPhone}
+                    onChangeText={(txt)=>{checkNetwork(txt);setPhone(txt);}}
                   />
 
                   <TextInput
@@ -147,74 +199,14 @@ const BuyAirtime: React.FC = () => {
                   />
 
                   <TouchableOpacity style={styles.buyBox}>
-                    {" "}
-                    <Text style={styles.buyText}>Recharge Now</Text>{" "}
+                    
+                    <Text style={styles.buyText}>Recharge Now</Text>
                   </TouchableOpacity>
                 </View>
               </ScrollView>
             </View>
-          </View>
         </LinearGradient>
-      </View>
 
-      <BlurView style={styles.bottomTab}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("home")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.homeImage}
-              source={{
-                uri: "https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("fund")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.fundImage}
-              source={{
-                uri: "https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Fund</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("recents")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.tabImage}
-              source={{
-                uri: "https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Recents</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("profiles")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.tabImage}
-              source={{
-                uri: "https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Profile</Text>
-        </TouchableOpacity>
-      </BlurView>
     </>
   );
 };
@@ -253,65 +245,23 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   menuIcon: { height: 24, width: 24, left: 8, resizeMode: "contain" },
-  gradientContainer: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-  },
-
   contentTitle: {
     position: "absolute",
-    top: 15,
+    top: 0,
     alignSelf: "center",
     justifyContent: "space-around",
-    width: 300,
-    height: 30,
+    width: "100%",
+    height: 40,
     flexDirection: "row",
     alignItems: "center",
     zIndex: 4,
+    backgroundColor:"#6c969f",
   },
 
-  topCover: {
-    position: "absolute",
-    height: 60,
-    width: "100%",
-    backgroundColor: "#6c969f",
-    top: 0,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    zIndex: 1,
-  },
 
-  quickTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-    color: "#28272c",
-    zIndex: 3,
-    textDecorationLine: "underline",
-    textDecorationColor: "#feb819",
-  },
 
   flash: {
     fontSize: 25,
-  },
-  body: {
-    height: "100%",
-    width: "100%",
-    top: 0,
-    position: "absolute",
-    backgroundColor: "#d7e5d3",
-  },
-  contentArea: {
-    height: "80%",
-    width: "98%",
-    position: "absolute",
-    alignSelf: "center",
-    top: 50,
-    backgroundColor: "#30b3bf",
-    borderRadius: 30,
-    marginBottom: 50,
-    overflow: "hidden",
   },
 
   cardsType: {
@@ -326,14 +276,6 @@ const styles = StyleSheet.create({
     zIndex: 4,
   },
 
-  scrollView: {
-    height: 520,
-    width: "100%",
-    position: "absolute",
-    borderRadius: 20,
-    marginBottom: 200,
-    top: 20,
-  },
 
   addAccount: {
     position: "absolute",
@@ -345,35 +287,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 
-  airtimeForm: {
-    position: "absolute",
-    top: 50,
-
-    flex: 1,
-    width: "90%",
-    justifyContent: "space-around",
-    flexDirection: "column",
-    alignItems: "center",
-    borderRadius: 30,
-    elevation: 5,
-    backgroundColor: "#d7e5d3",
-    paddingTop: 30,
-    paddingBottom: 25,
-    paddingVertical: 30,
-    alignSelf: "center",
-    marginBottom: 50,
-    gap: 35,
-  },
 
   networkBox: {
-    height: 60,
-    width: "85%",
+    height: 50,
+    marginTop:20,
+    marginBottom:20,
+    width: "90%",
+    alignSelf:"center",
+    alignItems:"center",
     backgroundColor: "#20a385",
     borderRadius: 20,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    padding: 15,
+    padding: 10,
   },
 
   logoCover: {
@@ -395,8 +322,11 @@ const styles = StyleSheet.create({
   },
 
   buyBox: {
-    height: 60,
-    width: "60%",
+    height: 50,
+    marginBottom:20,
+    marginTop:20,
+    width: "70%",
+    alignSelf:"center",
     backgroundColor: "#28272c",
     borderRadius: 20,
     justifyContent: "center",
@@ -416,11 +346,10 @@ const styles = StyleSheet.create({
   },
 
   buyText: {
-    fontSize: 20,
+    fontSize: 17,
     alignSelf: "center",
 
     color: "#20a385",
-    fontWeight: "bold",
   },
 
   selectNetwork: {
@@ -429,79 +358,18 @@ const styles = StyleSheet.create({
   },
 
   pinInput: {
-    height: 60,
-    width: "85%",
+    height: 40,
+    width: "90%",
+    padding:10,
     alignItems: "center",
     backgroundColor: "#f7fcf6",
-    borderRadius: 20,
+    borderRadius: 15,
     borderWidth: 1,
     borderColor: "#30b3bf",
-    paddingLeft: 10,
+    alignSelf:"center",
+    marginBottom:20,
   },
 
-  bottomTab: {
-    position: "absolute",
-    bottom: 0,
-    flexDirection: "row",
-    height: 70,
-    width: "100%",
-    justifyContent: "space-around",
-    alignItems: "center",
-    backgroundColor: "#D3DEE8",
-    zIndex: 3,
-    borderTopWidth: 0.5,
-    borderColor: "#ddd",
-    paddingBottom: 5,
-  },
-  tabArea: {
-    height: 60,
-    width: 60,
-    padding: 4,
-    justifyContent: "space-around",
-    flexDirection: "column",
-  },
-  tab: {
-    height: 40,
-    width: 50,
-    borderRadius: 15,
-    top: 0,
-    marginLeft: "auto",
-    marginRight: "auto",
-    paddingRight: "auto",
-    paddingLeft: "auto",
-  },
-
-  tabImage: {
-    height: 40,
-    width: 50,
-    top: 5,
-    alignSelf: "center",
-    position: "absolute",
-    resizeMode: "contain",
-  },
-
-  homeImage: {
-    height: 35,
-    width: 45,
-    top: 5,
-    alignSelf: "center",
-    position: "absolute",
-    resizeMode: "contain",
-  },
-  fundImage: {
-    height: 31,
-    width: 50,
-    top: 10,
-    alignSelf: "center",
-    position: "absolute",
-    resizeMode: "cover",
-  },
-  tabText: {
-    alignSelf: "center",
-    color: "#1C445C",
-    marginTop: 5,
-    alignItems: "center",
-  },
 });
 
 export default BuyAirtime;

@@ -52,7 +52,7 @@ const Messages: React.FC<messagesProps> = ({ isMsg, toggleMsg }) => {
   return (
     <View style={styles.bodi}>
       <TouchableOpacity onPress={toggleMsg} style={styles.closeBtn}>
-        Close ❌
+       <Text style={{alignSelf:"center",position:"absolute",fontSize:12,}}> Close ❌</Text>
       </TouchableOpacity>
 
       <LinearGradient
@@ -68,7 +68,7 @@ const Messages: React.FC<messagesProps> = ({ isMsg, toggleMsg }) => {
             <View style={styles.msgArea}>
               {messages.map((item, index) => (
                 <View key={index} style={styles.msgBox}>
-                  {item.message}
+                 <Text> {item.message}</Text>
                 </View>
               ))}
             </View>

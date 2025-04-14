@@ -62,7 +62,7 @@ const AirtelPlans: React.FC<airtelProps> = ({
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
         >
-          ❌
+	  <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

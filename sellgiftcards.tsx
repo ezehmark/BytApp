@@ -246,14 +246,14 @@ const SellGiftCards: React.FC = () => {
                     onPress={toggleCardList}
                     style={styles.giftCardBox}
                   >
-                    {" "}
+                    
                     <Text style={styles.selectGiftCard}>{giftCardType}</Text>
                     <Image
                       source={{
                         uri: "https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png",
                       }}
                       style={styles.dropDownIcon}
-                    />{" "}
+                    />
                   </TouchableOpacity>
 
                   <TextInput
@@ -267,7 +267,7 @@ const SellGiftCards: React.FC = () => {
                   />
 
                   <View style={styles.amountBox}>
-                    {" "}
+                    
                     <Text style={styles.amountText}>₦ 00</Text>
                   </View>
                   <View style={styles.imageBoxCover}>
@@ -282,23 +282,23 @@ const SellGiftCards: React.FC = () => {
                         />
                       ) : (
                         <Text style={styles.uploadText}>
-                          Click to Upload Photo{" "}
+                          Click to Upload Photo
                         </Text>
-                      )}{" "}
+                      )}
                     </TouchableOpacity>
                     {image && (
                       <TouchableOpacity
                         onPress={() => closeImage()}
                         style={styles.closeImgBtn}
                       >
-                        ❌
+                        <Text>❌</Text>
                       </TouchableOpacity>
                     )}
                   </View>
 
                   <View style={styles.sellBox}>
-                    {" "}
-                    <Text style={styles.sellText}> Sell Now</Text>{" "}
+                    
+                    <Text style={styles.sellText}> Sell Now</Text>
                   </View>
                   <Text style={styles.rate}>Rate:₦0.0</Text>
                 </View>
@@ -330,64 +330,6 @@ const SellGiftCards: React.FC = () => {
         </LinearGradient>
       </View>
 
-      <BlurView style={styles.bottomTab}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("home")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.homeImage}
-              source={{
-                uri: "https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("fund")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.fundImage}
-              source={{
-                uri: "https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Fund</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("recents")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.tabImage}
-              source={{
-                uri: "https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Recents</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("profiles")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.tabImage}
-              source={{
-                uri: "https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Profile</Text>
-        </TouchableOpacity>
-      </BlurView>
     </>
   );
 };
@@ -474,8 +416,8 @@ const styles = StyleSheet.create({
     backgroundColor: " #f5b857",
   },
   contentArea: {
-    height: "80%",
-    width: "98%",
+   width:"90%",
+   height:"80%",
     position: "absolute",
     alignSelf: "center",
     top: 50,
@@ -503,6 +445,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderRadius: 20,
     marginBottom: 200,
+    zIndex:50,
   },
 
   physical: {

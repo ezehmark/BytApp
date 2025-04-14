@@ -97,7 +97,7 @@ const VanillaCards: React.FC<vanillaProps> = ({
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
         >
-          ❌
+          <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

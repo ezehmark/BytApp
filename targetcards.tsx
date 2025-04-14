@@ -42,7 +42,7 @@ const TargetCards: React.FC<targetProps> = ({
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
         >
-          ❌
+          <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

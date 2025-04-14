@@ -67,7 +67,7 @@ const NordstromCards: React.FC<nordProps> = ({
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
         >
-          ❌
+	  <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

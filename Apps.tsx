@@ -16,6 +16,7 @@ import * as NavigationBar from "expo-navigation-bar";
 import MyApp from "./comp.tsx";
 import ImgComp from "./Image.tsx";
 import Chat from "./chat.tsx";
+import NetInfo from "@react-native-community/netinfo";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -35,6 +36,9 @@ export default function App() {
   const notifyBoxAnim = useAnimatedStyle(() => {
     return { top: notifyBoxTop.value, opacity: notifyBoxOpacity.value };
   });
+
+  const[connected, setConnected] = useState(false);                                                                              const handleConnection = () => {                                  NetInfo.addEventListener((state) => {                             setConnected(state.isConnected);                              });                                                           };                                                              useEffect(() => {                                                 handleConnection();                                             setInterval(() => {
+      handleConnection();                                           }, 1000);                                                     }, []);
 
   const [notifyMsg, setNotifyMsg] = useState("");
   const [backendActive, setBackendActive] = useState(true);
@@ -164,7 +168,7 @@ export default function App() {
           {notifyMsg}
         </Text>
       </Animated.View>
-      <StatusBar barStyle="light-content" backgroundColor="#2e4a5f" />
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
       <NavigationContainer>
         <Stack.Navigator initialRouteName="MyApp" 
 	screenOptions={{gestureEnabled:true,gestureDirection:"horizontal",cardStyleInterpolator:CardStyleInterpolators.forVerticalIOS}}>
@@ -175,6 +179,8 @@ export default function App() {
             {(props) => (
               <MyApp
                 {...props}
+		connected={connected}
+		setConnected={setConnected}
                 name={name}
                 loadingTxt={loadingTxt}
                 setLoadingTxt={setLoadingTxt}
@@ -217,6 +223,8 @@ export default function App() {
             {(props) => (
               <Chat
                 {...props}
+		connected={connected}
+		setConnected={setConnected}
                 loading={loading}
                 loadingTxt={loadingTxt}
                 dropDownChanger={dropDownChanger}
@@ -251,12 +259,13 @@ export default function App() {
                 style={[
                   styles.home,
                   {
-                    width: screenWidth / 3,
+                    width: isTab? screenWidth / 3.2 : screenWidth/3.3,
                     borderRightWidth: 0,
-                    borderColor: isTab ? "#ccc" : "transparent",
-                    backgroundColor: isTab ? "#feb819" : "transparent",
+                    borderColor: isTab ? "#2e4a5f" : "#feb819",
+                    backgroundColor: isTab ? "#feb819" : "rgba(255,255,255,0.2)",
                     borderRadius:20,
-		    borderWidth: 0,
+		    borderWidth: isTab?2:0,
+		    margin:2
                   },
                 ]}
               >
@@ -290,10 +299,13 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth:0,
     borderBottomWidth:0,
+    justifyContent:"center",
     overflow: "hidden",
     elevation:20,
     shadowColor:"white",
     backgroundColor:"#2e4a5f",
+    paddingLeft:"2.3%",
+    paddingTop:1,
 
     flexDirection: "row",
   },

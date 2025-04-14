@@ -12,13 +12,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Menu from "./menu";
 
-const Fund: React.FC = () => {
-  const navigation = useNavigation();
+const Fund = ({toggleMenu,toggleMsg}) => {
 
   const route = useRoute();
-  const toggleMenu = route.params.toggleMenu;
-
-  const toggleMsg = route.params.toggleMsg;
   return (
     <>
       <View style={styles.container}>
@@ -30,7 +26,7 @@ const Fund: React.FC = () => {
         >
           <View style={styles.body}>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
-              {" "}
+              
               <Image
                 style={styles.menuIcon}
                 source={{
@@ -40,13 +36,13 @@ const Fund: React.FC = () => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
-              {" "}
+              
               <Image
                 style={styles.bellIcon}
                 source={{
                   uri: "https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png",
                 }}
-              />{" "}
+              />
             </TouchableOpacity>
 
             <ScrollView style={styles.contentArea}>
@@ -121,69 +117,6 @@ const Fund: React.FC = () => {
         </LinearGradient>
       </View>
 
-      <BlurView style={styles.bottomTab}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("home")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            {" "}
-            <Image
-              style={styles.homeImage}
-              source={{
-                uri: "https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png",
-              }}
-            />{" "}
-          </View>{" "}
-          <Text style={styles.tabText}>Home</Text>{" "}
-        </TouchableOpacity>{" "}
-        <TouchableOpacity
-          onPress={() => navigation.navigate("fund")}
-          style={styles.tabArea}
-        >
-          {" "}
-          <View style={styles.tab}>
-            <Image
-              style={styles.fundImage}
-              source={{
-                uri: "https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png",
-              }}
-            />{" "}
-          </View>{" "}
-          <Text style={styles.tabText}>Fund</Text>{" "}
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("recents")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            {" "}
-            <Image
-              style={styles.tabImage}
-              source={{
-                uri: "https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Recents</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("profiles")}
-          style={styles.tabArea}
-        >
-          {" "}
-          <View style={styles.tab}>
-            {" "}
-            <Image
-              style={styles.tabImage}
-              source={{
-                uri: "https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png",
-              }}
-            />{" "}
-          </View>
-          <Text style={styles.tabText}>Profile</Text>
-        </TouchableOpacity>{" "}
-      </BlurView>
     </>
   );
 };

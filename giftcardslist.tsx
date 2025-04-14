@@ -71,7 +71,7 @@ const GiftCardsList: React.FC<cardListProps> = ({
     <BlurView style={styles.mainBodi}>
       <View style={styles.bodi}>
         <TouchableOpacity onPress={() => toggleCard()} style={styles.closeBtn}>
-          ❌
+         <Text> ❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>
@@ -90,7 +90,7 @@ const GiftCardsList: React.FC<cardListProps> = ({
                     }}
                   >
                     <View style={styles.logoCover}>
-                      {" "}
+                      
                       <Image
                         style={styles.giftCardLogo}
                         source={{ uri: card.uri }}

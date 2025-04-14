@@ -60,7 +60,7 @@ useFocusEffect(
       imageLoadRef.current = true;
     }
     // No need for cleanup unless you want to reset imageLoadRef when screen loses focus
-    return () => {};
+    return;
   }, [])
 );
   const [profile, setProfile] = useState("");
@@ -189,7 +189,7 @@ const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     backgroundColor: "#2e4a5f",
     justifyContent: "center",
 

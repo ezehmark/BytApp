@@ -34,7 +34,7 @@ const DstvPlans: React.FC<dstvplansProps> = ({
     <BlurView style={styles.mainBodi}>
       <View style={styles.bodi}>
         <TouchableOpacity onPress={toggleCardList} style={styles.closeBtn}>
-          ❌
+          <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

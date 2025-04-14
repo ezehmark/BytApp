@@ -107,7 +107,7 @@ const TvSub: React.FC<tvsubsProps> = ({ plans }) => {
         />
       )}
       <View style={styles.container}>
-        {" "}
+        
         <LinearGradient
           colors={["white", "#f5b857"]}
           start={{ x: 0, y: 0 }}
@@ -160,16 +160,16 @@ const TvSub: React.FC<tvsubsProps> = ({ plans }) => {
                     onPress={toggleCardList}
                     style={styles.networkBox}
                   >
-                    {" "}
+                    
                     <Text style={styles.selectNetwork}>
                       {giftCardType}
-                    </Text>{" "}
+                    </Text>
                     <Image
                       source={{
                         uri: "https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png",
                       }}
                       style={styles.dropDownIcon}
-                    />{" "}
+                    />
                   </TouchableOpacity>
                   <TextInput
                     style={styles.pinInput}
@@ -190,8 +190,8 @@ const TvSub: React.FC<tvsubsProps> = ({ plans }) => {
                   />
 
                   <TouchableOpacity style={styles.buyBox}>
-                    {" "}
-                    <Text style={styles.buyText}>Recharge Tv</Text>{" "}
+                    
+                    <Text style={styles.buyText}>Recharge Tv</Text>
                   </TouchableOpacity>
                 </View>
               </ScrollView>

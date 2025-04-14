@@ -63,7 +63,7 @@ const NineMobilePlans: React.FC<nineProps> = ({
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
         >
-          ❌
+          <Text>❌</Text>
         </TouchableOpacity>
               
         <View style={styles.container}>

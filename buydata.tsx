@@ -98,7 +98,7 @@ const BuyData: React.FC = () => {
         />
       )}
       <View style={styles.container}>
-        {" "}
+        
         <LinearGradient
           colors={["white", "#f5b857"]}
           start={{ x: 0, y: 0 }}
@@ -151,16 +151,16 @@ const BuyData: React.FC = () => {
                     onPress={toggleCardList}
                     style={styles.networkBox}
                   >
-                    {" "}
+                    
                     <Text style={styles.selectNetwork}>
                       {giftCardType}
-                    </Text>{" "}
+                    </Text>
                     <Image
                       source={{
                         uri: "https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png",
                       }}
                       style={styles.dropDownIcon}
-                    />{" "}
+                    />
                   </TouchableOpacity>
                   <TextInput
                     style={styles.pinInput}
@@ -183,8 +183,8 @@ const BuyData: React.FC = () => {
                   />
 
                   <TouchableOpacity style={styles.buyBox}>
-                    {" "}
-                    <Text style={styles.buyText}>Buy Data</Text>{" "}
+                    
+                    <Text style={styles.buyText}>Buy Data</Text>
                   </TouchableOpacity>
                 </View>
               </ScrollView>

@@ -366,8 +366,7 @@ const AppleCards: React.FC<appleCardProps> = ({
         <TouchableOpacity
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
-        >
-          ❌
+        ><Text> ❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

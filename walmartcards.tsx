@@ -62,7 +62,7 @@ const WalmartCards: React.FC<walmartProps> = ({
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
         >
-          ❌
+          <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>
@@ -81,7 +81,7 @@ const WalmartCards: React.FC<walmartProps> = ({
                       <Image
                         style={styles.giftCardLogo}
                         source={{ uri: amazon.uri }}
-                      />{" "}
+                      />
                     </View>
                     <Text style={styles.giftCardName}>{amazon.name}</Text>
                   </TouchableOpacity>

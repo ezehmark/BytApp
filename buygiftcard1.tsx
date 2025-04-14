@@ -27,6 +27,7 @@ const BuyGiftCard1: React.FC = () => {
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
+  const[rate,setRate]=useState(1650);
 
   const [cardList, setCardList] = useState(false);
   const toggleCardList = () => {
@@ -206,17 +207,17 @@ const BuyGiftCard1: React.FC = () => {
                   />
 
                   <View style={styles.amountBox}>
-                    {" "}
+                    
                     <Text style={styles.amountText}>
                       ₦{amount.toLocaleString("en-US")}
                     </Text>
                   </View>
 
                   <View style={styles.buyBox}>
-                    {" "}
-                    <Text style={styles.buyText}> Buy Now</Text>{" "}
+                    
+                    <Text style={styles.buyText}> Buy Now</Text>
                   </View>
-                  <Text style={styles.rate}>Rate:₦0.0</Text>
+                  <Text style={styles.rate}>₦{rate.toLocaleString('en-us')}</Text>
                 </View>
               </ScrollView>
             </View>
@@ -224,64 +225,6 @@ const BuyGiftCard1: React.FC = () => {
         </LinearGradient>
       </View>
 
-      <BlurView style={styles.bottomTab}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("home")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.homeImage}
-              source={{
-                uri: "https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("fund")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.fundImage}
-              source={{
-                uri: "https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Fund</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("recents")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.tabImage}
-              source={{
-                uri: "https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Recents</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("profiles")}
-          style={styles.tabArea}
-        >
-          <View style={styles.tab}>
-            <Image
-              style={styles.tabImage}
-              source={{
-                uri: "https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png",
-              }}
-            />
-          </View>
-          <Text style={styles.tabText}>Profile</Text>
-        </TouchableOpacity>
-      </BlurView>
     </>
   );
 };

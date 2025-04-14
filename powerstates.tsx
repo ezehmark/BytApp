@@ -46,7 +46,7 @@ const PowerStates: React.FC<powerProps> = ({
     <BlurView style={styles.mainBodi}>
       <View style={styles.bodi}>
         <TouchableOpacity onPress={() => toggleCard()} style={styles.closeBtn}>
-          ❌
+          <Text>❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>

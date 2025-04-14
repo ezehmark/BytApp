@@ -27,27 +27,12 @@ import { WebView } from "react-native-webview";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
-import NetInfo from "@react-native-community/netinfo";
   
-interface MyAppProps {
-  name: string;
-  setName: (value: string) => void;
-  myEmail: string;
-  isEmail: boolean;
-  loadingTxt: string;
-  setLoadingTxt: (value: string) => void;
-  loading: boolean;
-  setLoading: (value: boolean) => void;
-  navigation: any; // or proper NavigationProp type
-  setNav: (value: any) => void;
-  dropDownChanger: (value: any) => void;
-  notifyMsg: string;
-  setNotifyMsg: (value: string) => void;
-}
 
 const MyApp: React.FC<MyAppProps> = ({
   name,
   setName,
+  connected,
   myEmail,
   isEmail,
   loadingTxt,
@@ -111,19 +96,6 @@ const [userDetails, setUserDetails] = useState("");
   useEffect(() => {
     Alert.alert("App produced by Mark");
     checkHealth();
-  }, []);
-  const [connected, setConnected] = useState(false);
-
-  const handleConnection = () => {
-    NetInfo.addEventListener((state) => {
-      setConnected(state.isConnected);
-    });
-  };
-  useEffect(() => {
-    handleConnection();
-    setInterval(() => {
-      handleConnection();
-    }, 1000);
   }, []);
 
   const [uploaded, setUploaded] = useState(false);
@@ -275,6 +247,8 @@ const [userDetails, setUserDetails] = useState("");
   };
   const email = [
     "ezehmaker@gmail.com",
+    "odsaintg@gmail.com",
+    "odagunwa@gmail.com",
     "simplebiggly@gmail.com",
     "powerdonew@gmail.com",
     "younggreat303@gmail.com",
@@ -595,7 +569,6 @@ const [userDetails, setUserDetails] = useState("");
               <TouchableOpacity
                 onPress={() => {
                   handlePost();
-                  triggerScroll();
                 }}
                 disabled={loading}
                 style={{
@@ -768,7 +741,7 @@ const [userDetails, setUserDetails] = useState("");
               >
                 This app enables you to fetch saved users from Mark's backend
                 database. You can also press "Upload" to send new users to the
-                DB. Happy using ✔️{" "}
+                DB. Happy using ✔️
               </Text>
             </View>
             <Text

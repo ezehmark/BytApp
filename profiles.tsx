@@ -1,175 +1,236 @@
-import React from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useEffect } from "react";
+import * as NavigationBar from "expo-navigation-bar";
+import {
+  Text,
+  View,
+  StatusBar,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { BlurView } from "expo-blur";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
-const Profile: React.FC = () => {
+const Profile = ({ setDarkTheme, darkTheme, toggleMenu, toggleMsg }) => {
   const route = useRoute();
-  const navigation = useNavigation();
-  const toggleMenu = route.params.toggleMenu;
-  const toggleMsg = route.params.toggleMsg;
+
+  const toggleDarkTheme = () => {
+    setDarkTheme((prev) => !prev);
+  };
+
+  const handleNav = async () => {
+    await NavigationBar.setBackgroundColorAsync(
+      darkTheme ? "#022d36" : "white",
+    );
+    await NavigationBar.setButtonStyleAsync(darkTheme ? "light" : "dark");
+  };
+
+  useEffect(() => {
+    handleNav();
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
-        <Image
-          style={styles.menuIcon}
-          source={{
-            uri: "https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png",
+    <>
+      <StatusBar
+        barStyle={darkTheme ? "light-content" : "dark-content"}
+        backgroundColor={darkTheme ? "black" : "white"}
+      />
+      <View style={styles.container}>
+        <View
+          style={{
+            top: 0,
+            alignSelf: "center",
+            zIndex: 4,
+            position: "absolute",
+            backgroundColor: darkTheme ? "black" : "white",
+            height: 30,
+            width: "100%",
           }}
-        />{" "}
-      </TouchableOpacity>
+        >
+          <TouchableOpacity
+            style={{
+              alignSelf: "center",
+              top: 0,
+              backgroundColor: darkTheme ? "transparent" : "white",
+              borderRadius: 25,
+              elevation: 6,
+              height: 30,
+              width: 60,
+              ovherflow: "hidden",
+              left: 20,
+              zIndex: 5,
+              shadowColor: darkTheme ? "white" : "black",
+              alignItems: "centet",
+              justifyContent: "center",
+              position: "absolute",
+            }}
+            onPress={() => {
+              toggleDarkTheme();
+            }}
+          >
+            <Image
+              style={{
+                elevation: 0,
+                alignSelf: "center",
+                height: darkTheme ? "110%" : "112%",
+                width: darkTheme ? "115%" : "117%",
+                resizeMode: "fill",
+                position: "absolute",
+              }}
+              source={{
+                uri: darkTheme
+                  ? "https://i.postimg.cc/tCkL3r29/5c0c5c03-9080-4b2a-b8b1-555545701271-1.png"
+                  : "https://i.postimg.cc/CxzHsg4b/file-00000000356061f6a68ff9be855f9663-conversation-id-67fa6aad-afd0-800e-9a2f-72e2c3262668-message-i.png",
+              }}
+            />
+          </TouchableOpacity>
 
-      <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
-        <Image
-          style={styles.bellIcon}
-          source={{
-            uri: "https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png",
-          }}
-        />{" "}
-      </TouchableOpacity>
-      <LinearGradient
-        colors={["white", "#f5b857"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={styles.gradientContainer}
-      >
-        <View style={styles.userInfoArea}>
-          <View style={styles.picContainer}>
-            <View style={styles.userPicCircle}>
-              <Image
-                style={styles.userPic}
-                source={{
-                  uri: "https://i.postimg.cc/66P9tyfV/IMG-20241018-082659.jpg",
-                }}
-              />
-            </View>
-          </View>
-
-          <View style={styles.userInfo}>
-            <View style={styles.infoWritten1}>
-              <Text style={styles.userName}>Username:</Text>
-              <Text style={styles.userNameValue}>Ezeh Mark</Text>
-            </View>
-            <View style={styles.infoWritten2}>
-              <Text style={styles.rank}>Ranking:</Text>
-              <Text style={styles.rankValue}>Level 1 ⭐</Text>
-            </View>
-
-            <View style={styles.infoWritten3}>
-              {" "}
-              <Text style={styles.userName}>Referral ID:</Text>
-              <Text style={styles.userNameValue}>#A1014GG</Text>{" "}
-            </View>
-          </View>
+          <TouchableOpacity
+            onPress={toggleMsg}
+            style={[
+              styles.infoCircle,
+              {
+                elevation: 4,
+                shadowColor: darkTheme ? "white" : "black",
+                backgroundColor: darkTheme ? "#022d37" : "black",
+              },
+            ]}
+          >
+            <Image
+              style={styles.bellIcon}
+              source={{
+                uri: "https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png",
+              }}
+            />
+          </TouchableOpacity>
         </View>
-
         <LinearGradient
-          colors={["rgba(0,0,0,0.2)", "rgba(0,0,0,1)", "#8cd5cd"]}
+          colors={[
+            darkTheme ? "black" : "white",
+            darkTheme ? "black" : "white",
+            darkTheme ? "#022d36" : "white",
+          ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
-          style={styles.itemsZone}
+          style={styles.gradientContainer}
         >
-          <Text style={styles.item1}>User Verification</Text>
-          <Text style={styles.item1}>Engage Customer Support </Text>
-          <Text style={styles.item3}>Follow Us On ↓</Text>
-
-          <TouchableOpacity style={styles.socialIcons}>
+          <ScrollView contentContainerStyle={{ padding: 10 }}>
             <View
-              onPress={navigation.navigate("https:x.com")}
-              style={styles.icon1}
+              style={{
+                height: 1000,
+                width: "100%",
+                alignItems: "center",
+                alignSelf: "center",
+              }}
             >
-              {" "}
-              <Image
-                style={styles.iconImg}
-                source={{
-                  uri: "https://i.postimg.cc/Pr5HZ3gT/Picsart-24-11-07-07-24-41-438.png",
-                }}
-              />
-            </View>{" "}
-            <View style={styles.icon1}>
-              <Image
-                style={styles.iconImg}
-                source={{
-                  uri: "https://i.postimg.cc/QC7PD7P4/Picsart-24-11-07-07-18-09-134.png",
-                }}
-              />
+              <View
+                style={[
+                  styles.userInfoArea,
+                  {
+                    padding: 5,
+                    borderRadius: 20,
+                    borderWidth: 0,
+                    elevation: 5,
+                    shadowColor: darkTheme ? "white" : "black",
+                    borderColor: darkTheme ? "white" : "black",
+                    backgroundColor: darkTheme ? "#022d36" : "white",
+                  },
+                ]}
+              >
+                <View
+                  style={[
+                    styles.picContainer,
+                    {
+                      borderRadius: 20,
+                      borderWidth: 1,
+                      height: 90,
+                      borderColor: darkTheme ? "white" : "black",
+                    },
+                  ]}
+                >
+                  <View style={styles.userPicCircle}>
+                    <Image
+                      style={styles.userPic}
+                      source={{
+                        uri: "https://i.postimg.cc/66P9tyfV/IMG-20241018-082659.jpg",
+                      }}
+                    />
+                  </View>
+                </View>
+
+                <View
+                  style={[
+                    styles.userInfo,
+                    {
+                      borderWidth: 0,
+                      borderColor: darkTheme ? "white" : "black",
+                    },
+                  ]}
+                >
+                  <View style={styles.infoWritten1}>
+                    <Text style={styles.userName}>Name:</Text>
+                    <Text style={styles.userNameValue}>Ezeh Mark</Text>
+                  </View>
+                  <View style={styles.infoWritten2}>
+                    <Text style={styles.rank}>Ranking:</Text>
+                    <Text style={styles.rankValue}>Level 1 ⭐</Text>
+                  </View>
+
+                  <View style={styles.infoWritten3}>
+                    <Text style={styles.userName}>Referral ID:</Text>
+                    <Text style={styles.userNameValue}>#A1014GG</Text>
+                  </View>
+                </View>
+              </View>
+
+              <LinearGradient
+                colors={[
+                  darkTheme ? "#022d37" : "rgba(0,0,0,0.2)",
+                  "rgba(0,0,0,1)",
+                  "#8cd5cd",
+                ]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={styles.itemsZone}
+              >
+                <Text style={styles.item1}>User Verification</Text>
+                <Text style={styles.item1}>Engage Customer Support </Text>
+                <Text style={styles.item3}>Follow Us On ↓</Text>
+
+                <TouchableOpacity style={styles.socialIcons}>
+                  <View style={styles.icon1}>
+                    <Image
+                      style={styles.iconImg}
+                      source={{
+                        uri: "https://i.postimg.cc/Pr5HZ3gT/Picsart-24-11-07-07-24-41-438.png",
+                      }}
+                    />
+                  </View>
+                  <View style={styles.icon1}>
+                    <Image
+                      style={styles.iconImg}
+                      source={{
+                        uri: "https://i.postimg.cc/QC7PD7P4/Picsart-24-11-07-07-18-09-134.png",
+                      }}
+                    />
+                  </View>
+                  <View style={styles.icon1}>
+                    <Image
+                      style={styles.iconImg}
+                      source={{
+                        uri: "https://i.postimg.cc/tJ15GH19/2021-Facebook-icon-svg.png",
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </LinearGradient>
             </View>
-            <View style={styles.icon1}>
-              <Image
-                style={styles.iconImg}
-                source={{
-                  uri: "https://i.postimg.cc/tJ15GH19/2021-Facebook-icon-svg.png",
-                }}
-              />
-            </View>{" "}
-          </TouchableOpacity>
+          </ScrollView>
         </LinearGradient>
-
-        <BlurView style={styles.bottomTab}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("home")}
-            style={styles.tabArea}
-          >
-            <View style={styles.tab}>
-              <Image
-                style={styles.homeImage}
-                source={{
-                  uri: "https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png",
-                }}
-              />
-            </View>
-            <Text style={styles.tabText}>Home</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate("fund")}
-            style={styles.tabArea}
-          >
-            <View style={styles.tab}>
-              <Image
-                style={styles.fundImage}
-                source={{
-                  uri: "https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png",
-                }}
-              />
-            </View>
-            <Text style={styles.tabText}>Fund</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate("recents")}
-            style={styles.tabArea}
-          >
-            <View style={styles.tab}>
-              <Image
-                style={styles.tabImage}
-                source={{
-                  uri: "https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png",
-                }}
-              />
-            </View>
-            <Text style={styles.tabText}>Recents</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate("profiles")}
-            style={styles.tabArea}
-          >
-            <View style={styles.tab}>
-              <Image
-                style={styles.tabImage}
-                source={{
-                  uri: "https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png",
-                }}
-              />
-            </View>
-            <Text style={styles.tabText}>Profile</Text>
-          </TouchableOpacity>
-        </BlurView>
-      </LinearGradient>
-    </View>
+      </View>
+    </>
   );
 };
 
@@ -180,7 +241,7 @@ const styles = StyleSheet.create({
     height: 30,
     width: 35,
     overflow: "hidden",
-    zIndex: 3,
+    zIndex: 11,
   },
   menuIcon: {
     height: 24,
@@ -192,28 +253,30 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   gradientContainer: {
-    flex: 1,
+    height: "100%",
+    width: "100%",
+    position: "absolute",
   },
   userInfoArea: {
-    position: "absolute",
-    height: 105,
-    width: "88%",
-    left: "6%",
-    borderRadius: 25,
-    top: 30,
+    borderRadius: 20,
+    marginTop: 50,
+    marginBottom: 40,
     backgroundColor: "#fff",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     flexDirection: "row",
     zIndex: 1,
-    padding: 15,
+    padding: 5,
     alignItems: "center",
-    borderWidth: 2,
+    alignSelf: "center",
     borderColor: "#000",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    gap: 10,
   },
   infoCircle: {
     position: "absolute",
-    top: 6,
-    right: 10,
+    top: 0,
+    right: 20,
     height: 30,
     width: 30,
     borderRadius: 15,
@@ -221,7 +284,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
     overflow: "hidden",
-    zIndex: 3,
+    zIndex: 6,
   },
   bellIcon: {
     height: 25,
@@ -233,11 +296,9 @@ const styles = StyleSheet.create({
     width: 94,
     borderTopRightRadius: 25,
     borderBottomRightRadius: 25,
-    position: "absolute",
     backgroundColor: "#000",
     alignItems: "center",
     justifyContent: "center",
-    right: 2,
   },
   userPicCircle: {
     height: 76,
@@ -257,63 +318,68 @@ const styles = StyleSheet.create({
     right: 17,
   },
   userInfo: {
-    position: "absolute",
-    height: 95,
-    width: "65%",
-    left: 2,
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     flexDirection: "column",
     alignItems: "center",
-    overflow: "hidden",
     backgroundColor: "#000",
-    borderTopLeftRadius: 25,
-    borderBottomLeftRadius: 25,
+    borderRadius: 20,
+    gap: 5,
+    padding: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   infoWritten1: {
-    height: 25,
-    width: 150,
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 10,
     borderColor: "#adafa4",
     borderWidth: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    gap: 4,
   },
   userName: {
     color: "#ccc",
-    fontWeight: "bold",
+    fontWeight: "normal",
+    fontSize: 12,
   },
   userNameValue: {
     color: "#8cd5cd",
-    fontWeight: "bold",
+    fontWeight: "bormal",
+    fontSize: 12,
   },
   infoWritten2: {
-    height: 25,
-    width: 150,
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 10,
     borderColor: "#adafa4",
     borderWidth: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    gap: 4,
   },
   infoWritten3: {
-    height: 25,
-    width: 150,
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
     borderColor: "#adafa4",
     borderRadius: 10,
     borderWidth: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    gap: 4,
   },
   rank: {
     color: "#ccc",
-    fontWeight: "bold",
+    fontWeight: "normal",
+    fontSize: 12,
   },
   rankValue: {
     color: "#8cd5cd",
-    fontWeight: "bold",
+    fontWeight: "normal",
+    fontSize: 12,
   },
   moveable: {
     height: 400,
@@ -324,47 +390,44 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
   },
   itemsZone: {
-    position: "absolute",
     height: 400,
     width: "90%",
     justifyContent: "space-around",
     flexDirection: "column",
-    top: 160,
     paddingBottom: 100,
     backgroundColor: "#fff",
     borderRadius: 15,
-    left: "5%",
     padding: 20,
+    marginBottom: 40,
     alignItems: "center",
+    alignSelf: "center",
   },
   item1: {
     height: 50,
-    width: "80%",
+    width: "95%",
     borderColor: "#ccc",
     borderWidth: 1,
     alignItems: "center",
     marginBottom: 15,
     backgroundColor: "#8cd5cd",
-    borderRadius: 10,
+    borderRadius: 15,
     padding: 15,
     textAlign: "center",
     justifyContent: "center",
     fontSize: 15,
-    fontWeight: "bold",
   },
   item3: {
     height: 50,
-    width: "80%",
+    width: "95%",
     borderColor: "#ccc",
     alignItems: "center",
     marginBottom: 15,
     backgroundColor: "white",
-    borderRadius: 10,
+    borderRadius: 15,
     padding: 15,
     textAlign: "center",
     justifyContent: "center",
     fontSize: 18,
-    fontWeight: "bold",
     color: "red",
   },
   socialIcons: {
@@ -390,57 +453,6 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     height: 48,
     width: 48,
-  },
-  bottomTab: {
-    position: "absolute",
-    bottom: 0,
-    flexDirection: "row",
-    height: 70,
-    width: "100%",
-    justifyContent: "space-around",
-    alignItems: "center",
-    backgroundColor: "#D3DEE8",
-    zIndex: 5,
-    borderTopWidth: 0.5,
-    borderColor: "#ddd",
-    paddingBottom: 5,
-  },
-  tabArea: {
-    height: 60,
-    width: 60,
-    padding: 4,
-    justifyContent: "space-around",
-    flexDirection: "column",
-  },
-  tab: {
-    height: 40,
-    width: 50,
-    borderRadius: 15,
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-  homeImage: {
-    height: 35,
-    width: 45,
-    top: 5,
-    alignSelf: "center",
-    resizeMode: "contain",
-  },
-  fundImage: {
-    height: 35,
-    width: 45,
-    alignSelf: "center",
-    resizeMode: "contain",
-  },
-  tabImage: {
-    height: 35,
-    width: 45,
-    alignSelf: "center",
-    resizeMode: "contain",
-  },
-  tabText: {
-    fontSize: 12,
-    textAlign: "center",
   },
 });
 

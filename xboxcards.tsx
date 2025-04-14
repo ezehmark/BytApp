@@ -67,7 +67,7 @@ const XboxCards: React.FC<xboxProps> = ({
           onPress={() => toggleCardList()}
           style={styles.closeBtn}
         >
-          ❌
+         <Text> ❌</Text>
         </TouchableOpacity>
 
         <View style={styles.container}>
