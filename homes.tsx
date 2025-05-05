@@ -181,7 +181,7 @@ const Home = ({ setNav, darkTheme, navigation, toggleMenu, toggleMsg }) => {
             ) : (
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: 17,
                   alignSelf: "center",
                   position: "absolute",
                 }}
