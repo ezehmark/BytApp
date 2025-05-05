@@ -31,6 +31,9 @@ import { BlurView } from "expo-blur";
 
 const MyApp: React.FC<MyAppProps> = ({
   name,
+  dark,
+  toggleDark,
+  setDark,
   setName,
   connected,
   myEmail,
@@ -423,6 +426,41 @@ const [userDetails, setUserDetails] = useState("");
           left: 20,
         }}
       />
+      <TouchableOpacity
+            style={{
+              alignSelf: "center",
+              top: 0,                                                                                              
+	      backgroundColor: dark ? "transparent" : "white",                                                
+	      borderRadius: 25,
+              elevation: 6,
+              height: 30,
+              width: 60,
+              ovherflow: "hidden",
+	      margin:5,
+              zIndex: 5,
+              shadowColor: dark ? "white" : "black",
+              alignItems: "centet",
+              justifyContent: "center",
+              position: "absolute",
+            }}
+            onPress={() => {
+              toggleDark();
+            }}
+          >
+            <Image
+              style={{
+                elevation: 0,
+                alignSelf: "center",
+                height: dark ? "110%" : "112%",
+                width: dark ? "115%" : "117%",                                                                  resizeMode: "fill",                                                                                  position: "absolute",
+              }}
+              source={{
+                uri: dark
+                  ? "https://i.postimg.cc/tCkL3r29/5c0c5c03-9080-4b2a-b8b1-555545701271-1.png"
+                  : "https://i.postimg.cc/CxzHsg4b/file-00000000356061f6a68ff9be855f9663-conversation-id-67fa6aad-afd0-800e-9a2f-72e2c3262668-message-i.png",
+              }}
+            />
+          </TouchableOpacity>
 
       <View style={{ height: "100%", width: "100%", paddingBottom: 20 }}>
         <View

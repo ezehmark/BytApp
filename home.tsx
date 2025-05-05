@@ -199,7 +199,7 @@ const Home = ({ setNav, darkTheme, navigation, toggleMenu, toggleMsg }) => {
         <Image
           style={styles.menuIcon}
           source={{
-            uri: "https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png",
+            uri: darkTheme?"https://i.postimg.cc/B65wgYfV/images-41.jpg":"https://i.postimg.cc/bwdWh91Z/download.webp"
           }}
         />
       </TouchableOpacity>
