@@ -10,6 +10,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  Pressable
 } from "react-native";
 import {MMKV} from "react-native-mmkv";
 import Animated,{Easing,useSharedValue,withTiming,withSequence,withRepeat,useAnimatedStyle} from "react-native-reanimated";
@@ -23,6 +24,7 @@ const Chat = ({
   connected,
   setLoading,
   notifyMsg,
+  dark,
   loadingTxt,
   setLoadingTxt,
   setNotifyMsg,
@@ -38,31 +40,37 @@ const Chat = ({
   };
 
 
-  const myPusher = new Pusher("9f6c0b8345c2297e09e6",                                 {cluster: "eu"});
+  const myPusher = new Pusher("9f6c0b8345c2297e09e6",{cluster: "eu"});
   const asyncStorage = new MMKV();
 
 
-  const saveChats = (chats)=>{
+  const saveChats = (chats:any[])=>{
         try{
 	asyncStorage.set("chats",JSON.stringify(chats))}
-catch(error){console.error("error saving chats")}}
+catch(error){console.error("error saving chats", error)}}
 
   useEffect(()=>{
   const channel = myPusher.subscribe("chat-channel");
   channel.bind("chatance",(data)=>{
   setChats((prev)=>[...prev,data])});
-  saveChats();
   return()=>{channel.unbind_all();
   channel.unsubscribe();
   channel.disconnect()}
-  },[])
+  },[]);
 
+useEffect(()=>{saveChats(chats)},[chats]);
 
 
 const retrieveChats = ()=>{
 try{
 const savedChats = asyncStorage.getString("chats");
-setChats(JSON.parse(savedChats))}
+if(savedChats){
+	const parsedChats = JSON.parse(savedChats);
+	if(JSON.stringify(parsedChats)!==JSON.stringify(chats)){
+	setChats(parsedChats)}
+	console.log(parsedChats);
+}
+}
 catch(error){console.error("failed to retrie chats")}
 }
 
@@ -115,9 +123,13 @@ const sendChat = () => {
 
 
   const[logoAnim,setLogoAnim]=useState(false);
+  const widthX = useSharedValue(1);
+      const widthAnim = useAnimatedStyle(()=>{                        return{borderWidth:widthX.value}});                                                                                             const animateBorder = ()=>{                                     widthX.value = withTiming(8,{duration:2000})}
+
   const sendToBackend = async () => {
     if (msg !== "") {
       setLogoAnim(true);
+
 
       await axios
         .post("https://mybackend-oftz.onrender.com/chats", { myChats: msg })
@@ -146,10 +158,10 @@ const sendChat = () => {
 	  withTiming("360deg",{duration:1000,easing:Easing.linear}),-1,false)
   },[]);
 
+
   return (
     <React.Fragment>
-      <View contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.outer}>
+        <View style={[styles.outer,{backgroundColor:dark?"#080917":"white"}]}>
 
 
 
@@ -159,7 +171,7 @@ const sendChat = () => {
           <Text
             style={{
               position: "absolute",
-              color: "#2e4a5f",
+              color: dark?"#f0f8ff":"#2e4a5f",
               fontSize: 24,
               fontWeight: "bold",
 	      height:"95%",
@@ -167,7 +179,7 @@ const sendChat = () => {
 	      textAlign:"center",
 	      borderRadius:10,
 
-	      backgroundColor:"white",
+	      backgroundColor:dark?"#080917":"white",
 	      alignSelf:"center",
 	      elevation:5,
 	      shadowColor:"#feb819",
@@ -182,26 +194,29 @@ const sendChat = () => {
                 onChangeText={(text) => {
                   updateMsg(text);
                 }}
-                onFocus={() => setFocused(true)}
+                onFocus={() => {setFocused(true);animateBorder()}}
                 onBlur={() => setFocused(false)}
                 value={msg}
                 multiline={true}
                 returnKeyType="Enter"
                 placeholder={"Chat here"}
-                style={{
+                placeholderTextColor={dark?"rgba(254,184,25,0.8)":"rgba(0,0,0,0.5)"}
+		style={[{
                   width: focused ? "80%" : "70%",
                   height: focused && msg.length >0 ? "140%":"100%" || focused && msg.length ==30&&"180%",
                   textAlign: "left",
-                  color: "black",
-                  zIndex:150,
+                  color: dark?"#f0f8ff":"black",
+		  zIndex:150,
 		  justifyContent: "flex-start",
                   padding: 10,
 		  textAlignVertical:msg.length>0?"top":"center",
                   outlineWidth: 0,
                   caretColor: "red",
 		  borderRadius:15,
-		  backgroundColor:"#ccc",
-                }}
+		  borderColor:"#00f0a9",
+		  borderWidth:1,
+		  backgroundColor:dark?"rgba(0,0,0,0.5)":"#e0e2d7"
+		},focused && widthAnim]}
               />
 	      <TouchableOpacity
               onPress={() => {
@@ -216,7 +231,7 @@ const sendChat = () => {
                 justifyContent: "center",
               }}
             >
-	    { msg.length >0? <Image source={{uri:"https://i.postimg.cc/BbPZn9kX/send-Icon-1.png"}}style={{resizeMode:"contain",position:"absolute",height:"55%",width:"55%"}}/> : 
+	    { msg.length >0? 
 		    <Text
                 style={{
                   alignSelf: "center",
@@ -226,12 +241,12 @@ const sendChat = () => {
                 }}
               >
                 {push}
-              </Text>}
+              </Text>:<Image source={{uri:"https://i.postimg.cc/xdYQVrtg/Picsart-25-04-16-12-47-48-955.png"}}style={{resizeMode:"contain",position:"absolute",height:"55%",width:"55%"}}/>}
             </TouchableOpacity>
 
           </View>
 
-          <View style={styles.listContainer}>
+          <View style={[styles.listContainer,{backgroundColor:dark?"black":"#e0e2d7"}]}>
 	  <View style={{height:8,width:8,elevation:2,borderRadius:4,backgroundColor:connected?"#00f0a9":"black",top:4,right:4,position:"absolute"}}/>
             <FlatList
               ref={flatListRef}
@@ -241,16 +256,14 @@ const sendChat = () => {
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item, index }) => {
                 const isWritten = index == num;
-                return (
-                  <>
-                    <View style={styles.msgBox}><Text style={{color:"#feb819",textAlign:"left"}}>{item}</Text></View>
+                    return(<><Pressable
+		    style={styles.msgBox}><Text style={{color:"#feb819",textAlign:"left"}}>{item}</Text></Pressable>
                   </>
                 );
               }}
             />
           </View>
         </View>
-      </View>
     </React.Fragment>
   );
 };

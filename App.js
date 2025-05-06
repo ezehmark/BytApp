@@ -11,7 +11,7 @@ StatusBar,
 Dimensions
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator,TransitionPresets } from "@react-navigation/stack";
 import { BlurView } from "expo-blur";
 
 import Home from "./homes";
@@ -37,11 +37,12 @@ import Electricity from "./electricity.tsx";
 export default function App() {
 
 	const[darkTheme,setDarkTheme]=useState(false);
+	const [balance, setBalance]=useState(150000);
 
 
 const Stack = createStackNavigator();
 	const handleNav = async()=>{
-await NavigationBar.setBackgroundColorAsync("#f5b857");               await NavigationBar.setButtonStyleAsync(darkTheme?"light":"dark")}
+await NavigationBar.setBackgroundColorAsync(darkTheme?"#022d36":"white");               await NavigationBar.setButtonStyleAsync(darkTheme?"light":"dark")}
                                                                       useEffect(()=>{handleNav()},[]);
 
 
@@ -83,17 +84,19 @@ await NavigationBar.setBackgroundColorAsync("#f5b857");               await Navi
 
   return (
     <>
-	  <StatusBar barStyle={"dark-content"} backgroundColor={"#f5b857"}/>
+	  <StatusBar barStyle={darkTheme?"light-content":"dark-content"} backgroundColor={darkTheme?"black":"white"}/>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="home"
-          screenOptions={{ headerShown: false }}
+          screenOptions={{ headerShown: false,gestureEnabled:true,gestureDirection:"vertical",...TransitionPresets.ModalSlideomBottomIOS}}
         >
           <Stack.Screen name="home">
             {(props) => (
               <Home
                 {...props}
 		darkTheme={darkTheme}
+		    balance={balance}
+		    setBalance={setBalance}
                 toggleMenu={toggleMenu}
                 toggleMsg={toggleMsg}
                 setNav={setNav}
@@ -147,7 +150,7 @@ await NavigationBar.setBackgroundColorAsync("#f5b857");               await Navi
           </Stack.Screen>
           <Stack.Screen name="fund">
             {(props) => (
-              <Fund {...props} darkTheme={darkTheme}
+              <Fund {...props} darkTheme={darkTheme} balance={balance}
 		    toggleMenu={toggleMenu} toggleMsg={toggleMsg} />
             )}
           </Stack.Screen>
@@ -185,7 +188,7 @@ await NavigationBar.setBackgroundColorAsync("#f5b857");               await Navi
         </Stack.Navigator>
       </NavigationContainer>
 
-      {menuOpen && <Menu isOpen={menuOpen} toggleMenu={toggleMenu} />}
+      {menuOpen && <Menu isOpen={menuOpen} nav={nav}darkTheme={darkTheme}toggleMenu={toggleMenu} />}
       {openMsg && <Messages isMsg={openMsg} toggleMsg={toggleMsg} />}
 
       <View style={styles.bottomTab}>
@@ -198,7 +201,7 @@ await NavigationBar.setBackgroundColorAsync("#f5b857");               await Navi
             const isTab = pressedTab == item.id;
             return (
               <TouchableOpacity
-                style={styles.tabArea}
+                style={[styles.tabArea,{backgroundColor:darkTheme?"#022d36":"white"}]}
                 onPress={() => {
                   setPressedTab(item.id);
                   nav?.navigate(item.route);
@@ -210,7 +213,7 @@ await NavigationBar.setBackgroundColorAsync("#f5b857");               await Navi
                       uri: item.uri,
                     }}
                   />
-                  <Text style={styles.tabText}>{item.name}</Text>
+                  <Text style={[styles.tabText],{color:darkTheme?"#ccc":"black"}}>{item.name}</Text>
               </TouchableOpacity>
             );
           }}
@@ -225,24 +228,27 @@ const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   bottomTab: {
     position: "absolute",
-    bottom: 0,
+    bottom: -2,
     flexDirection: "row",
-    height: 40,
+    height: 60,
     width: "100%",
     justifyContent: "space-around",
     alignItems: "center",
     backgroundColor: "#D3DEE8",
-    zIndex: 3,
-    borderTopWidth: 0.5,
+backgroundColor:"transparent",
+    borderTopWidth: 0,
     borderColor: "#ddd",
-    paddingBottom: 5,
+    paddingBottom: 0,
   },
   tabArea: {
-    height: 60,
+    height: "100%",
+position:"relative",
     padding: 4,
+	  zIndex:55,
 	  alignItems:"center",
 	  justifyContent:"space-around",
 	  flexDirection:"column",
+	  backgroundColor:"#feb819",
 width:screenWidth/4,
   },
   tab: {

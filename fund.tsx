@@ -12,17 +12,23 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Menu from "./menu";
 
-const Fund = ({toggleMenu,toggleMsg}) => {
+const Fund = ({toggleMenu,toggleMsg,balance,darkTheme}) => {
 
   const route = useRoute();
   return (
     <>
       <View style={styles.container}>
-        <LinearGradient
-          colors={["white", "#f5b857"]}
+	<LinearGradient
+          colors={[
+            darkTheme ? "black" : "white",
+            darkTheme ? "black" : "white",
+            darkTheme ? "#022d36" : "white",
+          ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
-          style={styles.gradientContainer}
+        
+        
+	style={[styles.gradientContainer,{}]}
         >
           <View style={styles.body}>
             <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
@@ -30,12 +36,12 @@ const Fund = ({toggleMenu,toggleMsg}) => {
               <Image
                 style={styles.menuIcon}
                 source={{
-                  uri: "https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png",
+                  uri:darkTheme?"https://i.postimg.cc/B65wgYfV/images-41.jpg":"https://i.postimg.cc/3xCFDfww/Picsart-25-05-04-05-37-21-849.png"
                 }}
               />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
+            <TouchableOpacity onPress={toggleMsg} style={[styles.infoCircle,{backgroundColor:darkTheme?"#022d36":"black"}]}>
               
               <Image
                 style={styles.bellIcon}
@@ -45,49 +51,32 @@ const Fund = ({toggleMenu,toggleMsg}) => {
               />
             </TouchableOpacity>
 
-            <ScrollView style={styles.contentArea}>
+            <View style={[styles.contentArea,{borderRadius:5,elevation:6,top:45,shadowColor:"white",backgroundColor:"#3db2cb"}]}>
               <View style={styles.contentTitle}>
-                <Text style={styles.quickTitle}>Quick Processing</Text>
+                <Text style={[styles.quickTitle,{color:darkTheme?"rgba(255,255,255,0.8)":"#feb819"}]}>Quick Processing</Text>
 
                 <Text style={styles.flash}>⚡</Text>
-              </View>
+              </View></View>
 
-              <Text style={styles.addAccount}>Link Bank Account → </Text>
-              <View style={styles.fundingArea}>
+              <View style={[styles.fundingArea,{backgroundColor:darkTheme?"rgba(0,0,0,0.9)":"#f7fcf6"}]}><Text style={{position:"absolute",bottom:15,alignSelf:"center",padding:5,color:darkTheme?"#feb819":"#3db2cb",borderColor:darkTheme?"#feb819":"#3db2cb",borderRadius:5,borderWidth:1}}>Add more bank card →</Text>
+	      <ScrollView>
+	<View style={{height:600,backgroundColor:"transparent",width:"100%"}}>
                 <View style={styles.balArea}>
-                  <Text style={styles.bal}>Bal:</Text>
-                  <Text style={styles.balance}>₦100,000</Text>
+                   <Text style={[styles.bal,{color:darkTheme?"grey":"#548C94"}]}>Bal:</Text>
+                  <Text style={[styles.balance,{color:darkTheme?"#ccc":"black"}]}>₦{balance.toLocaleString("en-us")}</Text>
                 </View>
 
-                <Text style={styles.recentAccounts}>Recent Accounts</Text>
+                <Text style={styles.recentAccounts}>Funding history</Text>
                 <View style={styles.accountsList}>
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
 
-                  <LinearGradient
+		{Array(5).fill(null).map((_,index)=><LinearGradient
+		key={index}
                     colors={["#fff", "#fff", "#fff", "#ccc"]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={styles.usedAccount}
-                  />
+                  />)}
 
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
-
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
                 </View>
 
                 <View style={styles.fundButtons}>
@@ -111,8 +100,9 @@ const Fund = ({toggleMenu,toggleMsg}) => {
                     <Text style={styles.withdraw}>Withdraw</Text>
                   </View>
                 </View>
-              </View>
-            </ScrollView>
+		</View>
+		</ScrollView>
+            </View>
           </View>
         </LinearGradient>
       </View>
@@ -156,7 +146,7 @@ const styles = StyleSheet.create({
 
   contentTitle: {
     position: "absolute",
-    top: 25,
+    top: 16,
     alignSelf: "center",
     justifyContent: "space-around",
     width: 300,
@@ -165,13 +155,13 @@ const styles = StyleSheet.create({
   },
 
   quickTitle: {
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#3CB2CB",
+    color: "#ec77700",
   },
 
   flash: {
-    fontSize: 30,
+    fontSize: 25,
   },
   body: {
     height: "100%",
@@ -181,7 +171,7 @@ const styles = StyleSheet.create({
     backgroundColor: " #f5b857",
   },
   contentArea: {
-    height: 500,
+    height: "30%",
     width: "95%",
     position: "absolute",
     alignSelf: "center",
@@ -190,21 +180,24 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   fundButtons: {
-    flex: 1,
     position: "absolute",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     flexDirection: "row",
+    alignItems:"center",
+    width:"90%",
     gap: 20,
+    alignSelf:'center',
+    top:10
   },
   fundingArea: {
     position: "absolute",
     justifyContent: "center",
-    flexDirection: "row",
     padding: 15,
-    top: 80,
+    paddingTop:25,
+    top: 100,
     backgroundColor: "#f7fcf6",
-    height: 350,
-    width: 320,
+    height: 500,
+    width: "94.8%",
     alignSelf: "center",
     borderRadius: 30,
     shadowColor: "black",
@@ -285,17 +278,17 @@ const styles = StyleSheet.create({
 
   addFund: {
     fontWeight: "bold",
-    position: "absolute",
     alignSelf: "center",
     color: "white",
     bottom: 4.5,
+    position:"absolute",
   },
 
   withdraw: {
     fontWeight: "bold",
-    position: "absolute",
     alignSelf: "center",
     color: "black",
+    position:"absolute",
     bottom: 4.5,
   },
 
@@ -308,7 +301,7 @@ const styles = StyleSheet.create({
 
   addAccount: {
     position: "absolute",
-    top: 455,
+    bottom: 10,
     alignSelf: "center",
     fontWeight: "bold",
     color: "#3CB2CB",
@@ -319,92 +312,31 @@ const styles = StyleSheet.create({
   accountsList: {
     position: "absolute",
     top: 120,
+    width:"100%",
 
     flex: 1,
-    padding: 15,
     justifyContent: "space-around",
     flexDirection: "column",
     alignItems: "center",
     borderRadius: 30,
-    elevation: 5,
-    backgroundColor: "#ccc",
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingRight: 30,
+    gap:10,
+    elevation: 0,
+    alignItems:"center",
+    backgroundColor: "transparent",
     alignSelf: "center",
   },
 
   usedAccount: {
-    height: 30,
-    width: 240,
-    backgroundColor: "black",
-    borderRadius: 20,
-    margin: 5,
-  },
-
-  bottomTab: {
-    position: "absolute",
-    bottom: 0,
-    flexDirection: "row",
-    height: 70,
-    width: "100%",
-    justifyContent: "space-around",
-    alignItems: "center",
-    backgroundColor: "#D3DEE8",
-    zIndex: 3,
-    borderTopWidth: 0.5,
-    borderColor: "#ddd",
-    paddingBottom: 5,
-  },
-  tabArea: {
-    height: 60,
-    width: 60,
-    padding: 4,
-    justifyContent: "space-around",
-    flexDirection: "column",
-  },
-  tab: {
-    height: 40,
-    width: 50,
-    borderRadius: 15,
-    top: 0,
-    marginLeft: "auto",
-    marginRight: "auto",
-    paddingRight: "auto",
-    paddingLeft: "auto",
-  },
-
-  tabImage: {
-    height: 40,
-    width: 50,
-    top: 5,
-    alignSelf: "center",
-    position: "absolute",
-    resizeMode: "contain",
-  },
-
-  homeImage: {
     height: 35,
-    width: 45,
-    top: 5,
-    alignSelf: "center",
-    position: "absolute",
-    resizeMode: "contain",
+    width: "90%",
+    backgroundColor: "black",
+    borderRadius: 15,
+    margin: 5,
+    elevation:10,
+    shadowColor:"rgba(0,0,0,0.8)",
   },
-  fundImage: {
-    height: 31,
-    width: 50,
-    top: 10,
-    alignSelf: "center",
-    position: "absolute",
-    resizeMode: "cover",
-  },
-  tabText: {
-    alignSelf: "center",
-    color: "#1C445C",
-    marginTop: 5,
-    alignItems: "center",
-  },
+
+
 });
 
 export default Fund;

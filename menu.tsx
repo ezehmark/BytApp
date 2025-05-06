@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity,FlatList } from "react-native";
 import { BlurView } from "expo-blur";
 import Recents from "./recents.tsx";
 import { useNavigation } from "@react-navigation/native";
@@ -7,21 +7,32 @@ import { useNavigation } from "@react-navigation/native";
 interface MenuProps {
   isOpen: boolean;
   toggleMenu: () => void;
+  darkTheme:boolean
 }
 
-const Menu: React.FC<MenuProps> = ({ isOpen, toggleMenu }) => {
+const Menu: React.FC<MenuProps> = ({ isOpen, nav,toggleMenu, darkTheme }) => {
+
+	const menuItems = [{id:1,name:"History",route:"recents"},{id:2,name:"Referrals",route:"referrals"},{id:3,name:"Exchange",route:"exchange"},{id:4,name:"About us",route:"about"},{id:5,name:"Privacy policies",route:"privacy"}];
   if (!isOpen) return null;
 
+
   return (
-    <BlurView intensity={340}tint={"light"}style={styles.mymenu}>
+    <BlurView intensity={darkTheme?550:380}tint={darkTheme?"dark":"light"}style={styles.mymenu}>
       <TouchableOpacity onPress={toggleMenu} style={styles.btnCover}>
         <Text style={styles.closeBtn}>Close ❌</Text>
       </TouchableOpacity>
-      <Text style={styles.item1}>Exchange</Text>
-      <Text style={styles.item1}>Referrals</Text>
-      <Text style={styles.item1}>History</Text>
-      <Text style={styles.item1}>About Us</Text>
-      <Text style={styles.item1}>Privacy Policy</Text>
+      {<FlatList
+      data={menuItems}
+      keyExtractor={(item)=>item.id}
+      renderItem={({item})=>{
+	      function clickMenu(){
+	     nav?.navigate(item.route);
+	      toggleMenu()}
+	      return(<>
+      <TouchableOpacity onPress={()=>clickMenu()}style={[styles.item1,{borderRadius:10,backgroundColor:darkTheme?"rgba(0,0,0,0.5)":"rgba(255,255,255,0.5)"}]}>
+      <Text style={{color:darkTheme?"white":"black"}}>{item.name}</Text>
+      </TouchableOpacity></>)}}
+      />}
     </BlurView>
   );
 };
@@ -33,7 +44,7 @@ const styles = StyleSheet.create({
     width: "80%",
     justifyContent: "space-around",
     flexDirection: "column",
-    padding: 15,
+    padding: 0,
     paddingBottom: 300,
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
@@ -41,8 +52,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 4, height: 1 },
     shadowRadius: 4,
     shadowOpacity: 0.5,
-    zIndex: 12,
+    zIndex: 180,
     borderWidth: 1,
+    left:0,
+    borderLeftWidth:0,
     borderColor: "#ccc",
     overflow:"hidden"
   },
@@ -66,8 +79,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     padding: 20,
+    color:"rgba(0,0,0,0.8)",
     borderBottomWidth: 1,
     borderColor: "#ddd",
+    borderColor:"#558c94",
+    position:"relative",
+
   },
 });
 

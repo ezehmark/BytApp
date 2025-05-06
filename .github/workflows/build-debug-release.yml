@@ -3,7 +3,7 @@ name: Build Debug APK
 on:
   push:
     branches:
-      - main  # Adjust if using another branch
+      - main
 
 jobs:
   build:
@@ -11,24 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Full clone to support Git-based operations
+          fetch-depth: 0
 
-      # Step 2: Set up Node.js with Yarn cache
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: yarn
 
-      # Step 3: Install dependencies
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      # Step 4: Ensure Metro config exists
       - name: Setup Metro Config
         run: |
           cat <<EOT > metro.config.js
@@ -36,11 +32,9 @@ jobs:
           module.exports = getDefaultConfig(__dirname);
           EOT
 
-      # Step 5: Ensure Assets directory exists
       - name: Create Assets Directory
         run: mkdir -p android/app/src/main/assets
 
-      # Step 6: Cache Gradle & Metro
       - name: Cache Gradle and Metro
         uses: actions/cache@v3
         with:
@@ -52,31 +46,27 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-metro-
 
-      # Step 7: Bundle React Native JavaScript
       - name: Bundle React Native JS
         run: |
-          npx react-native bundle \
+          node ./node_modules/react-native/cli.js bundle \
             --platform android \
             --dev false \
             --entry-file index.js \
             --bundle-output android/app/src/main/assets/index.android.bundle \
-            --assets-dest android/app/src/main/res/
+            --assets-dest android/app/src/main/res/ \
+            --config metro.config.js
 
-      # Step 8: Clean Gradle build
       - name: Clean Gradle
         run: cd android && ./gradlew clean
 
-      # Step 9: Give permission to Gradle wrapper
       - name: Make Gradle Executable
         run: chmod +x android/gradlew
 
-      # Step 10: Build the Debug APK
       - name: Build Debug APK
         run: cd android && ./gradlew assembleDebug --no-daemon --stacktrace
 
-      # Step 11: Upload APK as artifact
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: debug-app
+          name: debug-app-${{ github.sha }}
           path: android/app/build/outputs/apk/debug/app-debug.apk

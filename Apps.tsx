@@ -31,13 +31,20 @@ export default function App() {
   const [isEmail, setIsEmail] = useState(false);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+
   const notifyBoxTop = useSharedValue(-40);
   const notifyBoxOpacity = useSharedValue(1);
   const notifyBoxAnim = useAnimatedStyle(() => {
     return { top: notifyBoxTop.value, opacity: notifyBoxOpacity.value };
   });
 
-  const[connected, setConnected] = useState(false);                                                                              const handleConnection = () => {                                  NetInfo.addEventListener((state) => {                             setConnected(state.isConnected);                              });                                                           };                                                              useEffect(() => {                                                 handleConnection();                                             setInterval(() => {
+  const[dark,setDark]=useState(true);
+  const toggleDark = ()=>{setDark((prev)=>!prev)}
+
+  const[connected, setConnected] = useState(false);
+
+
+  const handleConnection = () => {                                  NetInfo.addEventListener((state) => {                             setConnected(state.isConnected);                              });                                                           };                                                              useEffect(() => {                                                 handleConnection();                                             setInterval(() => {
       handleConnection();                                           }, 1000);                                                     }, []);
 
   const [notifyMsg, setNotifyMsg] = useState("");
@@ -171,7 +178,7 @@ export default function App() {
       <StatusBar barStyle="dark-content" backgroundColor="white" />
       <NavigationContainer>
         <Stack.Navigator initialRouteName="MyApp" 
-	screenOptions={{gestureEnabled:true,gestureDirection:"horizontal",cardStyleInterpolator:CardStyleInterpolators.forVerticalIOS}}>
+	screenOptions={{gestureEnabled:true,gestureDirection:"vertical",cardStyleInterpolator:CardStyleInterpolators.forVerticalIOS}}>
           <Stack.Screen
             name="MyApp"
             options={{ headerShown: false, unmountOnBlur: false }}
@@ -179,6 +186,9 @@ export default function App() {
             {(props) => (
               <MyApp
                 {...props}
+		dark={dark}
+		setDark={setDark}
+		toggleDark={toggleDark}
 		connected={connected}
 		setConnected={setConnected}
                 name={name}
@@ -203,7 +213,9 @@ export default function App() {
           >
             {(props) => (
               <ImgComp
+
                 {...props}
+		dark={dark}
                 loading={loading}
                 setNav={setNav}
                 name={name}
@@ -223,6 +235,7 @@ export default function App() {
             {(props) => (
               <Chat
                 {...props}
+		dark={dark}
 		connected={connected}
 		setConnected={setConnected}
                 loading={loading}

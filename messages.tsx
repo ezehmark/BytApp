@@ -10,12 +10,8 @@ import { BlurView } from "expo-blur";
 
 import { LinearGradient } from "expo-linear-gradient";
 
-interface messagesProps {
-  isMsg: boolean;
-  toggleMsg: () => void;
-}
 
-const Messages: React.FC<messagesProps> = ({ isMsg, toggleMsg }) => {
+const Messages = ({ isMsg, toggleMsg, darkTheme }) => {
   const messages = [
     {
       message:

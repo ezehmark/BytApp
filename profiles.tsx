@@ -195,9 +195,9 @@ const Profile = ({ setDarkTheme, darkTheme, toggleMenu, toggleMsg }) => {
                 end={{ x: 0, y: 1 }}
                 style={styles.itemsZone}
               >
-                <Text style={styles.item1}>User Verification</Text>
-                <Text style={styles.item1}>Engage Customer Support </Text>
-                <Text style={styles.item3}>Follow Us On ↓</Text>
+                <Text style={styles.item1}>User verification</Text>
+                <Text style={styles.item1}>Engage customer support </Text>
+                <Text style={styles.item3}>Follow us on ↓</Text>
 
                 <TouchableOpacity style={styles.socialIcons}>
                   <View style={styles.icon1}>
