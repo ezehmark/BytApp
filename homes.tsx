@@ -192,7 +192,7 @@ const Home = ({ setNav, darkTheme, navigation, toggleMenu, toggleMsg }) => {
             )}
           </Text>
         </View>
-        <Text style={styles.welcome}>{click ? "***" : "Welcome, Mark"}</Text>
+        <Text style={styles.welcome,{color:"#00ff00"}}>{click ? "***" : "Welcome, Mark"}</Text>
       </View>
 
       <TouchableOpacity style={styles.menuCircle} onPress={toggleMenu}>
