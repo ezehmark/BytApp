@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity,FlatList } from "react-native";
+import { View,Text, StyleSheet, TouchableOpacity,FlatList } from "react-native";
 import { BlurView } from "expo-blur";
 import Recents from "./recents.tsx";
 import { useNavigation } from "@react-navigation/native";
@@ -17,23 +17,26 @@ const Menu: React.FC<MenuProps> = ({ isOpen, nav,toggleMenu, darkTheme }) => {
 
 
   return (
-    <BlurView intensity={darkTheme?550:380}tint={darkTheme?"dark":"light"}style={styles.mymenu}>
+	  <View style={[styles.mymenu,{backgroundColor:darkTheme?"#022d36":"#ECFBFF"}]}>
+    <View intensity={darkTheme?550:380}tint={darkTheme?"dark":"light"}style={{height:"100%",width:"100%"}}>
       <TouchableOpacity onPress={toggleMenu} style={styles.btnCover}>
         <Text style={styles.closeBtn}>Close ❌</Text>
       </TouchableOpacity>
       {<FlatList
       data={menuItems}
       keyExtractor={(item)=>item.id}
+      style={{marginTop:-35}}
       renderItem={({item})=>{
 	      function clickMenu(){
 	     nav?.navigate(item.route);
 	      toggleMenu()}
 	      return(<>
-      <TouchableOpacity onPress={()=>clickMenu()}style={[styles.item1,{borderRadius:10,backgroundColor:darkTheme?"rgba(0,0,0,0.5)":"rgba(255,255,255,0.5)"}]}>
-      <Text style={{color:darkTheme?"white":"black"}}>{item.name}</Text>
+      <TouchableOpacity onPress={()=>clickMenu()}style={[styles.item1,{borderRadius:15,backgroundColor:"transparent"}]}>
+      <Text style={{fontSize:16,padding:10,color:darkTheme?"white":"black"}}>{item.name}</Text>
       </TouchableOpacity></>)}}
       />}
-    </BlurView>
+    </View>
+    </View>
   );
 };
 
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     flexDirection: "column",
     padding: 0,
-    paddingBottom: 300,
+    paddingBottom: 20,
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
     shadowColor: "black",
@@ -76,12 +79,11 @@ const styles = StyleSheet.create({
     whiteSpace: "nowrap",
   },
   item1: {
-    fontSize: 16,
+    fontSize: 30,
     fontWeight: "bold",
     padding: 20,
     color:"rgba(0,0,0,0.8)",
     borderBottomWidth: 1,
-    borderColor: "#ddd",
     borderColor:"#558c94",
     position:"relative",
 

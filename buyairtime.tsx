@@ -10,9 +10,12 @@ import {
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
+import {BallIndicator} from "react-native-indicators";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from "./mobilenetworks";
-const BuyAirtime = ({toggleMenu,toggleMsg}) => {
+import axios from "axios";
+import moment from "moment-timezone";
+const BuyAirtime = ({ darkTheme, toggleMenu, toggleMsg }) => {
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -21,64 +24,87 @@ const BuyAirtime = ({toggleMenu,toggleMsg}) => {
     setCardList((init) => !init);
   };
 
+  const[loading,setLoading]=useState(false);
+
+  const[phone,setPhone]=useState("");
+  const[amount,setAmount]=useState("");
+  const[serviceId,setServiceId]=useState("");
+
+  function getRequestId(){
+  const lagosTime = moment.tz("Africa/Lagos").format("YYYYMMDDHHmm");
+  return lagosTime + phone.toString()}
+
   const mtnIdentity = [
-  '0803', '0806', '0703', '0706', 
-  '0810', '0813', '0814', '0816', 
-  '0903', '0906', '0913', '0916'
-];
+    "0803",
+    "0806",
+    "0703",
+    "0706",
+    "0810",
+    "0813",
+    "0814",
+    "0816",
+    "0903",
+    "0906",
+    "0913",
+    "0916",
+  ];
 
-const airtelIdentity = [
-  '0802', '0808', '0708', 
-  '0812', '0902', '0907', 
-  '0901', '0912'
-];
+  const airtelIdentity = [
+    "0802",
+    "0808",
+    "0708",
+    "0812",
+    "0902",
+    "0907",
+    "0901",
+    "0912",
+  ];
 
-const gloIdentity = [
-  '0805', '0807', '0705', 
-  '0811', '0815', '0905', 
-  '0915'
-];
+  const gloIdentity = ["0805", "0807", "0705", "0811", "0815", "0905", "0915"];
 
-const nineMobileIdentity = [
-  '0809', '0817', '0818',
-  '0909', '0908'
-];
+  const nineMobileIdentity = ["0809", "0817", "0818", "0909", "0908"];
 
-const[inputNotice,setInputNotice]=useState("");
-const[isNotice,setIsNotice]=useState(false);
+  const [inputNotice, setInputNotice] = useState("");
+  const [isNotice, setIsNotice] = useState(false);
 
-const checkNetwork = (txt)=>{
-	var firstFour;
-if(txt.length >=4){
-	firstFour = txt.slice(0,4);
+  const checkNetwork = (txt) => {
+    var firstFour;
+    if (txt.length >= 4) {
+      firstFour = txt.slice(0, 4);
 
+      if (firstFour && mtnIdentity.includes(firstFour)) {
+        setInputNotice("MTN Nigeria");
+        setIsNotice(true);
+      }
 
+      if (firstFour && airtelIdentity.includes(firstFour)) {
+        setInputNotice("Airtel Nigeria");
+        setIsNotice(true);
+      }
 
-if(firstFour && mtnIdentity.includes(firstFour)){
-setInputNotice("MTN Nigeria");
-setIsNotice(true)}
+      if (firstFour && gloIdentity.includes(firstFour)) {
+        setInputNotice("Glo Nigeria");
+        setIsNotice(true);
+      }
 
-if(firstFour && airtelIdentity.includes(firstFour)){
-setInputNotice("Airtel Nigeria");                                  setIsNotice(true)}
-
-if(firstFour && gloIdentity.includes(firstFour)){
-setInputNotice("Glo Nigeria");                                  setIsNotice(true)}
-
-if(firstFour && nineMobileIdentity.includes(firstFour)){
-setInputNotice("9 Mobile");                                  
-setIsNotice(true)}
-
-
-}
-
-
-
-else{setIsNotice(false)}
-}
+      if (firstFour && nineMobileIdentity.includes(firstFour)) {
+        setInputNotice("9 Mobile");
+        setIsNotice(true);
+      }
+    } else {
+      setIsNotice(false);
+    }
+  };
 
   const [pin, setPin] = useState("");
-  const [amount, setAmount] = useState("");
-  const [phone, setPhone] = useState("");
+
+  const handlePurchase =async()=>{
+  setLoading(true);
+  await axios.post("https://sandbox.vtpass.com/api/pay",{request_Id:getRequestId(),serviceID:cardType,phone:phone,amount:amount},{
+  headers:{"api-key":"0f0c613baa1f831c13499d84186a4372","secret-key":"SK_6163cc9d969dcb761a5f5f223a5f8da2f36ebad21b6"}})
+  .then((response)=>{setNotice(response.data.content.transactions.status)})
+  .catch((error)=>console.error(message))
+  .finally(()=>setLoading(false))}
 
   const [isCard, setIsCard] = useState(false);
   const toggleCard = () => {
@@ -118,95 +144,175 @@ else{setIsNotice(false)}
         />
       )}
 
-        <LinearGradient
-          colors={["white","white", "#f5b857"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={{flex:1,padding:10,backgroundColor:"black"}}
+      <LinearGradient
+        colors={[
+          darkTheme ? "black" : "white",
+          darkTheme ? "#022d36" : "#f7fcf6",
+        ]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={{ flex: 1, padding: 10, backgroundColor: "black" }}
+      >
+        <Text style={styles.topTitle}>Airtime Top-Up</Text>
+        <TouchableOpacity style={styles.menuCircle} onPress={toggleMenu}>
+          {" "}
+          <Image
+            style={styles.menuIcon}
+            source={{
+              uri: darkTheme
+                ? "https://i.postimg.cc/B65wgYfV/images-41.jpg"
+                : "https://i.postimg.cc/3xCFDfww/Picsart-25-05-04-05-37-21-849.png",
+            }}
+          />{" "}
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={toggleMsg}
+          style={[
+            styles.infoCircle,
+            {
+              elevation: 4,
+              shadowColor: darkTheme ? "white" : "black",
+              backgroundColor: darkTheme ? "#022d37" : "black",
+            },
+          ]}
         >
-            <Text style={styles.topTitle}>Airtime Top-Up</Text>
-            <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
-              <Image
-                style={styles.menuIcon}
-                source={{
-                  uri: "https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png",
-                }}
-              />
-            </TouchableOpacity>
+          {" "}
+          <Image
+            style={styles.bellIcon}
+            source={{
+              uri: "https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png",
+            }}
+          />{" "}
+        </TouchableOpacity>
+        <View
+          style={{
+            elevation: 5,
+            shadowColor: "black",
+            position: "absolute",
+            alignSelf: "center",
+            top: 70,
+            backgroundColor: "red",
+            width: "95%",
+            borderRadius: 20,
+            overflow: "hidden",
+            height: 500,
+            padding: 0,
+          }}
+        >
+          <View
+            style={[
+              styles.contentTitle,
+              { backgroundColor: darkTheme ? "#022d36" : "#6c969f" },
+            ]}
+          >
+            <Text
+              style={{
+                fontSize: 17,
+                textDecorationLine: "underline",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              Quick Recharge, All Networks
+            </Text>
+            <Text style={styles.flash}>⚡</Text>
+          </View>
 
-            <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
-              <Image
-                style={styles.bellIcon}
-                source={{
-                  uri: "https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png",
-                }}
-              />
-            </TouchableOpacity>
+          <ScrollView
+            contentContainerStyle={{
+              backgroundColor: darkTheme ? "black" : "white",
+              padding: 0,
+            }}
+          >
+            <View
+              style={{
+                height: 700,
+                padding: 5,
+                marginTop: 50,
+                backgroundColor: "transparent",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => toggleCard()}
+                style={styles.networkBox}
+              >
+                <Text style={styles.selectNetwork}>{cardType}</Text>
+                <Image
+                  source={{
+                    uri: "https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png",
+                  }}
+                  style={styles.dropDownIcon}
+                />
+              </TouchableOpacity>
 
-            <View style={{elevation:5,shadowColor:"black",position:"absolute",alignSelf:"center",top:70,backgroundColor:"transparent",width:"95%",borderRadius:20,overflow:"hidden",height:500,padding:0}}>
-              <View style={styles.contentTitle}>
-                <Text style={{fontSize:17,textDecorationLine:"underline",color:"white",fontWeight:"bold"}}>
-                  Quick Recharge, All Networks
+              {isNotice && (
+                <Text
+                  style={{
+                    color:
+                      (inputNotice == "Glo Nigeria" && "white") ||
+                      (inputNotice == "Airtel Nigeria" && "white") ||
+                      (inputNotice == "MTN Nigeria" && "black") ||
+                      (inputNotice == "9 Mobile" && "black"),
+                    fontSize: 12,
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    borderRadius: 5,
+                    backgroundColor:
+                      (inputNotice == "MTN Nigeria" && "yellow") ||
+                      (inputNotice == "Airtel Nigeria" && "red") ||
+                      (inputNotice == "Glo Nigeria" && "green") ||
+                      (inputNotice == "9 Mobile" && "#c7ea46"),
+                    alignSelf: "center",
+                    marginLeft: "50%",
+                    marginBottom: 5,
+                    marginTop: -15,
+                  }}
+                >
+                  {inputNotice}
                 </Text>
-                <Text style={styles.flash}>⚡</Text>
-              </View>
+              )}
 
-              <ScrollView contentContainerStyle={{backgroundColor:"white",padding:0}}>
-                <View style={{height:700,padding:5, marginTop:50,backgroundColor:"transparent"}}>
-                  <TouchableOpacity
-                    onPress={() => toggleCard()}
-                    style={styles.networkBox}
-                  >
-                    <Text style={styles.selectNetwork}>{cardType}</Text>
-                    <Image
-                      source={{
-                        uri: "https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png",
-                      }}
-                      style={styles.dropDownIcon}
-                    />
-                  </TouchableOpacity>
+              <TextInput
+                style={styles.pinInput}
+                value={phone}
+                keyboardType="numeric"
+                placeholder="Phone number"
+                color="black"
+                placeholderTextColor="#999"
+                onChangeText={(txt) => {
+                  checkNetwork(txt);
+                  setPhone(txt);
+                }}
+              />
 
-		  {isNotice &&<Text style={{color:(inputNotice=="Glo Nigeria" && "white" ||inputNotice=="Airtel Nigeria"&&"white") ||inputNotice=="MTN Nigeria"&&"black" || inputNotice == "9 Mobile"&&"black",fontSize:12,paddingVertical:5,paddingHorizontal:10,borderRadius:5,backgroundColor:inputNotice =="MTN Nigeria"&&"yellow"|| inputNotice =="Airtel Nigeria"&&"red" || inputNotice =="Glo Nigeria"&&"green"||inputNotice =="9 Mobile"&&"#c7ea46",alignSelf:"center",marginLeft:"50%",marginBottom:5,marginTop:-15,}}>{inputNotice}</Text>}
+              <TextInput
+                style={styles.pinInput}
+                value={amount}
+                placeholder="₦100 to ₦5,000"
+                color="black"
+                keyboardType="numeric"
+                placeholderTextColor="#999"
+                onChangeText={setAmount}
+              />
 
-                  <TextInput
-                    style={styles.pinInput}
-                    value={phone}
-                    keyboardType="numeric"
-                    placeholder="Phone number"
-                    color="black"
-                    placeholderTextColor="#999"
-                    onChangeText={(txt)=>{checkNetwork(txt);setPhone(txt);}}
-                  />
+              <TextInput
+                style={styles.pinInput}
+                value={pin}
+                keyboardType="numeric"
+                placeholder="6 digits PIN"
+                color="black"
+                placeholderTextColor="#999"
+                onChangeText={setPin}
+              />
 
-                  <TextInput
-                    style={styles.pinInput}
-                    value={amount}
-                    placeholder="₦100 to ₦5,000"
-                    color="black"
-                    keyboardType="numeric"
-                    placeholderTextColor="#999"
-                    onChangeText={setAmount}
-                  />
-
-                  <TextInput
-                    style={styles.pinInput}
-                    value={pin}
-                    keyboardType="numeric"
-                    placeholder="6 digits PIN"
-                    color="black"
-                    placeholderTextColor="#999"
-                    onChangeText={setPin}
-                  />
-
-                  <TouchableOpacity style={styles.buyBox}>
-                    
-                    <Text style={styles.buyText}>Recharge Now</Text>
-                  </TouchableOpacity>
-                </View>
-              </ScrollView>
+              <TouchableOpacity onPress={()=>{handlePurchase();console.log(getRequestId(),cardType)}}style={styles.buyBox}>
+		      <View style={{justifyContent:"space-between",gap:2,flexDirection:"row",alignItems:"center"}}>
+                <Text style={styles.buyText}>Recharge Now</Text>
+		{loading && <BallIndicator size={20}color="#cc7722"/>}</View> </TouchableOpacity>
             </View>
-        </LinearGradient>
-
+          </ScrollView>
+        </View>
+      </LinearGradient>
     </>
   );
 };
@@ -255,10 +361,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     zIndex: 4,
-    backgroundColor:"#6c969f",
+    backgroundColor: "#6c969f",
   },
-
-
 
   flash: {
     fontSize: 25,
@@ -276,7 +380,6 @@ const styles = StyleSheet.create({
     zIndex: 4,
   },
 
-
   addAccount: {
     position: "absolute",
     top: 455,
@@ -287,14 +390,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 
-
   networkBox: {
     height: 50,
-    marginTop:20,
-    marginBottom:20,
+    marginTop: 20,
+    marginBottom: 20,
     width: "90%",
-    alignSelf:"center",
-    alignItems:"center",
+    alignSelf: "center",
+    alignItems: "center",
     backgroundColor: "#20a385",
     borderRadius: 20,
     justifyContent: "space-between",
@@ -323,14 +425,14 @@ const styles = StyleSheet.create({
 
   buyBox: {
     height: 50,
-    marginBottom:20,
-    marginTop:20,
+    marginBottom: 20,
+    marginTop: 20,
     width: "70%",
-    alignSelf:"center",
+    alignSelf: "center",
     backgroundColor: "#28272c",
     borderRadius: 20,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent:"center",
     shadowColor: "#feb819",
     shadowRadius: 8,
     shadowOffset: { height: 3, width: 0 },
@@ -347,7 +449,6 @@ const styles = StyleSheet.create({
 
   buyText: {
     fontSize: 17,
-    alignSelf: "center",
 
     color: "#20a385",
   },
@@ -360,16 +461,15 @@ const styles = StyleSheet.create({
   pinInput: {
     height: 40,
     width: "90%",
-    padding:10,
+    padding: 10,
     alignItems: "center",
     backgroundColor: "#f7fcf6",
     borderRadius: 15,
     borderWidth: 1,
     borderColor: "#30b3bf",
-    alignSelf:"center",
-    marginBottom:20,
+    alignSelf: "center",
+    marginBottom: 20,
   },
-
 });
 
 export default BuyAirtime;

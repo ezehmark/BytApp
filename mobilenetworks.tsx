@@ -18,13 +18,13 @@ interface networkProps {
 
 // Define an array of gift cards
 const mobileNetworks = [
-  { name: "MTN", uri: "https://i.postimg.cc/JhRWnm0V/mtnIcon.png" },
-  { name: "AIRTEL", uri: "https://i.postimg.cc/ydt1W52m/images-13.png" },
+  { name: "mtn", uri: "https://i.postimg.cc/JhRWnm0V/mtnIcon.png" },
+  { name: "airtel", uri: "https://i.postimg.cc/ydt1W52m/images-13.png" },
   {
-    name: "GLO",
+    name: "glo",
     uri: "https://i.postimg.cc/ZYvYXbyV/globacom-limited-icon-2048x2048-uovm3iz4.png",
   },
-  { name: "9MOBILE", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
+  { name: "9mobile", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
 ];
 
 const MobileNetworks: React.FC<networkProps> = ({

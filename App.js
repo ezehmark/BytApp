@@ -55,12 +55,15 @@ await NavigationBar.setBackgroundColorAsync(darkTheme?"#022d36":"white");       
   const toggleMsg = () => setOpenMsg((msg) => !msg);
 
 
+
   const tabs = [
     {
       name: "Home",
       route: "home",
       id: 1,
-      uri: "https://i.postimg.cc/N0KGCxqB/Picsart-24-11-01-00-52-07-164.png",
+      dark:"https://i.postimg.cc/Hsdvt26P/Picsart-25-05-09-09-28-17-219.png",
+light:"https://i.postimg.cc/Y97CSZxx/Picsart-25-05-09-09-25-29-920.png",
+active:"https://i.postimg.cc/3NYMmHyt/Picsart-25-05-09-09-30-35-168.png",
     },
     {
       name: "Fund",
@@ -69,11 +72,12 @@ await NavigationBar.setBackgroundColorAsync(darkTheme?"#022d36":"white");       
       uri: "https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png",
     },
     {
-      name: "Recents",
-      route: "recents",
-      id: 3,
-      uri: "https://i.postimg.cc/RZHzKTXL/Picsart-24-11-01-05-09-49-049.png",
-    },
+name: "Recents",
+route: "recents",
+id: 3,
+active:"https://i.postimg.cc/XvqcCg5Q/Picsart-25-05-10-06-47-10-520.png",
+light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
+
     {
       name: "Profile",
       route: "profiles",
@@ -81,6 +85,7 @@ await NavigationBar.setBackgroundColorAsync(darkTheme?"#022d36":"white");       
       uri: "https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png",
     },
   ];
+
 
   return (
     <>
@@ -188,7 +193,7 @@ await NavigationBar.setBackgroundColorAsync(darkTheme?"#022d36":"white");       
         </Stack.Navigator>
       </NavigationContainer>
 
-      {menuOpen && <Menu isOpen={menuOpen} nav={nav}darkTheme={darkTheme}toggleMenu={toggleMenu} />}
+      {menuOpen && <Menu  isOpen={menuOpen} nav={nav}darkTheme={darkTheme}toggleMenu={toggleMenu} />}
       {openMsg && <Messages isMsg={openMsg} toggleMsg={toggleMsg} />}
 
       <View style={styles.bottomTab}>
@@ -199,6 +204,12 @@ await NavigationBar.setBackgroundColorAsync(darkTheme?"#022d36":"white");       
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             const isTab = pressedTab == item.id;
+		  let uri = item.light;
+		  if(darkTheme){uri = item.dark;}
+		  else if(isTab){uri = item.active;}
+		  
+
+		
             return (
               <TouchableOpacity
                 style={[styles.tabArea,{backgroundColor:darkTheme?"#022d36":"white"}]}
@@ -210,7 +221,7 @@ await NavigationBar.setBackgroundColorAsync(darkTheme?"#022d36":"white");       
                   <Image
                     style={styles.tabImage}
                     source={{
-                      uri: item.uri,
+                      uri
                     }}
                   />
                   <Text style={[styles.tabText],{color:darkTheme?"#ccc":"black"}}>{item.name}</Text>
@@ -244,6 +255,7 @@ backgroundColor:"transparent",
     height: "100%",
 position:"relative",
     padding: 4,
+	  gap:0,
 	  zIndex:55,
 	  alignItems:"center",
 	  justifyContent:"space-around",

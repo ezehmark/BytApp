@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import {
   View,
   Text,
@@ -8,102 +8,54 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { BlurView } from "expo-blur";
+import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
+import {BallIndicator} from "react-native-indicators";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Menu from "./menu";
 
-const Recents = ({toggleMenu,toggleMsg}) => {
+const Recents = ({darkTheme,toggleMenu,toggleMsg}) => {
+
+
+useEffect(()=>{
+const fetchHistory = async()=>{
+setLoading(true);
+await axios.get("https://mybackend-oftz.onrender.com/health")
+.then((response)=>{console.log(resposnse.data.msg);
+if(response.data.msg.length < 50){console.log("Feedback not sufficient")}})
+
+.catch((error)=>console.log(error))
+.finally(()=>setTimeout(()=>{setLoading(true)},8000))}
+},[]);
 
   const route = useRoute();
+  const [loading,setLoading]=useState(false);
   return (
     <>
       <View style={styles.container}>
         <LinearGradient
-          colors={["white", "#f5b857"]}
+          colors={[darkTheme?"black":"white",darkTheme?"#022d36":"white"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.gradientContainer}
         >
           <View style={styles.body}>
-            <TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>
-              
-              <Image
+<TouchableOpacity onPress={toggleMenu} style={styles.menuCircle}>                                                                                                                                 <Image
                 style={styles.menuIcon}
-                source={{
-                  uri: "https://i.postimg.cc/ZnGwS6pJ/Picsart-24-11-01-05-41-03-753.png",
-                }}
-              />
-            </TouchableOpacity>
+                source={{                                                         uri:darkTheme?"https://i.postimg.cc/B65wgYfV/images-41.jpg":"https://i.postimg.cc/3xCFDfww/Picsart-25-05-04-05-37-21-849.png"                                                                 }}
+              />                                                            </TouchableOpacity>                                                                                                             <TouchableOpacity onPress={toggleMsg} style={[styles.infoCircle,{backgroundColor:darkTheme?"#022d36":"black"}]}>                                                                                  <Image                                                            style={styles.bellIcon}                                         source={{
+                  uri: "https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png",                                                       }}                                                            />                                                            </TouchableOpacity>
+	    <Text style={[styles.quickTitle,{alignSelf:"center",poaition:"absolute",fontSize:18,top:20}]}>Recent Transactions</Text>	
 
-            <TouchableOpacity onPress={toggleMsg} style={styles.infoCircle}>
-        
-              <Image
-                style={styles.bellIcon}
-                source={{
-                  uri: "https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png",
-                }}
-              />
-            </TouchableOpacity>
+            <View style={[styles.contentArea,{borderColor:"#3CB2CB",borderWidth:0,elevation:5,shadowColor:"rgba(0,0,0,0.6)",backgroundColor:darkTheme?"#022d36":"#f7fcf6",borderRadius:25,top:50}]}>
 
-            <ScrollView style={styles.contentArea}>
-              <View style={styles.contentTitle}>
-                <Text style={styles.quickTitle}>Recent Transactions</Text>
-              </View>
+	    {loading && <BallIndicator size={40} color={"#022d36"}/>}
 
-              <Text style={styles.addAccount}>See All → </Text>
-              <View style={styles.fundingArea}>
-                <View style={styles.accountsList}>
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
-                  <LinearGradient
-                    colors={["#fff", "#fff", "#fff", "#ccc"]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.usedAccount}
-                  />
-                </View>
-              </View>
-            </ScrollView>
+
+
+
+              <Text style={[styles.moreHistory,{fontSize:12,color:darkTheme?"#feb819":"#3CB2CB",borderRadius:5,borderColor:darkTheme?"#feb819":"#3CB2CB",padding:5,fontWeight:"bold",borderWidth:1,bottom:20}]}>See All → </Text>
+            </View>
           </View>
         </LinearGradient>
       </View>
@@ -168,6 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     color: "#3CB2CB",
+    position:"absolute"
   },
 
   body: {
@@ -178,13 +131,15 @@ const styles = StyleSheet.create({
     backgroundColor: " #f5b857",
   },
   contentArea: {
-    height: 500,
-    width: "95%",
+    height:"80%",
+    width: "90%",
     position: "absolute",
     alignSelf: "center",
     top: 40,
     backgroundColor: "#cfccc5",
     borderRadius: 30,
+    alignItems:"center",
+    justifyContent:"center"
   },
   fundingArea: {
     position: "absolute",
@@ -204,14 +159,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  addAccount: {
+  moreHistory: {
     position: "absolute",
-    top: 455,
     alignSelf: "center",
     fontWeight: "bold",
-    color: "#3CB2CB",
-    zIndex: 13,
-    fontSize: 12,
   },
 
   accountsList: {

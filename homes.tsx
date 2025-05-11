@@ -199,7 +199,7 @@ const Home = ({
             <Text
               style={{
                 borderRadius: 15,
-                backgroundColor: darkTheme?"black":"#bb7e10",
+                backgroundColor: darkTheme?"black":"#cc7722",
                 paddingVertical: 8,
                 paddingHorizontal: 10,
                 fontSize: 10,
@@ -228,7 +228,7 @@ const Home = ({
             <TouchableOpacity
               style={{
                 borderRadius: 15,
-                backgroundColor: darkTheme?"#cc7722":"#bb7e10",
+                backgroundColor: darkTheme?"black":"#cc7722",
                 paddingVertical: 4,
                 paddingHorizontal: 5,
 		elevation:4,
