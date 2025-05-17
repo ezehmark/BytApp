@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import {
   TextInput,
   View,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 import { BlurView } from "expo-blur";
@@ -15,8 +16,30 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from "./mobilenetworks";
 import axios from "axios";
 import moment from "moment-timezone";
+import {MMKV} from "react-native-mmkv";
 const BuyAirtime = ({ darkTheme, toggleMenu, toggleMsg }) => {
-  const navigation = useNavigation();
+  
+const[token,setToken]=useState("");
+const[balance,setBalance]=useState("");
+const[loading1,setLoading1]=useState(false);
+
+const myStore = new MMKV()
+let newtoken;
+
+useEffect(()=>{
+async function getToken(){
+
+setLoading1(true);
+await axios.post("https://ebills.africa/wp-json/jwt-auth/v1/token",{username:"ezehmark@gmail.com",password:"Mark@ebills5050"})
+.then((response)=>{newtoken = response.data.token;setToken(newtoken);console.log(response.data.token)})
+.catch((error)=>console.error(error))
+.finally(()=>{setLoading1(false);console.log("Token obtained successfully")});
+}
+
+getToken();
+},[]);
+
+const navigation = useNavigation();
   const route = useRoute();
 
   const [cardList, setCardList] = useState(false);
@@ -97,13 +120,24 @@ const BuyAirtime = ({ darkTheme, toggleMenu, toggleMsg }) => {
   };
 
   const [pin, setPin] = useState("");
+  const[notice,setNotice]=useState("");
+
+
+
+  const getBalance = async()=>{
+	  console.log(token);
+if(!token){console.log("empty token. pleqse get one before getting balance")}
+  await axios.get("https://ebills.africa/wp-json/api/v2/balance",{headers:{Authorization:`Bearer ${token}`}}).then((response)=>{console.log(`Token before balance: ${token}`);setBalance(response.data.data.balance);console.log(response.data.data.balance)})
+  .catch((error)=>console.error(error))
+  .finally(console.log("You have successfully obtained your balance"))};
+
 
   const handlePurchase =async()=>{
   setLoading(true);
   await axios.post("https://sandbox.vtpass.com/api/pay",{request_Id:getRequestId(),serviceID:cardType,phone:phone,amount:amount},{
   headers:{"api-key":"0f0c613baa1f831c13499d84186a4372","secret-key":"SK_6163cc9d969dcb761a5f5f223a5f8da2f36ebad21b6"}})
-  .then((response)=>{setNotice(response.data.content.transactions.status)})
-  .catch((error)=>console.error(message))
+  .then((response)=>{setNotice(response.data?.content?.transactions?.status)})
+  .catch((error)=>{console.error(message);setNotice(error.message)})
   .finally(()=>setLoading(false))}
 
   const [isCard, setIsCard] = useState(false);
@@ -155,7 +189,7 @@ const BuyAirtime = ({ darkTheme, toggleMenu, toggleMsg }) => {
       >
         <Text style={styles.topTitle}>Airtime Top-Up</Text>
         <TouchableOpacity style={styles.menuCircle} onPress={toggleMenu}>
-          {" "}
+          
           <Image
             style={styles.menuIcon}
             source={{
@@ -163,7 +197,7 @@ const BuyAirtime = ({ darkTheme, toggleMenu, toggleMsg }) => {
                 ? "https://i.postimg.cc/B65wgYfV/images-41.jpg"
                 : "https://i.postimg.cc/3xCFDfww/Picsart-25-05-04-05-37-21-849.png",
             }}
-          />{" "}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={toggleMsg}
@@ -176,13 +210,13 @@ const BuyAirtime = ({ darkTheme, toggleMenu, toggleMsg }) => {
             },
           ]}
         >
-          {" "}
+          
           <Image
             style={styles.bellIcon}
             source={{
               uri: "https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png",
             }}
-          />{" "}
+          />
         </TouchableOpacity>
         <View
           style={{
@@ -231,7 +265,7 @@ const BuyAirtime = ({ darkTheme, toggleMenu, toggleMsg }) => {
                 marginTop: 50,
                 backgroundColor: "transparent",
               }}
-            >
+            >{loading1 && <View style={{height:60,width:60,alignItems:"center",justifyContent:"center",alignSelf:"center",zIndex:150}}><ActivityIndicator size={40} color={"black"}/></View>}
               <TouchableOpacity
                 onPress={() => toggleCard()}
                 style={styles.networkBox}
@@ -272,6 +306,8 @@ const BuyAirtime = ({ darkTheme, toggleMenu, toggleMsg }) => {
                 </Text>
               )}
 
+	      <Text style={{color:"grey",fontSize:12,fontWeight:"bold"}}>{notice}</Text>
+
               <TextInput
                 style={styles.pinInput}
                 value={phone}
@@ -306,9 +342,13 @@ const BuyAirtime = ({ darkTheme, toggleMenu, toggleMsg }) => {
               />
 
               <TouchableOpacity onPress={()=>{handlePurchase();console.log(getRequestId(),cardType)}}style={styles.buyBox}>
-		      <View style={{justifyContent:"space-between",gap:2,flexDirection:"row",alignItems:"center"}}>
-                <Text style={styles.buyText}>Recharge Now</Text>
-		{loading && <BallIndicator size={20}color="#cc7722"/>}</View> </TouchableOpacity>
+		      <View style={{justifyContent:"space-between",gap:0,flexDirection:"row",alignItems:"center"}}>
+                <Text style={styles.buyText}>Recharge Now</Text>{loading && <BallIndicator size={20} color="#cc7722"/>}</View> </TouchableOpacity>
+
+		<View style={{justifyContent:"space-between",alignItems:"center",flexDirection:"row",gap:10,backgroundColor:"#ccc"}}>
+		<TouchableOpacity disabled={!token} style={{position:"relative",padding:8,borderRadius:15,backgroundColor:"black",alignItems:"center",justifyContent:"center"}} onPress={()=>getBalance()}><Text style={{color:"white",fontWeight:"bold"}}>Get Balance</Text></TouchableOpacity>
+		{balance && <Text style={{color:"green"}}>{balance}</Text>}
+		</View>
             </View>
           </ScrollView>
         </View>

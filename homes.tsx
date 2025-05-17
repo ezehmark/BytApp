@@ -25,6 +25,8 @@ import Animated, {
 } from "react-native-reanimated";
 import BuyGiftCard1 from "./buygiftcard1.tsx";
 
+import * as LocalAuthentication from "expo-local-authentication";
+
 const Home = ({
   setNav,
   darkTheme,
@@ -36,6 +38,7 @@ const Home = ({
 }) => {
   const widthA = useSharedValue(270);
   const colorA = useSharedValue("#2f7378");
+  const [info,setInfo]=useState("");
   useEffect(() => {
     if (setNav) {
       setNav(navigation);
@@ -45,6 +48,19 @@ const Home = ({
     return { width: widthA.value, backgroundColor: colorA.value };
   });
 
+
+const verifyFingerprint = async()=>{
+const available = await LocalAuthentication.hasHardwareAsync();
+const enrolled = await LocalAuthentication.isEnrolledAsync();
+
+if(!available || !enrolled){setInfo("Fingerprint Not available on this device");return}
+const result = await LocalAuthentication.authenticateAsync({promptMessage:"Put fingerprint",
+fallBackLabel:"Use Pin"});
+if (!result.success){setInfo("Authenticating failed");return}
+setInfo("Fingerprint authenticated successfully");
+setTimeout(()=>{nav?.navigate("buyairtime")},3000);
+
+}
   useEffect(() => {
     setTimeout(() => {
       const myInterval = setInterval(() => {
@@ -307,7 +323,7 @@ const Home = ({
               paddingBottom: 50,
               height: 900,
             }}
-          >
+          >{info &&<Text style={{color:"red",fontWeight:"bold",textAlign:"center",fontSize:12,padding:5,backgroundColor:"black",borderRadius:5}}>{info}</Text>}
             <View style={[styles.headingContainer, { zIndex: 60 }]}>
               <Text
                 style={[
@@ -431,7 +447,7 @@ const Home = ({
                   right: "2%",
                 },
               ]}
-              onPress={() => navigation.navigate("buyairtime")}
+              onPress={() => verifyFingerprint()}
             >
               <Text style={styles.recharge}>Top-Up</Text>
               <Text style={[styles.topUp,{color:"#ccc"}]}>Airtime</Text>
