@@ -25,8 +25,7 @@ import Animated, {
 } from "react-native-reanimated";
 import BuyGiftCard1 from "./buygiftcard1.tsx";
 
-import * as LocalAuthentication from "expo-local-authentication";
-
+import ReactNativeBiometrics from "react-native-biometrics";
 const Home = ({
   setNav,
   darkTheme,
@@ -47,16 +46,15 @@ const Home = ({
   const boxAnime = useAnimatedStyle(() => {
     return { width: widthA.value, backgroundColor: colorA.value };
   });
-
+const rnBiometrics = new ReactNativeBiometrics();
 
 const verifyFingerprint = async()=>{
-const available = await LocalAuthentication.hasHardwareAsync();
-const enrolled = await LocalAuthentication.isEnrolledAsync();
+const available = await rnBiometrics.isSensorAvailable();
 
-if(!available || !enrolled){setInfo("Fingerprint Not available on this device");return}
-const result = await LocalAuthentication.authenticateAsync({promptMessage:"Put fingerprint",
-fallBackLabel:"Use Pin"});
-if (!result.success){setInfo("Authenticating failed");return}
+if(!available){setInfo("Fingerprint Not available on this device");return}
+const {result} = await rnBiometrics.simplePrompt({promptMessage:"Put fingerprint",
+fallbackPromptMessage:"Use Pin"});
+if (!result){setInfo("Authenticating failed");return}
 setInfo("Fingerprint authenticated successfully");
 setTimeout(()=>{nav?.navigate("buyairtime")},3000);
 
