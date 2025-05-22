@@ -5,7 +5,7 @@ import {useAnimatedStyle,useSharedValue,withTiming} from "react-native-reanimate
 
 const { width, height } = Dimensions.get('window');
 
-export Default function Drop(){
+export default function Drop(){
 	const [cardColor,setCardColor]=useState("green");
 
 	const dropZoneY = height*0.6;
