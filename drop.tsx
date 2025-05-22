@@ -1,63 +1,42 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity,Animated, PanResponder, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 
 import {useAnimatedStyle,useSharedValue,withTiming} from "react-native-reanimated";
 
 const { width, height } = Dimensions.get('window');
-const dropZoneY = height * 0.6;
-export default function Drop() {
 
-  const pan = useRef(new Animated.ValueXY()).current;
-  const [dropped, setDropped] = useState(false);
-  const[cardColor,setCardColor]=useState("#1e3a8a");
-  const [amount,setAmount]=useState("");
+export Default function Drop(){
+	const [cardColor,setCardColor]=useState("green");
 
+	const dropZoneY = height*0.6;
 
+const translateY = useSharedValue(0);
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
+const translateX = useSharedValue(0);
+const isDropped = useSharedValue(false);
 
-      onPanResponderMove:(e,gesture)=>{
-const dy = gesture.dy <0? gesture.dy:0;
-      pan.setValue({x:0,y:dy});
+const gestureHandler = useAnimatedGestureHandler({
+onActive:(e)=>{
+translateY.value = e.translationY;
+translateX.value = e.translationX;
+if(e.absoluteY > dropZoneY){
+	setCardColor("red");
+}},
+onEnd:(e)=>{
+translateY.value = withSpring(0);}
+});
 
-      setAmount(gesture.moveY);
-      if(gesture.moveY>dropZoneY){
-      setCardColor("green");}
-      else{setCardColor("#1e3a8a")}},
+const cardAnim = useAnimatedStyle(()=>{
+return{translateY:translateY.value,translateX:translateX.value}})
 
-      onPanResponderRelease: (_, gesture) => {
-        if (gesture.moveY > dropZoneY) {
-          setDropped(true);
-	  Animated.spring(pan, {
-          toValue: { x: 0, y: 0 },
-          useNativeDriver: true,
-        }).start();
-	  
-        }
-      },
-    })
-  ).current;
-
-  const cardTop= useSharedValue(0);
-  const cardMove = useAnimatedStyle(()=>{
-  return{translateY:cardTop.value}});
-
-  const moveCardUp = ()=>{
-
-  cardTop.value=withTiming(-20,{duration:1500});
-  }
 
   return (
     <View style={styles.container}>
-      <Animated.View
-        style={[styles.card, { zIndex:2,top:40,width:270,height:130,backgroundColor:cardColor,transform: pan.getTranslateTransform() },cardMove]}
-        {...panResponder.panHandlers}
-      >
+      <PanGestureHandler><Animated.View
+        style={[styles.card, { zIndex:2,top:40,width:270,height:130,backgroundColor:cardColor,}]}>
         <Text style={styles.cardText}>**** **** **** 4242</Text>
         <Text style={styles.balance}>${amount.toLocaleString("en-us")}</Text>
-      </Animated.View>
+      </Animated.View></PanGestureHandler>
 <View style={{top:100,position:"absolute",width:"80%",height:150,borderTopRightRadius:20,borderTopLeftRadius:20,backgroundColor:"#ffe0b2",alignItems:"center",zIndex:0,justifyContent:"center"}}                 />
 
       <View style={{top:140,zIndex:3,elevation:10,shadowRadius:8,shadowColor:"black",position:"absolute",width:"80%",height:150,borderBottomRightRadius:10,borderBottomLeftRadius:10,backgroundColor:"#feb819",alignItems:"center",justifyContent:"center"}}>
