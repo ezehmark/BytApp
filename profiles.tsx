@@ -7,6 +7,8 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Pressable,
+  Linking,
   Image,
 } from "react-native";
 import { BlurView } from "expo-blur";
@@ -200,7 +202,7 @@ const Profile = ({ setDarkTheme, darkTheme, toggleMenu, toggleMsg }) => {
                 <Text style={styles.item1}>Engage customer support </Text>
                 <Text style={styles.item3}>Follow us on ↓</Text>
 
-                <TouchableOpacity style={styles.socialIcons}>
+                <View style={styles.socialIcons}>
                   <View style={styles.icon1}>
                     <Image
                       style={styles.iconImg}
@@ -209,14 +211,14 @@ const Profile = ({ setDarkTheme, darkTheme, toggleMenu, toggleMsg }) => {
                       }}
                     />
                   </View>
-                  <View style={styles.icon1}>
+                  <Pressable onPress={()=>Linking.openURL("https://x.com/EzehMark1")}style={styles.icon1}>
                     <Image
                       style={styles.iconImg}
                       source={{
                         uri: "https://i.postimg.cc/QC7PD7P4/Picsart-24-11-07-07-18-09-134.png",
                       }}
                     />
-                  </View>
+                  </Pressable>
                   <View style={styles.icon1}>
                     <Image
                       style={styles.iconImg}
@@ -225,7 +227,7 @@ const Profile = ({ setDarkTheme, darkTheme, toggleMenu, toggleMsg }) => {
                       }}
                     />
                   </View>
-                </TouchableOpacity>
+                </View>
               </LinearGradient>
             </View>
           </ScrollView>

@@ -38,7 +38,7 @@ import Drop from "./drop.tsx";
 export default function App() {
 
 	const[darkTheme,setDarkTheme]=useState(false);
-	const [balance, setBalance]=useState(150000);
+	const [balance, setBalance]=useState(1500000);
 
 
 const Stack = createStackNavigator();
@@ -95,7 +95,7 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="home"
-          screenOptions={{ headerShown: false,gestureEnabled:true,gestureDirection:"vertical",...TransitionPresets.ModalSlideomBottomIOS}}
+          screenOptions={{ headerShown: false,gestureEnabled:false}}
         >
           <Stack.Screen name="home">
             {(props) => (

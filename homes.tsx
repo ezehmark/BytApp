@@ -23,6 +23,7 @@ import Animated, {
   withTiming,
   withRepeat,
   withSequence,
+  Easing,
 } from "react-native-reanimated";
 import BuyGiftCard1 from "./buygiftcard1.tsx";
 
@@ -45,6 +46,7 @@ const Home = ({
     }
   }, [navigation]);
 const rnBiometrics = new ReactNativeBiometrics();
+const[infoColor,setInfoColor]=useState("#d50204");
 
 const verifyFingerprint = async()=>{
 const available = await rnBiometrics.isSensorAvailable();
@@ -52,21 +54,24 @@ const available = await rnBiometrics.isSensorAvailable();
 if(!available){setInfo("Fingerprint Not available on this device");return}
 const {error,success} = await rnBiometrics.simplePrompt({promptMessage:"Put finger",
 fallbackPromptMessage:"Use Pin"});
-if (!success){setInfo("Authenticating failed");setTimeout(()=>{setInfo("")},4100);return}
-setInfo("Fingerprint authenticated successfully");
+if (!success){setInfoColor("#e8555b");setInfo("Authentication failed  ⚠️");setTimeout(()=>{setInfo("")},4100);return}
+setInfoColor("#feb819");
+setInfo("Fingerprint authenticated successfully ✔️");
 setTimeout(()=>{navigation.navigate("buyairtime")},3000);
 
 }
-const flashSize = useSharedValue(1);
+const flashOpacity = useSharedValue(1);
 
 const flashAnim = useAnimatedStyle(()=>{
-return{transform:[{scale:flashSize.value}]}});
+return{opacity:flashOpacity.value}});
 
 useEffect(()=>{
-flashSize.value=withRepeat(withSequence(
-withTiming(1.3,{duration:2000}),
-withTiming(0.9,{duration:1500})
-			    ),-1, false)},[]);
+flashOpacity.value = withRepeat(withSequence(
+withTiming(0.3,{duration:1200}),
+withTiming(1,{duration:1200}),
+withTiming(0.3,{duration:1600}),
+withTiming(1,{duration:2000}),
+			    ),-1)},[]);
 
   const rotateA = useSharedValue("0deg");
 
@@ -229,22 +234,19 @@ withTiming(0,{duration:4000}))
             >
               NGN
             </Text>
-            <Text style={{ color: darkTheme?"white":"#8a5f0b", fontSize: 25, fontWeight: "bold" }}>
-              {click ? (
-                balance.toLocaleString("en-us")
+	    { click?(<Text style={{ color: darkTheme?"white":"#8a5f0b", fontSize: balance.length>5?14:25, fontWeight: "bold" }}>{balance.toLocaleString("en-us")}</Text>
               ) : (
                 <Animated.Text
                   style={[{
                     fontSize: 16,
                     alignSelf: "center",
-                    position: "absolute",
 		   color:darkTheme?"#feb819":"#8a5f0b" 
                   },flashAnim]}
                 >
                   ⚡ ⚡ ⚡ ⚡
                 </Animated.Text>
               )}
-            </Text>
+            
 
             <Pressable
               style={{
@@ -330,7 +332,7 @@ withTiming(0,{duration:4000}))
 
 
 	<View style={{width:"100%",justifyContent:"space-between",flexDirection:"column",gap:4,backgroundColor:'transparent'}}>
-	{info &&<Animated.Text style={[{color:"red",fontWeight:"bold",textAlign:"center",fontSize:12,padding:15,backgroundColor:"black",borderRadius:2},infoStyle]}>{info}</Animated.Text>}
+	{info &&<Animated.Text style={[{color:infoColor,fontWeight:"bold",textAlign:"center",fontSize:12,padding:15,backgroundColor:"#4A6163",borderRadius:2},infoStyle]}>{info}</Animated.Text>}
             <View style={[styles.headingContainer, { zIndex: 60,backgroundColor:"transparent" }]}>
               <Text
                 style={[
