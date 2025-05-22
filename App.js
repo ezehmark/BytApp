@@ -29,6 +29,7 @@ import BuyAirtime from "./buyairtime.tsx";
 import BuyData from "./buydata.tsx";
 import TvSub from "./tvsubs.tsx";
 import Electricity from "./electricity.tsx";
+import Drop from "./drop.tsx";
 
 
 
@@ -84,6 +85,7 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
       id: 4,
       uri: "https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png",
     },
+
   ];
 
 
@@ -108,11 +110,19 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
               />
             )}
           </Stack.Screen>
+
+	  <Stack.Screen name="drop">
+	  {(props)=><Drop {...props}/>}
+	  </Stack.Screen>
           <Stack.Screen name="tvsub">
             {(props) => (
               <TvSub {...props} toggleMenu={toggleMenu} toggleMsg={toggleMsg} />
             )}
           </Stack.Screen>
+
+
+
+
           <Stack.Screen name="electricity">
             {(props) => (
               <Electricity

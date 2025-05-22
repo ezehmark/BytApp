@@ -5,7 +5,7 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
+  Pressable,
   Alert,
   StatusBar,
 } from "react-native";
@@ -21,6 +21,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
+  withRepeat,
   withSequence,
 } from "react-native-reanimated";
 import BuyGiftCard1 from "./buygiftcard1.tsx";
@@ -35,50 +36,37 @@ const Home = ({
   toggleMenu,
   toggleMsg,
 }) => {
-  const widthA = useSharedValue(270);
-  const colorA = useSharedValue("#2f7378");
+
+  const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
   const [info,setInfo]=useState("");
   useEffect(() => {
     if (setNav) {
       setNav(navigation);
     }
   }, [navigation]);
-  const boxAnime = useAnimatedStyle(() => {
-    return { width: widthA.value, backgroundColor: colorA.value };
-  });
 const rnBiometrics = new ReactNativeBiometrics();
 
 const verifyFingerprint = async()=>{
 const available = await rnBiometrics.isSensorAvailable();
 
 if(!available){setInfo("Fingerprint Not available on this device");return}
-const {result} = await rnBiometrics.simplePrompt({promptMessage:"Put fingerprint",
+const {error,success} = await rnBiometrics.simplePrompt({promptMessage:"Put finger",
 fallbackPromptMessage:"Use Pin"});
-if (!result){setInfo("Authenticating failed");return}
+if (!success){setInfo("Authenticating failed");setTimeout(()=>{setInfo("")},4100);return}
 setInfo("Fingerprint authenticated successfully");
-setTimeout(()=>{nav?.navigate("buyairtime")},3000);
+setTimeout(()=>{navigation.navigate("buyairtime")},3000);
 
 }
-  useEffect(() => {
-    setTimeout(() => {
-      const myInterval = setInterval(() => {
-        widthA.value = withSequence(
-          withTiming(300, { duration: 1000 }),
-          withTiming(240, { duration: 700 }),
-          withTiming(300, { duration: 800 }),
-          withTiming(270, { duration: 700 }),
-        );
+const flashSize = useSharedValue(1);
 
-        colorA.value = withSequence(
-          withTiming("#2f7378", { duration: 1000 }),
-          withTiming("#4A6163", { duration: 700 }),
-          withTiming("#2f7378", { duration: 800 }),
-          withTiming("#4A6163", { duration: 700 }),
-        );
-      }, 15000);
-      return () => clearInterval(myInterval);
-    }, 6000);
-  }, []);
+const flashAnim = useAnimatedStyle(()=>{
+return{transform:[{scale:flashSize.value}]}});
+
+useEffect(()=>{
+flashSize.value=withRepeat(withSequence(
+withTiming(1.3,{duration:2000}),
+withTiming(0.9,{duration:1500})
+			    ),-1, false)},[]);
 
   const rotateA = useSharedValue("0deg");
 
@@ -144,6 +132,26 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
   const toggleClick = () => {
     setClick((click) => !click);
   };
+
+  const infoOpacity = useSharedValue(0);
+  const infoPadding = useSharedValue(0);
+
+  const infoStyle =  useAnimatedStyle(()=>{
+  return{opacity:infoOpacity.value,
+  padding:infoPadding.value}});
+
+  useEffect(()=>{
+  if(info){
+  infoOpacity.value = withSequence(
+withTiming(1,{duration:1000}),
+withTiming(1,{duration:3000}),
+withTiming(0,{duration:4000}));
+infoPadding.value = withSequence(
+withTiming(10,{duration:1000}),
+withTiming(10,{duration:3000}),
+withTiming(0,{duration:4000}))
+
+  }},[info]);
   return (
     <LinearGradient
       colors={[
@@ -183,17 +191,15 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
           source={{
             uri: "https://i.postimg.cc/sXShHWLR/Picsart-24-11-01-15-07-20-853.png",
           }}
-          style={[styles.icon,{left:55}]}
+          style={[styles.icon,{left:54}]}
         />
-        <LinearGradient                                                         colors={[
+        <AnimatedGradient                                                         colors={[
           darkTheme ? "#022d36" : "#fff2cc",                                        darkTheme ? "#022d36" : "#fff2cc",                                      darkTheme ? "#022d36" : "#fff2cc",                                  ]}
         start={{ x: 1, y: 1 }}
         end={{ x: 1, y: 1 }}                                                
           style={[
             styles.balanceArea,
-            { borderWidth:0,elevation:4,shadowColor:darkTheme?"black":"rgba(0,0,0,0.7)",borderColor:"#ccc",backgroundColor: darkTheme ? "#022d36" : "#fff2cc" },
-            boxAnime,
-          ]}
+            { borderWidth:0,elevation:4,shadowColor:darkTheme?"black":"rgba(0,0,0,0.7)",borderColor:"#ccc",backgroundColor: darkTheme ? "#022d36" : "#fff2cc" }]}
         >
           <Text style={[styles.balance,{color:darkTheme?"white":"#4a6163"}]}>Balance</Text>
 
@@ -227,19 +233,20 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
               {click ? (
                 balance.toLocaleString("en-us")
               ) : (
-                <Text
-                  style={{
+                <Animated.Text
+                  style={[{
                     fontSize: 16,
                     alignSelf: "center",
                     position: "absolute",
-                  }}
+		   color:darkTheme?"#feb819":"#8a5f0b" 
+                  },flashAnim]}
                 >
                   ⚡ ⚡ ⚡ ⚡
-                </Text>
+                </Animated.Text>
               )}
             </Text>
 
-            <TouchableOpacity
+            <Pressable
               style={{
                 borderRadius: 15,
                 backgroundColor: darkTheme?"black":"#cc7722",
@@ -262,9 +269,9 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
               >
                 {click ? "Hide" : "See"}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
-        </LinearGradient>
+        </AnimatedGradient>
       </LinearGradient>
       <View
         style={{
@@ -279,7 +286,7 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
       ><Text style={{color:darkTheme?"#ccc":"black",fontSize:11,}}>Welcome, Mark</Text>
         <Text style={styles.welcome}>{"Welcome, Mark"}</Text>
 
-	<TouchableOpacity
+	<Pressable
             onPress={toggleMsg}
             style={[                                                                styles.infoCircle,
               {                                                                       elevation: 4,
@@ -287,11 +294,11 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                 backgroundColor: darkTheme ? "#022d37" : "black",                   },                                                                  ]}                                                                  >                                                                       <Image                                                                  style={styles.bellIcon}                                               source={{
                 uri: "https://i.postimg.cc/Kvhbr28G/Picsart-24-11-01-00-29-29-864.png",                                                                   }}
             />
-          </TouchableOpacity>
+          </Pressable>
 
       </View>
 
-      <TouchableOpacity style={styles.menuCircle} onPress={toggleMenu}>
+      <Pressable style={styles.menuCircle} onPress={toggleMenu}>
         <Image
           style={styles.menuIcon}
           source={{
@@ -300,7 +307,7 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
               : "https://i.postimg.cc/3xCFDfww/Picsart-25-05-04-05-37-21-849.png",
           }}
         />
-      </TouchableOpacity>
+      </Pressable>
 
       <View
         style={{
@@ -316,13 +323,15 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
           <View
             style={{
               alignSelf: "center",
-              backgroundColor: "transparent",
               width: "100%",
-              paddingBottom: 50,
-              height: 900,
-            }}
-          >{info &&<Text style={{color:"red",fontWeight:"bold",textAlign:"center",fontSize:12,padding:5,backgroundColor:"black",borderRadius:5}}>{info}</Text>}
-            <View style={[styles.headingContainer, { zIndex: 60 }]}>
+	      top:15,
+              paddingBottom: 50,alignItems:"center",
+	justifyContent:"space-between",flexDirection:"column",gap:5,paddingBottom:550,backgroundColor:'transparent'}}>
+
+
+	<View style={{width:"100%",justifyContent:"space-between",flexDirection:"column",gap:4,backgroundColor:'transparent'}}>
+	{info &&<Animated.Text style={[{color:"red",fontWeight:"bold",textAlign:"center",fontSize:12,padding:15,backgroundColor:"black",borderRadius:2},infoStyle]}>{info}</Animated.Text>}
+            <View style={[styles.headingContainer, { zIndex: 60,backgroundColor:"transparent" }]}>
               <Text
                 style={[
                   styles.heading1,
@@ -339,13 +348,18 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
               </Animated.Text>
             </View>
 
-            <TouchableOpacity
+	    </View>
+
+	    <View style={{width:"100%",height:400,backgroundColor:"transparent"}}>
+
+            <Pressable
               onPress={() => navigation.navigate("buygiftcard1")}
               style={[
                 styles.buyGiftCard,
                 {
                   shadowColor: darkTheme ? "white" : "black",
                   elevation: 2,
+		  top:10,
                   left: "2%",
                   backgroundColor: darkTheme ? "#cc7722" : "#cc7722",
                 },
@@ -363,14 +377,15 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                   }}
                 />
               </View>
-            </TouchableOpacity>
+            </Pressable>
 
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.sellGiftCard,
                 {
                   shadowColor: darkTheme ? "white" : "black",
                   elevation: 2,
+		  top:10,
                   right: "2%",
                 },
               ]}
@@ -386,9 +401,9 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                   }}
                 />
               </View>
-            </TouchableOpacity>
+            </Pressable>
 
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.buyData,
                 {
@@ -411,9 +426,9 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                   }}
                 />
               </View>
-            </TouchableOpacity>
+            </Pressable>
 
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.buyData,
                 {
@@ -434,9 +449,9 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                   }}
                 />
               </View>
-            </TouchableOpacity>
+            </Pressable>
 
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.buyAirtime,
                 {
@@ -457,9 +472,9 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                   }}
                 />
               </View>
-            </TouchableOpacity>
+            </Pressable>
 
-            <TouchableOpacity
+            <Pressable
               style={[
                 styles.subscribeTv,
                 { shadowColor: darkTheme ? "white" : "black", elevation: 2 },
@@ -470,7 +485,7 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                 style={styles.tvImage}
                 source={{ uri: "https://i.postimg.cc/7LXTzX0b/TvSubs.png" }}
               />
-              <Text style={styles.tvheading}>Fast Tv Subscriptions</Text>
+              <Text style={styles.tvheading}>Fast TV subscriptions</Text>
               <View style={styles.TVs}>
                 <View style={styles.TV}>
                   <Image
@@ -499,9 +514,9 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                   />
                 </View>
               </View>
-            </TouchableOpacity>
+            </Pressable>
 
-            <TouchableOpacity
+            <Pressable
               onPress={() => navigation.navigate("electricity")}
               style={[
                 styles.buyElectricity,
@@ -522,8 +537,8 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                   }}
                 />
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Pressable>
+            <Pressable
               style={[
                 styles.fundBet,
                 {
@@ -543,9 +558,9 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                   }}
                 />
               </View>
-            </TouchableOpacity>
+            </Pressable>
 
-            <TouchableOpacity style={styles.Crypto}>
+            <Pressable style={styles.Crypto}>
               
               <Image
                 style={styles.tvImage}
@@ -558,7 +573,10 @@ setTimeout(()=>{nav?.navigate("buyairtime")},3000);
                 <Text> F⚡ASH™ Trading App</Text>
               </BlurView>
               <Text style={styles.comingSoon}>Coming Soon...</Text>
-            </TouchableOpacity>
+            </Pressable>
+
+	    
+	    </View>
           </View>
         </ScrollView>
       </View>
@@ -626,24 +644,23 @@ const styles = StyleSheet.create({
   },
 
   headingContainer: {
-    position: "absolute",
-    height: 30,
     width: "100%",
-    padding: 30,
-    left: 10,
+    justifyContent:"space-between",
+    gap:4,
+    paddingLeft:10,
+    flexDirection:"column",
+    backgroundColor:"red"
+
   },
   heading1: {
     fontSize: 15,
     fontWeight: "bold",
-    position: "absolute",
-    top: 15,
     color: "#09435F",
   },
   heading2: {
     fontSize: 10,
+    zIndex:200,
     fontWeight: "bold",
-    position: "absolute",
-    bottom: 8,
     color: "#526669",
   },
   container: {
@@ -704,7 +721,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     elevation: 4,
     position: "absolute",
-    top: 550,
+    top: 540,
     left: 15,
   },
   PHCN: {
@@ -759,7 +776,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.3,
     elevation: 4,
-    top: 550,
+    top: 540,
     position: "absolute",
     right: 15,
   },
@@ -928,7 +945,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     elevation: 4,
     position: "absolute",
-    top: 215,
+    top: 165,
     marginLeft: 0,
   },
   buyAirtime: {
@@ -942,7 +959,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.3,
     elevation: 4,
-    top: 215,
+    top: 165,
     position: "absolute",
     right: 15,
   },
@@ -957,23 +974,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.3,
     elevation: 4,
-    top: 400,
-    position: "absolute",
-    right: 15,
-    overflow: "hidden",
-  },
-  subscribeTv: {
-    height: 120,
-    width: 327,
-    marginVertical: "auto",
-    backgroundColor: "#20a385",
-    borderRadius: 15,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 4,
-    shadowOpacity: 0.3,
-    elevation: 4,
-    top: 400,
+    top: 360,
     position: "absolute",
     right: 15,
     overflow: "hidden",
@@ -1151,7 +1152,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: "100%",
     flexDirection: "row",
-    bottom: 15,
+    bottom: 0,
   },
 
   TV: {
@@ -1178,10 +1179,10 @@ const styles = StyleSheet.create({
   TVimageS: { height: 45, width: 65, resizeMode: "contain" },
   tvheading: {
     alignSelf: "center",
-    top: 15,
+    top: 5,
     position: "absolute",
-    padding: 3,
-    borderRadius: 15,
+    padding: 10,
+    borderRadius:15 ,
     fontSize: 15,
     backgroundColor: "#3D6178",
     color: "white",

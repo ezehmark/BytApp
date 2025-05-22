@@ -15,6 +15,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const Profile = ({ setDarkTheme, darkTheme, toggleMenu, toggleMsg }) => {
   const route = useRoute();
+  const navigation = useNavigation();
 
   const toggleDarkTheme = () => {
     setDarkTheme((prev) => !prev);
@@ -88,7 +89,7 @@ const Profile = ({ setDarkTheme, darkTheme, toggleMenu, toggleMsg }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={toggleMsg}
+            onPress={()=>{navigation.navigate("drop")}}
             style={[
               styles.infoCircle,
               {
