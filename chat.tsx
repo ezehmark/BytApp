@@ -14,7 +14,6 @@ import {
 } from "react-native";
 import {MMKV} from "react-native-mmkv";
 import Animated,{Easing,useSharedValue,withTiming,withSequence,withRepeat,useAnimatedStyle} from "react-native-reanimated";
-import { io } from "socket.io-client";
 import { BlurView } from "expo-blur";
 import axios from "axios";
 import Pusher from "pusher-js";
@@ -79,37 +78,6 @@ retrieveChats();},[]);
 
 
 
-const socketRef = useRef();
-
-useEffect(() => {
-  socketRef.current = io("https://mybackend-oftz.onrender.com", {
-    transports: ["websocket"],
-  });
-
-  socketRef.current.on("connect", () => {
-    console.log("Connected to socket");
-  });
-
-  socketRef.current.on("receive-chats", (newMsg) => {
-    setInChats(prev => [...prev, newMsg]);
-  });
-
-  return () => {
-    socketRef.current.disconnect();
-  };
-}, []);
-
-const sendChat = () => {
-    if (msg !== "") {
-      setLoading(true);
-      setLoadingTxt("Chatting...");                                         socketRef.current.emit("send-chats", msg, (response) => {
-        console.log(response);
-        setNotifyMsg(response.info);                                          dropDownChanger();
-        setLoading(false);
-      });
-      setMsg("");
-    }
-  };
 
 
   const flatListRef = useRef(null);
@@ -124,7 +92,10 @@ const sendChat = () => {
 
   const[logoAnim,setLogoAnim]=useState(false);
   const widthX = useSharedValue(1);
-      const widthAnim = useAnimatedStyle(()=>{                        return{borderWidth:widthX.value}});                                                                                             const animateBorder = ()=>{                                     widthX.value = withTiming(8,{duration:2000})}
+      const widthAnim = useAnimatedStyle(()=>{                        
+	      return{borderWidth:widthX.value}});                                                                                             
+	      const animateBorder = ()=>{                                     
+		      widthX.value = withTiming(8,{duration:2000})}
 
   const sendToBackend = async () => {
     if (msg !== "") {
