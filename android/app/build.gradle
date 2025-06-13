@@ -9,7 +9,7 @@ project.ext.react = [
 ]
 
 react {
-    entryFile = file("index.js")
+    entryFile = file("$projectRoot/index.js")
 
     reactNativeDir = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
     hermesCommand = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc"
