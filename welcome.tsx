@@ -1,5 +1,5 @@
 import {useState,useEffect} from "react";
-import {StyleSheet,View,Text} from "react-native";
+import {StyleSheet,View,Text,StatusBar} from "react-native";
 import Animated,{useSharedValue,useAnimatedStyle,withTiming,
 	withSequence} from "react-native-reanimated";
 import { BallIndicator} from "react-native-indicators";
@@ -45,6 +45,8 @@ withTiming(400,{duration:1200})
 
 
 return(<>
+       <StatusBar backgroundColor={"#00d4d4"}
+       barStyle={"light-content"}/>
 <View style={styles.main}>
 {spin && <BallIndicator size={40} count={5}/>}
 

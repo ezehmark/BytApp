@@ -1,4 +1,4 @@
-name: Build Debug APK
+name: Build Release APK
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build Debug APK
+    name: Build Release APK
     runs-on: ubuntu-latest
 
     steps:
@@ -46,7 +46,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-metro-
 
-      - name: Bundle React Native JS
+      - name: Bundle React Native JS (Release)
         run: |
           node ./node_modules/react-native/cli.js bundle \
             --platform android \
@@ -62,11 +62,11 @@ jobs:
       - name: Make Gradle Executable
         run: chmod +x android/gradlew
 
-      - name: Build Debug APK
-        run: cd android && ./gradlew assembleDebug --no-daemon --stacktrace
+      - name: Build Release APK
+        run: cd android && ./gradlew assembleRelease --no-daemon --stacktrace
 
-      - name: Upload Debug APK
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: debug-app-${{ github.sha }}
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: release-apk-${{ github.sha }}
+          path: android/app/build/outputs/apk/release/app-release.apk

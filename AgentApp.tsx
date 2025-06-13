@@ -23,6 +23,7 @@ export default function App() {
 const Stack = createStackNavigator();
 
 const [chats,setChats]=useState([]);
+const [newestChats,setNewestChats]=useState([]);
 function getDateTime(){
 	const date = new Date();
 	const months = [
@@ -113,23 +114,11 @@ const socket = io("https://mybackend-oftz.onrender.com");
 useEffect(()=>{                                                                         socket.on("connection",()=>console.log("Front end is connected to backend"));
                                                                                         socket.on("complaints",(info)=>{
 try{const mdata = Array.isArray(info)?info:[info];                                                
-	console.log(info);                                                                 console.log(info);
+console.log(info);                                                                 
+console.log(info);
 console.error(info);
-const dateNow = getDateTime();
-setDate(dateNow);                                                                       //Storing it locally:
 
-myStore.set("date",dateNow);
-const msgAndTime = mdata.map((item)=>({...item,date:dateNow}))
-setChats(prev=>{
-const updatedChats = [...prev,...msgAndTime];
-
-
-myStore.set("storedChats",JSON.stringify(updatedChats));                                    console.log(updatedChats);
-
-
-myStore.set("date",dateNow);
-return updatedChats;
-})     
+setChats(prev=>[...prev,...mdata])     
 }
 catch(error){console.error(error)}
 });
@@ -142,18 +131,12 @@ catch(error){console.error(error)}
 const[savedChats,setSavedChats]=useState([]);                                   
 const[myDate,setMyDate]=useState("");
 //Dark mode toggle
-const[dark,setDark]=useState(false);
+const[dark,setDark]=useState(true);
 
 function toggleDark(){
 setDark(dark=>!dark)}
 
 
-useEffect(()=>{
-const savedChat = JSON.parse(myStore.getString("storedChats") || "[]");
-const mDate = myStore.getString("date");
-setSavedChats(savedChat);
-setMyDate(mDate)
-},[]);
 
 
 const[isConnect,setIsConnect]= useState(false);
@@ -169,7 +152,11 @@ const[isConnect,setIsConnect]= useState(false);
 		  myDate={myDate}
 		  date={date} updatedChats={chats}
 		  dark={dark}
-		  savedChats={savedChats}/>}
+		  newestChats={newestChats}
+		  setNewestChats={setNewestChats}
+		  myStore={myStore}
+		  savedChats={savedChats}/>
+	  }
 	  </Stack.Screen>
 
 	  <Stack.Screen name="bubble">
@@ -186,9 +173,10 @@ const[isConnect,setIsConnect]= useState(false);
 
 	  <Stack.Screen name="chatArea">
           {(props)=><ChatArea {...props} 
-		  myDate={myDate} myStore={myStore}
-		  date={date} date = {date} myDate={myDate} 
-	updatedChats={chats} savedChats={savedChats}/>}
+		  dark={dark}
+		  myStore={myStore}
+		  setNewestChats={setNewestChats}
+	updatedChats={chats}/>}
           </Stack.Screen>
 
 
