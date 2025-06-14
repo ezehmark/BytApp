@@ -5,15 +5,26 @@ apply plugin: "com.facebook.react"
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
 project.ext.react = [
-    enableHermes: true
+    enableHermes: false
 ]
 
 react {
     entryFile = file("../../index.js")
 
-    reactNativeDir = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
-    hermesCommand = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc"
-    codegenDir = new File(["node", "--print", "require.resolve('@react-native/codegen/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
+    reactNativeDir = new File(["node", "--print", "require.resolve('react-native/package.json')"]
+        .execute(null, rootDir).text.trim())
+        .getParentFile()
+        .getAbsoluteFile()
+
+    hermesCommand = new File(["node", "--print", "require.resolve('react-native/package.json')"]
+        .execute(null, rootDir).text.trim())
+        .getParentFile()
+        .getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc"
+
+    codegenDir = new File(["node", "--print", "require.resolve('@react-native/codegen/package.json', { paths: [require.resolve('react-native/package.json')] })"]
+        .execute(null, rootDir).text.trim())
+        .getParentFile()
+        .getAbsoluteFile()
 
     autolinkLibrariesWithApp()
 }
@@ -35,6 +46,16 @@ android {
         versionName "1.0.0"
     }
 
+    // ✅ Target only armeabi-v7a to reduce APK size
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -49,11 +70,11 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            signingConfig signingConfigs.debug  // ✅ Use debug key for now
-            shrinkResources true                // ✅ Remove unused resources
-            minifyEnabled true                  // ✅ Enable Proguard
+            signingConfig signingConfigs.debug  // Use debug key for now
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            crunchPngs true                     // ✅ Optimize PNGs
+            crunchPngs true
         }
     }
 
@@ -97,6 +118,5 @@ dependencies {
         }
     }
 
-    // ✅ Hermes engine for performance
     implementation("com.facebook.react:hermes-android")
 }
