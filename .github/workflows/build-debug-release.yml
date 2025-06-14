@@ -63,10 +63,10 @@ jobs:
         run: chmod +x android/gradlew
 
       - name: Build Release APK
-        run: cd android && ./gradlew assembleRelease --stacktrace --info --warning-mode all
+        run: cd android && ./gradlew assembleDebug --stacktrace --info --warning-mode all
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
           name: release-apk-${{ github.sha }}
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: android/app/build/outputs/apk/release/app-debug.apk
