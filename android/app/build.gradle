@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+def jscFlavor = 'org.webkit:android-jsc:+'
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
@@ -118,5 +119,5 @@ dependencies {
         }
     }
 
-    implementation("com.facebook.react:hermes-android")
+implementation jscFlavor // JSC engine fallback
 }
