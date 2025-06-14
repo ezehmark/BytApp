@@ -161,9 +161,10 @@ useEffect(() => {
                     style={[
                       styles.chatBox,
                       {
-                        borderTopRightRadius: item.mine ? 2 : 15,
+                        borderTopRightRadius: item.mine ? 15 : 15,
                         borderTopLeftRadius: item.mine ? 15 : 2,
                         borderBottomLeftRadius: 15,
+			borderBottomRightRadius:item.mine?2:15,
                         borderTopLeftRadius: item.mine ? 15 : 2,
                         alignSelf: item.mine && "flex-end",
 			paddingVertical:!item.mine ?5:5,
@@ -298,5 +299,5 @@ listBox1: {
   },
 
   msg: { color: "#131314", fontSize: 15 },
-  date: { fontSize: 10, color:"red",position: "absolute", right: 10, bottom: 10 },
+  date: { fontSize: 10, color:"red",marginRight: 10, marginBottom: 10 },
 });
