@@ -285,7 +285,7 @@ export default function HomeComp({
                   }}
                 >
                   <Image
-                    source={{ uri: item.img }}
+                    source={require('./assets/aditem1.jpg')}
                     style={{ height: 80, resizeMode: "stretch", width: "100%" }}
                   />
                 </View>
