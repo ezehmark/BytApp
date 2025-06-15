@@ -169,7 +169,7 @@ export default function HomeComp({
                       height={40}
                       width="90%"
                       borderRadius={20}
-                      backgeoundColor={"red"}
+                      backgroundColor={"red"}
                     />
                   );
                 })}
