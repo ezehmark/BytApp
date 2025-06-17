@@ -18,8 +18,7 @@ react {
 
     hermesCommand = new File(["node", "--print", "require.resolve('react-native/package.json')"]
         .execute(null, rootDir).text.trim())
-        .getParentFile()
-        .getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc"
+        .getParentFile().getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc"
 
     codegenDir = new File(["node", "--print", "require.resolve('@react-native/codegen/package.json', { paths: [require.resolve('react-native/package.json')] })"]
         .execute(null, rootDir).text.trim())
@@ -44,9 +43,13 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
+        ndk {
+            // ✅ Only include ARMv7 to reduce size
+            abiFilters "armeabi-v7a"
+        }
     }
 
-    // ✅ Target only armeabi-v7a to reduce APK size
+    // ✅ ABI splits (no universal APK, only ARMv7)
     splits {
         abi {
             enable true
@@ -70,26 +73,31 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            signingConfig signingConfigs.debug  // Use debug key for now
+            signingConfig signingConfigs.debug  // Or change to your release key
             shrinkResources true
             minifyEnabled true
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             crunchPngs true
-        }
-    }
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        
+    
 
+    // ✅ Disable legacy packaging and exclude extra native libs
     packagingOptions {
         jniLibs {
-            useLegacyPackaging (findProperty('expo.useLegacyPackaging')?.toBoolean() ?: false)
+            useLegacyPackaging false
         }
+        exclude "**/libhermes-inspector.so" // Optional, helps if not using debug inspector
+        exclude "**/librnskia.so" // Optional, if Skia removed
     }
-
+}
+}
+    // ✅ Clean unneeded assets (ignore hidden/system files)
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
     }
 }
 
-// Optional: Apply static values from `gradle.properties`
+// Optional static packagingOptions injection
 ["pickFirsts", "excludes", "merges", "doNotStrip"].each { prop ->
     def options = (findProperty("android.packagingOptions.$prop") ?: "").split(",")
     for (i in 0..<options.size()) options[i] = options[i].trim()
@@ -118,5 +126,6 @@ dependencies {
         }
     }
 
-implementation("com.facebook.react:hermes-android")
+    // ✅ Use Hermes for smaller JS engine
+    implementation("com.facebook.react:hermes-android")
 }
