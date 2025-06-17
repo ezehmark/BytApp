@@ -43,10 +43,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-        ndk {
-            // ✅ Only include ARMv7 to reduce size
-            abiFilters "armeabi-v7a"
-        }
     }
 
     // ✅ ABI splits (no universal APK, only ARMv7)
