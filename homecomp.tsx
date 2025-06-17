@@ -16,6 +16,10 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
   withSequence,
+  useAnimatedScrollHandler,
+  interpolate,
+  Extrapolate,
+  withSpring,
 } from "react-native-reanimated";
 import { BallIndicator } from "react-native-indicators";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
@@ -36,15 +40,56 @@ export default function HomeComp({
   setNewestChats,
 }) {
   const navigation = useNavigation();
+  useEffect(() => {
+    console.log("time now:", new Date().getHours());
+  }, []);
 
-  useEffect(()=>{
-  const lastChatInterval=
-	  setInterval(()=>{const chats = JSON.parse(myStore.getString("chatList"));
-  setNewestChats(chats)},2000);
-  return()=>clearInterval(lastChatInterval);
+  //Animate dynaically the contents of scrollView as bottom is hit
+  //
+  const AnimatedScroll = Animated.createAnimatedComponent(ScrollView);
 
-  },[myStore]);
+  const scrollY = useSharedValue(0);
+  const contentHeight = useSharedValue(0);
+  const containerHeight = useSharedValue(0);
 
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (e) => {
+      scrollY.value = e.contentOffset.y;
+      contentHeight.value = e.contentSize.height;
+      containerHeight.value = e.layoutMeasurement.height;
+    },
+  });
+
+  /*const stretchStyle = useAnimatedStyle(()=>{
+const maxScroll = contentHeight.value - containerHeight.value;
+const extraScroll = scrollY.value - maxScroll;
+
+const scale = interpolate(extraScroll,
+			 [0,100],
+			 [1,1.2],
+			 Extrapolate.CLAMP);
+return {transform:[{scaleY:scale}]}})
+*/
+  useEffect(() => {
+    if (myStore) {
+      const lastChatInterval = setInterval(() => {
+        const chatString = myStore.getString("chatList");
+        if (chatString) {
+          try {
+            const parseChats = JSON.parse(chatString);
+            setNewestChats(parseChats);
+          } catch (err) {
+            console.error(err);
+          }
+        } else {
+          console.log("No chatLiat saved");
+        }
+      }, 2000);
+      return () => clearInterval(lastChatInterval);
+    } else {
+      console.log("No store found");
+    }
+  }, [myStore]);
 
   const adsBox = useRef(null);
   useEffect(() => {
@@ -73,19 +118,12 @@ export default function HomeComp({
 
   useEffect(() => {
     handleNavBar();
-    console.log(sWidth);
+    console.log(sWidth, "by", Dimensions.get("window").height);
+
     setTimeout(() => setLoading(false), 4000);
   }, []);
 
   const [loading, setLoading] = useState(true);
-
-  const chaits = [
-    {
-      name: "Onah Kingsley",
-      msg: "Please check why my deposit failed...",
-      msgCount: 20,
-    },
-  ];
 
   const adsItem = [
     {
@@ -128,7 +166,7 @@ export default function HomeComp({
       />
 
       <View
-        style={[styles.main, { backgroundColor: dark ? "black" : "white" }]}
+        style={[styles.main, { backgroundColor: dark ? "#131314" : "white" }]}
       >
         <View
           style={[
@@ -147,7 +185,6 @@ export default function HomeComp({
             CS Agent
           </Text>
           <Text style={{ bottom: 5, fontSize: 8, right: 10, color: "grey" }}>
-            
             ...by BytanceTech
           </Text>
         </View>
@@ -155,110 +192,163 @@ export default function HomeComp({
         <View
           style={[
             styles.chatMain,
-            { backgroundColor: dark ? "#131314" : "white" },
+            { backgroundColor: dark ? "transparent" : "transparent" },
           ]}
         >
+          <LinearGradient
+            style={{
+              height: 70,
+              position: "absolute",
+              zIndex: 20,
+              top: 0,
+              width: "100%",
+              pointerEvents: "none",
+            }}
+            colors={[
+              dark ? "#131314" : "white",
+              dark ? "rgba(19,19,20,0.5)" : "rgba(255,255,255,0.5)",
+              "transparent",
+            ]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+          />
+
+          <LinearGradient
+            style={{
+              height: 70,
+              position: "absolute",
+              zIndex: 20,
+              bottom: 0,
+              width: "100%",
+              pointerEvents: "none",
+            }}
+            colors={[
+              dark ? "#131314" : "white",
+              dark ? "rgba(19,19,20,0.5)" : "rgba(255,255,255,0.5)",
+              "transparent",
+            ]}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+          />
           {loading ? (
-            <SkeletonPlaceholder backgroundColor="#ccc" paddingTop={20}>
-              {Array(6)
+            <SkeletonPlaceholder
+              borderRadius={20}
+              highlightColor={"rgba(0,212,212,0.5)"}
+              backgroundColor={dark ? "gray" : "#ccc"}
+            >
+              {Array(8)
                 .fill(null)
-                .map((_, index) => {
-                  return (
-                    <SkeletonPlaceholder.Item
-                      key={index}
-                      height={40}
-                      width="90%"
-                      borderRadius={20}
-                      backgroundColor={"red"}
-                    />
-                  );
-                })}
+                .map((_, i) => (
+                  <SkeletonPlaceholder.Item
+                    key={i}
+                    height={70}
+                    width={sWidth * 0.9}
+		    marginTop={i==0?20:0}
+                    marginBottom={20}
+                    alignSelf="center"
+                  />
+                ))}
             </SkeletonPlaceholder>
           ) : (
             <View
               style={{
                 height: 500,
-                backgroundColor: "transparent",
+                backgroundColor: "#131314",
                 alignItems: "center",
                 justifyContent: "center",
                 width: "100%",
               }}
             >
-              <ScrollView style={{ flex: 1 }}>
+              <ScrollView
+                showVerticalScrollIndicator={false}
+                style={{ flex: 1 }}
+              >
                 {Array(25)
                   .fill(null)
-                  .map((_, index) => (
-                    <Pressable
-                      onPress={() => navigation.navigate("chatArea")}
-                      style={{
-                        backgroundColor: dark ? "black" : "white",
-                        width: sWidth/1.2,
-                        elevation: 0,
-                        alignSelf: "center",
-                        justifyContent: "space-between",
-                        flexDirection: "column",
-                        borderRadius: 20,
-                        marginBottom: 10,
-			padding:10,
-                        marginTop: 10,
-			height:90,
-			borderWidth:1,
-			borderColor:dark?"rgba(255,255,255,0.1)":"rgba(0,0,0,0.1)"
-                      }}
-                    >
-                      <Text
+                  .map((_, index) => {
+                    return (
+                      <Pressable
+                        key={index}
+                        onPress={() => navigation.navigate("chatArea")}
                         style={{
-                          fontWeight: "bold",
-                          color: dark ? "rgba(255,255,255,0.88)" : "black",
-                        }}
-                      >
-                        {newestChats.length > 0
-                          && newestChats[3].name}
-                      </Text>
-                      <Text
-                        style={{
-                          color: dark ? "#ccc" : "black",
-                        }}
-                      >
-                        {newestChats[newestChats.length -1]?.msg}
-                      </Text>
-                      <View
-                        style={{
-                          height: 20,
-                          width: 20,
-                          borderRadius: 10,
-                          backgroundColor: "#00d4d4",
-                          color: "white",
-                          position: "absolute",
-                          fontSize: 10,
-                          textAlign: "center",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          top: 20,
-                          right: 20,
+                          backgroundColor: dark ? "black" : "white",
+                          width: sWidth / 1.1,
+                          alignSelf: "center",
+                          justifyContent: "space-between",
+                          flexDirection: "column",
+                          borderRadius: 20,
+                          marginBottom: 10,
+                          overflow: "hidden",
+                          padding: 10,
+                          marginTop: 10,
+                          height: 90,
+                          zIndex: 25,
+                          borderWidth: 1,
+                          borderColor: dark
+                            ? "rgba(255,255,255,0.5)"
+                            : "rgba(0,212,212,0.2)",
                         }}
                       >
                         <Text
                           style={{
-                            fontSize: 10,
-                            textAlign: "center",
-                            color: "black",
+                            fontWeight: "bold",
+                            color: dark ? "rgba(255,255,255,0.88)" : "black",
                           }}
                         >
-                          7
+                          {newestChats.length > 0
+                            ? newestChats[0].name
+                            : "Nill custumer"}
                         </Text>
-                      </View>
-                      <Text
-                        style={{
-                          fontSize: 10,
-                          color: dark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.8)",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {date ? date : myDate}
-                      </Text>
-                    </Pressable>
-                  ))}
+                        <Text
+                          style={{
+                            color: dark ? "#ccc" : "black",
+                          }}
+                        >
+                          {newestChats.length > 0
+                            ? newestChats[newestChats.length - 1].msg
+                            : "No chats yet"}
+                        </Text>
+                        <View
+                          style={{
+                            height: 20,
+                            width: 20,
+                            borderRadius: 10,
+                            backgroundColor: "#00d4d4",
+                            position: "absolute",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            top: 20,
+                            right: 20,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 10,
+                              textAlign: "center",
+                              color: "black",
+                            }}
+                          >
+                            7
+                          </Text>
+                        </View>
+                        <Text
+                          style={{
+                            fontSize: 10,
+                            color: dark
+                              ? "rgba(255,255,255,0.6)"
+                              : "rgba(0,0,0,0.8)",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {newestChats.length > 0
+                            ? newestChats[newestChats.length - 1].date
+                            : newestChats.date
+                              ? newestChats[newestChats.length - 1].date
+                              : new Date().getHours()}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
               </ScrollView>
             </View>
           )}
@@ -277,6 +367,7 @@ export default function HomeComp({
             {adsItem.map((item, index) => {
               return (
                 <View
+                  key={index}
                   style={{
                     height: 80,
                     width: 300,
@@ -285,7 +376,7 @@ export default function HomeComp({
                   }}
                 >
                   <Image
-                    source={require('./assets/aditem1.jpg')}
+                    source={require("./assets/aditem1.jpg")}
                     style={{ height: 80, resizeMode: "stretch", width: "100%" }}
                   />
                 </View>
@@ -304,7 +395,7 @@ const styles = StyleSheet.create({
   main: { height: "100%", width: "100%", backgroundColor: "#ccc" },
   chatMain: {
     height: "70%",
-    top: 90,
+    top: "10%",
     alignItems: "center",
     position: "absolute",
     borderBottomLeftRadius: 20,
@@ -318,7 +409,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "space-between",
     flexDirection: "row",
-    top: 25,
+    top: 10,
     padding: 10,
     paddingBottom: 20,
     alignItems: "center",
