@@ -196,7 +196,7 @@ export default function ChatArea({
                       paddingHorizontal: 15,
 		      alignItems:"flex-start",
                       backgroundColor: item.mine
-                        ? "rgba(0,212,212,0.6)"
+                        ? "rgba(0,212,212,0.7)"
                         : "#a9bf90",
                     },
                   ]}
