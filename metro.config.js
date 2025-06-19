@@ -13,7 +13,7 @@ module.exports = (async () => {
         keep_classnames: false,
         keep_fnames: false,
         mangle: {
-          toplevel: true,
+          toplevel: process.env.NODE_ENV === "production",
         },
         output: {
           comments: false,
