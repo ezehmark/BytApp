@@ -28,17 +28,21 @@ import { useNavigation } from "@react-navigation/native";
 import BottomTab from "./bottomTab.tsx";
 import * as NavigationBar from "expo-navigation-bar";
 import { LinearGradient } from "expo-linear-gradient";
+import useStore from "./zustand";
 
 export default function HomeComp({
   updatedChats,
-  dark,
-  savedChats,
   date,
   myDate,
   newestChats,
   myStore,
   setNewestChats,
 }) {
+
+
+
+//calling items up from zustand:
+const {dark} = useStore;
   const navigation = useNavigation();
   useEffect(() => {
     console.log("time now:", new Date().getHours());

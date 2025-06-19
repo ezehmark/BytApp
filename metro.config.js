@@ -1,33 +1,31 @@
-const { getDefaultConfig } = require("metro-config");
+const { getDefaultConfig } = require("expo/metro-config");
 
-module.exports = (async () => {
-  const {
-    resolver: { sourceExts, assetExts },
-    transformer,
-  } = await getDefaultConfig();
+module.exports = (() => {
+  const defaultConfig = getDefaultConfig(__dirname);
 
   return {
+    ...defaultConfig,
     transformer: {
-      ...transformer,
+      ...defaultConfig.transformer,
       minifierConfig: {
         keep_classnames: false,
         keep_fnames: false,
         mangle: {
-          toplevel: process.env.NODE_ENV === "production",
+          toplevel: process.env.NODE_ENV === "production", // Avoid mangling in development
         },
         output: {
           comments: false,
         },
         compress: {
-          drop_console: true,
+          drop_console: true, // Remove console.logs in production
           passes: 2,
           toplevel: true,
         },
       },
     },
     resolver: {
-      assetExts,
-      sourceExts,
+      assetExts: defaultConfig.resolver.assetExts,
+      sourceExts: defaultConfig.resolver.sourceExts, // Ensure source extensions are correct
     },
   };
 })();
