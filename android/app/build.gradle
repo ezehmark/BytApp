@@ -45,7 +45,6 @@ android {
         versionName "1.0.0"
     }
 
-    // ✅ ABI splits (no universal APK, only ARMv7)
     splits {
         abi {
             enable true
@@ -67,33 +66,35 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            // No minification or resource shrinking in debug
+            minifyEnabled false
+            shrinkResources false
         }
+
         release {
-            signingConfig signingConfigs.debug  // Or change to your release key
+            signingConfig signingConfigs.debug // Change to release key if needed
             shrinkResources true
             minifyEnabled true
             crunchPngs true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-        
-    
 
-    // ✅ Disable legacy packaging and exclude extra native libs
-    packagingOptions {
-        jniLibs {
-            useLegacyPackaging false
+            // 🛠️ Only exclude inspector libs in release
+            packagingOptions {
+                jniLibs {
+                    useLegacyPackaging false
+                }
+                exclude "**/libhermes-inspector.so"
+                exclude "**/librnskia.so"
+            }
         }
-        exclude "**/libhermes-inspector.so" // Optional, helps if not using debug inspector
-        exclude "**/librnskia.so" // Optional, if Skia removed
     }
-}
-}
-    // ✅ Clean unneeded assets (ignore hidden/system files)
+
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
     }
 }
 
-// Optional static packagingOptions injection
+// Optional dynamic packagingOptions injection
 ["pickFirsts", "excludes", "merges", "doNotStrip"].each { prop ->
     def options = (findProperty("android.packagingOptions.$prop") ?: "").split(",")
     for (i in 0..<options.size()) options[i] = options[i].trim()
@@ -122,6 +123,5 @@ dependencies {
         }
     }
 
-    // ✅ Use Hermes for smaller JS engine
     implementation("com.facebook.react:hermes-android")
 }
