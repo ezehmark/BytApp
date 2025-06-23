@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Welcome from "./welcome";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef,useCallback } from "react";
 
 import { createStackNavigator,CardStyleInterpolators } from "@react-navigation/stack";
 import { NavigationContainer, useNavigation} from "@react-navigation/native";
@@ -18,11 +18,28 @@ import ChatArea from "./chatArea.tsx";
 
 import { MMKV } from "react-native-mmkv";
 import io from "socket.io-client";
+import AdminPanel from "./adminPanel.tsx";
+import * as SplashScreen from "expo-splash-screen";
 const myStore = new MMKV();
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const Stack = createStackNavigator();
 
+  const[appReady,setAppReady]=useState(false);
+
+useEffect(()=>{
+async function prepareApp(){
+try {
+await new Promise(res=>setTimeout(res,2000))}
+catch(e){console.warn(e)}
+finally{setAppReady(true)}}
+
+prepareApp();
+},[]);
+
+const onLayoutRootView=useCallback(async()=>{
+	if(appReady){await SplashScreen.hideAsync()}},[appReady]);
   const [chats, setChats] = useState([]);
   const [newestChats, setNewestChats] = useState([]);
   function getDateTime() {
@@ -86,8 +103,11 @@ export default function App() {
 
   const [isConnect, setIsConnect] = useState(false);
 
+  if(!appReady)return;
+
   return (
-    <>
+    <View style={{flex:1}}
+    onLayout={onLayoutRootView}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="welcome"
@@ -112,6 +132,7 @@ export default function App() {
             )}
           </Stack.Screen>
 
+
           <Stack.Screen name="welcome">
             {(props) => <Welcome {...props} />}
           </Stack.Screen>
@@ -130,9 +151,18 @@ export default function App() {
               />
             )}
           </Stack.Screen>
+	  <Stack.Screen name="adminPanel"                                             
+	  options={{                                                
+		  cardStyleInterpolator: CardStyleInterpolators.forHorizontalAndroid  }}>                                                                             
+		  {(props) => (
+              <AdminPanel                                                             
+	      {...props}                                                          
+	      />
+            )}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
 
-    </>
+    </View>
   );
 }

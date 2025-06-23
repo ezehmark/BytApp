@@ -24,16 +24,16 @@ import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import LinearGradient from "react-native-linear-gradient";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import BottomTab from "./bottomTab.tsx";
-import * as NavigationBar from "expo-navigation-bar";
 import { MMKV } from "react-native-mmkv";
+import useStore from "./zustand";
 
 export default function ChatArea({
   updatedChats,
-  dark,
   myStore,
   setNewestChats,
 }) {
   const [chatList, setChatList] = useState([]);
+
 
   const [replying, setReplying] = useState(false);
 
@@ -47,6 +47,10 @@ export default function ChatArea({
     }, []),
   );
 
+
+  const { dark, toggleDark,handleNav,chats } = useStore();
+
+useEffect(()=>{handleNav();},[dark]);
   //Retrieving stored chatList
 
   useEffect(() => {
@@ -69,14 +73,6 @@ export default function ChatArea({
 
   const navigation = useNavigation();
 
-  const handleNavBar = async () => {
-    await NavigationBar.setBackgroundColorAsync(dark ? "#131314" : "white");
-    await NavigationBar.setButtonStyleAsync(dark ? "dark" : "light");
-  };
-
-  useEffect(() => {
-    handleNavBar();
-  }, []);
 
   //Ensuring the chat liat moves up on thebevent of new chat
   useEffect(() => {
@@ -95,7 +91,7 @@ export default function ChatArea({
   const [savedList, setSavedList] = useState(chatList);
   // Handler to send chat, setChat and store in MMKV
   function sendReply() {
-    const newReply = { msg: reply, mine: true };
+    const newReply = { msg: reply, mine: true,name:"Ezeh Mark" };
     if (reply.trim().length === 0) {
       return;
     }
@@ -140,7 +136,8 @@ export default function ChatArea({
       <View
         style={[styles.outer, { backgroundColor: dark ? "#131314" : "white" }]}
       >
-        <View style={styles.user}>
+        <View style={[styles.user ,{backgroundColor:dark?"#131314":"white"}]}>
+	<View style={{                                                                          justifyContent:"space-between",flexDirection:"row",gap:10,alignItems:"center"}}>
           <Text
             style={{
               color: "#00d4d4",
@@ -174,35 +171,35 @@ export default function ChatArea({
               {updatedChats.length > 0 && updatedChats[0].name?.charAt(0)}
             </Text>
           </View>
+	  </View>
         </View>
 
-        <View style={[styles.listBox1, {}]}>
+        <View style={[styles.listBox1, {backgroundColor:dark?'black':'white',paddingBottom:replying?100:80}]}>
           <ScrollView ref={listRef}
 	  overScrollMode={Platform.OS === "android"?"always":undefined}>
-            {chatList.map((item, index) => {
+            {chats.map((item, index) => {
               return (
                 <View
                   key={index}
                   style={[
                     styles.chatBox,
                     {
-                      borderTopRightRadius: item.mine ? 20 : 20,
-                      borderTopLeftRadius: item.mine ? 20 : 2,
-                      borderBottomLeftRadius: 20,
-                      borderBottomRightRadius: item.mine ? 2 : 20,
-                      borderTopLeftRadius: item.mine ? 20 : 2,
+                      borderTopRightRadius: item.mine ? 15 : 15,
+                      borderTopLeftRadius: item.mine ? 15 : 2,
+                      borderBottomLeftRadius: item.mine?15:2,
+                      borderBottomRightRadius: item.mine ? 2 : 15,
+                      borderTopLeftRadius: 15,
                       alignSelf: item.mine ?"flex-end":"flex-start",
                       paddingVertical:  5,
                       paddingHorizontal: 15,
 		      alignItems:"flex-start",
-                      backgroundColor: item.mine
-                        ? "rgba(0,212,212,0.7)"
-                        : "#a9bf90",
+                      backgroundColor: item.mine ?(dark?"#484c4f":"#edf3f7")
+                        : (dark?'#292e33':'#d3e3ee'),
                     },
                   ]}
                 >
-                  <Text style={[styles.msg, {}]}>{item.msg}</Text>
-		  {item.date&&<Text style={styles.date}>{item.date}</Text>}
+                  <Text style={[styles.msg, {color:dark?'white':'rgba(0,0,0,0.8)'}]}>{item.msg}</Text>
+		  {item.date&&<Text style={[styles.date,{color:dark?"rgba(255,255,255,0.8)":"rgba(0,0,0,0.6)",fontWeight:'bold'}]}>{item.date}</Text>}
                 </View>
               );
             })}
@@ -218,14 +215,16 @@ export default function ChatArea({
           position: "absolute",
           bottom: 80,
 	  gap:8,
+	  height:100,
+	  backgroundColor:dark?"#131314":"white",
           flexDirection: "row",
         }}
-      >{replying&&<View style={{height:40,width:40,borderRadius:20,backgroundColor:"white"}}/>}
+      >{replying&&<TouchableOpacity style={{height:40,width:40,borderRadius:20,backgroundColor:"black"}}/>}
         <TextInput
           value={reply}
           style={{
             width: replying? width*0.65 : width*0.7,
-            height:reply.length>=1?100: 50,
+            height:reply.length>=1?80: 50,
             borderRadius: reply.legth>=1?15:25,
             borderWidth: replying ? 1 : 0,
             textAlignVertical: reply.length>=1 ?"top" : "center",
@@ -234,10 +233,10 @@ export default function ChatArea({
             paddingRight: 10,
             paddingTop: 10,
             textAlign: "top",
-            backgroundColor: dark ? "black" :"#ccc",
-	    borderWidth:1,
-	    borderColor:dark?"rgba(255,255,255,0.5)":reply.length>=1?"rgba(0,212,212,0.4)":"rgba(0,0,0,0.5)",
-            color: dark ? "white" : "grey",
+            backgroundColor: dark ? "#131314" :"white",
+	    borderWidth:reply.length >0?1.5:0.5,
+	    borderColor:"#4b9490",
+            color: dark ? "white" : "rgba(0,0,0,0.8)",
           }}
           multiline={true}
           onFocus={() => {
@@ -250,103 +249,29 @@ export default function ChatArea({
             setReply(e);
           }}
           placeholder="Reply customer ..."
-          placeholderTextColor={"#ccc"}
+          placeholderTextColor={"#4b9490"}
         />
         <TouchableOpacity
           onPress={() => {
             sendReply();
           }}
           style={{
-            height: replying?40:reply.length>=1?50:40,
-            width: replying?40:reply.length>=1?50:40,
-            backgroundColor: dark ? "black" : "#ccc",
-            borderRadius:replying?20:reply.length>=1?25:20,
+            height: replying?40:50,
+            width: replying?40:50,
+            backgroundColor: dark ? "black" :"#4b9490",
+            borderRadius:replying?20:25,
 	    borderWidth:1,
 	    borderColor:"rgba(255,255,255,0.5)",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 12, color: dark ? "white" : "black" }}>
+          <Text style={{ fontSize: 12,fontWeight:"bold", color: dark ? "white" : "white" }}>
             Send
           </Text>
         </TouchableOpacity>
       </View>
-
-      <View
-        style={[styles.bottom, { backgroundColor: dark ? "#131314" : "white" }]}
-      >
-        {tabs.map((item, index) => {
-          const isTab = selected === index;
-          return (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                setSelected(index);
-                navigation.navigate(item.nav);
-              }}
-              style={[
-                styles.tab,
-                { backgroundColor: isTab && "rgba(0,240,212,169,0.7)" },
-              ]}
-            >
-              
-              <View
-                style={{
-                  justifyContent: "space-between",
-                  paddingBottom: 2,
-                  flexDirection: "column",
-                  gap: 4,
-                  width: 60,
-                  backgroundColor: "transparent",
-                  alignItems: "center",
-                }}
-              >
-                
-                <View
-                  style={{
-                    paddingHorizontal: 12,
-                    paddingVertical: 0,
-                    backgroundColor: isTab
-                      ? "rgba(0,212,212,0.2)"
-                      : "transparent",
-                    borderRadius: 15,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  
-                  <Image
-                    source={item.icon }
-                    style={{
-                      height: 40,
-                      marginTop: -4,
-                      marginBottom: -4,
-                      opacity: isTab ? 1 : 0.8,
-                      width: 40,
-                    }}
-                  />
-                </View>
-                <Text
-                  style={[
-                    styles.tabText,
-                    {
-                      fontWeight: "normal",
-                      color: isTab
-                        ? "#00d4d4"
-                        : dark
-                          ? "white"
-                          : "rgba(0,0,0,0.8)",
-                    },
-                  ]}
-                >
-                  {item.name}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+<BottomTab/>
     </>
   );
 }
@@ -364,12 +289,12 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: "center",
     alignSelf: "center",
-    justifyContent:"space-between",
-    gap:10,
-    flexDirection:"row",
-    backgroundColor: "transparent",
+    backgroundColor: "white",
+    width:width,
+    justifyContent:"center",
     position: "absolute",
-    top: 5,
+    top: 0,
+    zIndex:50,
   },
   name: { color: "white" },
 
@@ -380,7 +305,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "",
     padding: 10,
-    paddingBottom:60
+    paddingBottom:80
   },
   chatBox: {
     borderTopRightRadius: 15,
@@ -406,8 +331,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
 
-  msg: { color: "#131314", fontSize: 15 },
-  date: { fontSize: 10, color: "red", marginTop:2,alignSelf:"flex-end"},
+  msg: { color: "rgba(0,0,0,0.8)", fontSize: 14 },
+  date: { fontSize: 6, color: "rgb(0,0,0,0.1)", marginTop:4,alignSelf:"flex-end"},
   bottom: {
     justifyContent: "space-between",
     elevation: 4,

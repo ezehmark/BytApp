@@ -1,23 +1,56 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { MMKV } from "react-native-mmkv";
+import * as NavigationBar from "expo-navigation-bar";
 
 // Initialize MMKV storage
-const myStore = new MMKV();
+const mmkvStore = new MMKV();
+
+function getDateTime() {
+  const date = new Date();
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+  const thisMonth = months[date.getMonth()];
+  const thisDay = date.getDate();
+  const thisHour = date.getHours();
+  const thisMinute = date.getMinutes().toString().padStart(2, "0");
+  const meridian = thisHour >= 12 ? "pm" : "am";
+  let hour = thisHour % 12;
+  hour = hour ? hour : 12;
+  return `${thisDay} ${thisMonth}, ${hour}:${thisMinute} ${meridian}`;
+}
 
 const useStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
+      inChats: [],
+      setInChats: (data) => set({ inChats: data }),
+      chats: [],
+      setChats: (data) => set({ chats: [...get().chats, ...data] }),
       dark: false,
-      setDark: (day: boolean) => set({ dark: day }),
+      setDark: (value) => set({ dark: value }),
       toggleDark: () => set((state) => ({ dark: !state.dark })),
+      handleNav: async () => {
+        const isDark = get().dark;
+        await NavigationBar.setBackgroundColorAsync(isDark ? "#131314" : "white");
+        await NavigationBar.setButtonStyleAsync(isDark ? "light" : "dark");
+      },
     }),
     {
-      name: "myStore", // Storage key
+      name: "myStore",
       storage: {
-        getItem: (key) => myStore.getString(key) || null,
-        setItem: (key, value) => myStore.set(key, value),
-        removeItem: (key) => myStore.delete(key),
+        getItem: (key) => {
+          const value = mmkvStore.getString(key);
+          try {
+            return value ? JSON.parse(value) : null;
+          } catch {
+            return value;
+          }
+        },
+        setItem: (key, value) => mmkvStore.set(key, JSON.stringify(value)),
+        removeItem: (key) => mmkvStore.delete(key),
       },
     }
   )

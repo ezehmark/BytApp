@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, StatusBar,Image } from "react-native";
+import { StyleSheet, View, Text, StatusBar,Image,Pressable,BackHandler } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -12,14 +12,17 @@ import { WaveIndicator } from "react-native-indicators";
 import { useNavigation } from "@react-navigation/native";
 import * as NavigationBar from "expo-navigation-bar";
 import {LinearGradient} from "expo-linear-gradient";
+import useStore from "./zustand";
+
 
 export default function Welcome() {
   const navigation = useNavigation();
-
-  const handleNavBar = async () => {
+const {dark}=useStore();
+  useEffect(()=>{
+	const handleNavBar = async () => {
     await NavigationBar.setBackgroundColorAsync("#00bfbf");
     await NavigationBar.setButtonStyleAsync("light");
-  };
+  };handleNavBar()},[]);
 
 
 
@@ -75,7 +78,7 @@ withTiming(20.8,{duration:500})
 
 
 const[note,setNote]=useState("");
-const noteText = "Customer Support Solutions";
+const noteText = "Cuustomer Support Solution";
 useEffect(()=>{
 let index =0;
 let noteInterval;
@@ -86,9 +89,9 @@ noteTimeout = setTimeout(()=>{
 noteInterval = setInterval(()=>{
 
 setNote(prev=>prev + noteText.charAt(index));
-index ++;
+index +=1;
 if(index >= noteText.length){clearInterval(noteInterval)}
-},200);
+},100);
 },2500)}
 
 renderNote();
@@ -128,12 +131,15 @@ animateLogo();
 return()=>clearTimeout(logoTime);
 
 },[]);
-
+const[load,setLoad]=useState(true);
 const agentTop = useSharedValue(0);
 const agentStyle = useAnimatedStyle(()=>{
 return{translateY:agentTop.value}});
 
 useEffect(()=>{
+
+setTimeout(()=>{setLoad(false)},15500);
+
 let agentTime;
 function animateAgent(){
 agentTime = setTimeout(()=>{agentTop.value = withSequence(
@@ -145,6 +151,31 @@ withTiming(0,{duration:400,easing:Easing.ease}),
 animateAgent();
 return ()=>clearTimeout(agentTime);
 },[]);
+
+if(!load)return (<>
+		 <StatusBar
+        backgroundColor={dark ? "#2d2d2e" : "white"}
+        barStyle={dark ? "light-content" : "dark-content"}
+      />
+      <View style ={{height:"100%",width:"100%",backgroundColor:dark?"black":"white",alignItems:"center",justifyContent:"center"}}>
+		 <View style={{gap:40,padding:40,width:250,backgroundColor:dark?"#2d2d2e":"#edf3f7",alignItems:"center",borderRadius:15,justifyContent:"space-between",
+		 flexDirection:"column"}}>
+	 <Text style={{color:dark?"white":"rgba(0,0,0,0.85)",fontSize:30,
+	 }}>Do you want to exit?</Text>
+	 <View style={{alignItems:"center",justifyContent:"space-between",                        flexDirection:"row",gap:40,padding:20}}>
+	 <Pressable                                                            onPress ={()=>BackHandler.exitApp()}
+         style={{height:40,width:80,borderRadius:15,backgroundColor:dark?"#131314":"#d3e3ee",alignItems:"center",justifyContent:"center"}}>
+         <Text style={{color:dark?"white":"black",fontWeight:"bold"}}>Exit</Text>
+         </Pressable>
+	 <Pressable 
+	 onPress={()=>navigation.navigate("home")}
+	 style={{height:40,width:80,
+		 borderRadius:15,backgroundColor:dark?"#131314":"#8db3ca",alignItems:"center",justifyContent:"center"}}>
+	 <Text style={{color:dark?"white":"black",fontWeight:"bold"}}>Go back</Text>
+	 </Pressable>
+	 </View></View>
+		 </View>
+		</>);
   return (
     <>
       <StatusBar backgroundColor={"#00bfbf"} barStyle={"light-content"} />
@@ -160,7 +191,7 @@ return ()=>clearTimeout(agentTime);
 		    alignSelf: "center",paddingBottom:0 }]}
           >
 	  {/*The animated dot circle*/}
-	  <Animated.View style={[{height:13.4,width:13.4,borderRadius:6.7,top:39.8,borderWidth:0.5,borderColor:"black",left:-19,positinon:"absolute",backgroundColor:"#ccc",zIndex:5},
+	  <Animated.View style={[{height:13.4,width:13.4,borderRadius:6.7,top:39.8,borderWidth:0,borderColor:"black",left:-19,positinon:"absolute",backgroundColor:"transparent",zIndex:5},
 		  dotLocStyle]} />
 		  {/*The animated logo*/}
 	  <Animated.Image source={require("./assets/agentLogo.png")} 
@@ -174,7 +205,7 @@ return ()=>clearTimeout(agentTime);
           </View>
 	  <Text style={{bottom:250,color:"007f7f",fontWeight:"bold",
 		  fontSize:18,
-	  position:"absolute",textWrap:"no-wrap",zIndex:6}}>{note}</Text>
+	  position:"absolute",textWrap:"no-wrap",color:"white",zIndex:6}}>{note}</Text>
       </LinearGradient>
     </>
   );

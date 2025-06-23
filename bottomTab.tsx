@@ -9,9 +9,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import useStore from "./zustand";
 
-export default function BottomTab({ dark }) {
+export default function BottomTab() {
   const [selected, setSelected] = useState(0);
+
+  const {dark}=useStore();
 
   const navigation = useNavigation();
 
@@ -24,7 +27,7 @@ export default function BottomTab({ dark }) {
     },
     {
       name: "Admin",
-      nav: "bubble",
+      nav: "adminPanel",
       icon: dark?require("./assets/adminWhite.png"):require("./assets/adminBlack.png")
     },
   ];
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     bottom: 0,
-    height: 60,
+    height: 80,
     width: "100%",
   },
   tab: {
