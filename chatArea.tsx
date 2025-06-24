@@ -8,14 +8,17 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Pressable,
   ScrollView,
   TextInput,
+  ToastAndroid,
   Platform
 } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
+  Easing,
   withSequence,
 } from "react-native-reanimated";
 import { BallIndicator } from "react-native-indicators";
@@ -26,13 +29,10 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import BottomTab from "./bottomTab.tsx";
 import { MMKV } from "react-native-mmkv";
 import useStore from "./zustand";
+import * as Clipboard from "expo-clipboard";
 
 export default function ChatArea({
-  updatedChats,
-  myStore,
-  setNewestChats,
 }) {
-  const [chatList, setChatList] = useState([]);
 
 
   const [replying, setReplying] = useState(false);
@@ -48,28 +48,20 @@ export default function ChatArea({
   );
 
 
-  const { dark, toggleDark,handleNav,chats } = useStore();
+  const chats = useStore((state) => state.chats);
+const dark = useStore((state) => state.dark);
+
+const setChats = useStore((state)=>state.setChats);
+const handleNav = useStore((state) => state.handleNav);
+
+  const get = useStore.getState;
 
 useEffect(()=>{handleNav();},[dark]);
   //Retrieving stored chatList
 
-  useEffect(() => {
-    console.log(updatedChats ?? "No msgs");
-    const rawList = myStore.getString("chatList");
-    if (rawList) {
-      setSavedList(JSON.parse(rawList));
-      setChatList(JSON.parse(rawList));
-    }
-  }, []);
 
   /*Updating chatList when new chats come in from updatedChats*/
 
-  useEffect(() => {
-    if (updatedChats.length > 0) {
-      setChatList((prev) => [...prev, ...updatedChats]);
-      console.error(updatedChats);
-    }
-  }, [updatedChats]);
 
   const navigation = useNavigation();
 
@@ -79,7 +71,7 @@ useEffect(()=>{handleNav();},[dark]);
     if (listRef.current) {
       listRef.current.scrollToEnd({ animated: true });
     }
-  }, [chatList]);
+  }, [chats]);
 
   useEffect(() => {
     if (listRef.current) {
@@ -88,28 +80,22 @@ useEffect(()=>{handleNav();},[dark]);
   }, []);
 
   const [reply, setReply] = useState("");
-  const [savedList, setSavedList] = useState(chatList);
   // Handler to send chat, setChat and store in MMKV
   function sendReply() {
-    const newReply = { msg: reply, mine: true,name:"Ezeh Mark" };
+    const newReply = [{ msg: reply, mine: true,name:"Ezeh Mark" }];
     if (reply.trim().length === 0) {
       return;
     }
 
-    const newChat = [...chatList, newReply];
-    setChatList(newChat);
-    myStore.set("chatList", JSON.stringify(newChat));
-    console.log(newChat);
+
+//Update zustand with new copy of chat list array
+    setChats(newReply);
+    const updatedChats 	= get().chats;
+    console.log(chats);
     setReply("");
   }
   //Storing chat liat on the event of changes in chatlist
-  useEffect(() => {
-    myStore.set("chatList", JSON.stringify(chatList));
-  }, [chatList]);
 
-  useEffect(() => {
-    console.log(savedList, "- savedList");
-  }, []);
 
   //BottomTab
   //
@@ -127,12 +113,23 @@ useEffect(()=>{handleNav();},[dark]);
     },
   ];
 
+  const noticeTop = useSharedValue(-50);
+  const noticeStyle=useAnimatedStyle(()=>{
+  return{translateY:noticeTop.value}});
+
+  const noticeMover = ()=>{
+  noticeTop.value=withSequence(
+  withTiming(50,{duration:1000,easing:Easing.ease}),
+  withTiming(50,{duration:1000,easing:Easing.ease}),
+  withTiming(-50,{duration:1000,easing:Easing.ease}),)}
+const [notice,setNotice] = useState("Message copied!");
   return (
     <>
       <StatusBar
         backgroundColor={dark ? "#131314" : "white"}
         barStyle={dark ? "light-content" : "dark-content"}
       />
+      <Animated.Text style={[styles.notice,{                                                  paddingHorizontal:20,paddingVertical:40,backgroundColor:"#00d4d4",                      color:"white",alignSelf:"center",position:"absolute",                                                       borderRadius:15,fontSize:16,fontWeight:"bold",top:0},noticeStyle]}>{notice}</Animated.Text>
       <View
         style={[styles.outer, { backgroundColor: dark ? "#131314" : "white" }]}
       >
@@ -146,7 +143,7 @@ useEffect(()=>{handleNav();},[dark]);
               fontWeight: "bold",
             }}
           >
-            {updatedChats.length > 0 && updatedChats[0].name}
+            {chats.length > 0 && chats[0].name}
           </Text>
 
           <View
@@ -168,7 +165,7 @@ useEffect(()=>{handleNav();},[dark]);
                 position: "absolute",
               }}
             >
-              {updatedChats.length > 0 && updatedChats[0].name?.charAt(0)}
+              {chats.length > 0 && chats[0].name?.charAt(0)}
             </Text>
           </View>
 	  </View>
@@ -177,9 +174,17 @@ useEffect(()=>{handleNav();},[dark]);
         <View style={[styles.listBox1, {backgroundColor:dark?'black':'white',paddingBottom:replying?100:80}]}>
           <ScrollView ref={listRef}
 	  overScrollMode={Platform.OS === "android"?"always":undefined}>
+
             {chats.map((item, index) => {
+		    const handleCopy = async()=>{
+		await Clipboard.setStringAsync(item.msg);
+		    if(Platform.OS === "android"){
+		    ToastAndroid.show("Message copied"),
+		    ToastAndroid.SHORT}
+		    else{alert("Message copied")}}
               return (
-                <View
+                <Pressable
+		onLongPress={()=>{handleCopy();noticeMover()}}
                   key={index}
                   style={[
                     styles.chatBox,
@@ -197,10 +202,14 @@ useEffect(()=>{handleNav();},[dark]);
                         : (dark?'#292e33':'#d3e3ee'),
                     },
                   ]}
-                >
+                ><Pressable onPress={()=>{handleCopy();noticeMover()}}
+		style={{height:20,width:20,alignItems:"center",
+			position:"absolute",top:20,right:20,justifyContent:"center",
+		backgroundColor:"white",borderRadius:10}}>
+		<Text style={{fontSize:10}}>📎</Text></Pressable>
                   <Text style={[styles.msg, {color:dark?'white':'rgba(0,0,0,0.8)'}]}>{item.msg}</Text>
 		  {item.date&&<Text style={[styles.date,{color:dark?"rgba(255,255,255,0.8)":"rgba(0,0,0,0.6)",fontWeight:'bold'}]}>{item.date}</Text>}
-                </View>
+                </Pressable>
               );
             })}
           </ScrollView>

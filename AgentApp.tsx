@@ -20,11 +20,17 @@ import { MMKV } from "react-native-mmkv";
 import io from "socket.io-client";
 import AdminPanel from "./adminPanel.tsx";
 import * as SplashScreen from "expo-splash-screen";
-const myStore = new MMKV();
+import useStore from "./zustand";
+//const myStore = new MMKV();
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const Stack = createStackNavigator();
+
+  //Initialize zustand variables and functions
+  const chats = useStore((state) => state.chats);
+
+const setChats = useStore((state) => state.setChats);
 
   const[appReady,setAppReady]=useState(false);
 
@@ -40,7 +46,6 @@ prepareApp();
 
 const onLayoutRootView=useCallback(async()=>{
 	if(appReady){await SplashScreen.hideAsync()}},[appReady]);
-  const [chats, setChats] = useState([]);
   const [newestChats, setNewestChats] = useState([]);
   function getDateTime() {
     const date = new Date();
@@ -83,7 +88,7 @@ const onLayoutRootView=useCallback(async()=>{
         console.log(info);
         console.error(info);
 
-        setChats((prev) => [...prev, ...mdata]);
+        setChats(mdata);
       } catch (error) {
         console.error(error);
       }
@@ -126,7 +131,6 @@ const onLayoutRootView=useCallback(async()=>{
                 dark={dark}
                 newestChats={newestChats}
                 setNewestChats={setNewestChats}
-                myStore={myStore}
                 savedChats={savedChats}
               />
             )}
@@ -145,7 +149,6 @@ const onLayoutRootView=useCallback(async()=>{
               <ChatArea
                 {...props}
                 dark={dark}
-                myStore={myStore}
                 setNewestChats={setNewestChats}
                 updatedChats={chats}
               />

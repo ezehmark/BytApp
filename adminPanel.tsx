@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, Image, Text, View, Pressable } from "react-native";
 import useStore from "./zustand";
+import BottomTab from "./bottomTab.tsx";
 
 const AdminPanel = ({ savedChats }) => {
-  const { dark, toggleDark } = useStore(); // ✅ must call the hook
+const dark = useStore((state) => state.dark);
+const toggleDark = useStore((state)=>state.toggleDark)
+
+const handleNav = useStore((state) => state.handleNav);
+// ✅ must call the hook
 
   return (
     <View style={[styles.container, { backgroundColor: dark ? "#131314" : "white" }]}>
@@ -29,6 +34,7 @@ const AdminPanel = ({ savedChats }) => {
         /></View>
       </Pressable></View>
       </View>
+      <BottomTab/>
     </View>
   );
 };

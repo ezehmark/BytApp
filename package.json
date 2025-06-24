@@ -20,7 +20,7 @@
     "axios": "^1.6.8",
     "expo": "52.0.46",
     "expo-blur": "~14.0.2",
-    "expo-clipboard": "~7.0.1",
+    "expo-clipboard": "^7.1.4",
     "expo-image-picker": "~16.0.6",
     "expo-linear-gradient": "~14.0.2",
     "expo-navigation-bar": "^4.0.9",

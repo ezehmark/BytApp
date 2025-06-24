@@ -33,12 +33,14 @@ export default function HomeComp({
   updatedChats,
   date,
   myDate,
-  newestChats,
-  myStore,
-  setNewestChats,
 }) {
   //calling items up from zustand:
-  const { dark, handleNav } = useStore();
+
+  const chats = useStore((state) => state.chats);
+const dark = useStore((state) => state.dark);
+
+const setChats = useStore((state) => state.setChats);
+const handleNav = useStore((state) => state.handleNav);
   const navigation = useNavigation();
   useEffect(() => {
     handleNav();
@@ -72,26 +74,8 @@ const scale = interpolate(extraScroll,
 			 Extrapolate.CLAMP);
 return {transform:[{scaleY:scale}]}})
 */
-  useEffect(() => {
-    if (myStore) {
-      const lastChatInterval = setInterval(() => {
-        const chatString = myStore.getString("chatList");
-        if (chatString) {
-          try {
-            const parseChats = JSON.parse(chatString);
-            setNewestChats(parseChats);
-          } catch (err) {
-            console.error(err);
-          }
-        } else {
-          console.log("No chatLiat saved");
-        }
-      }, 2000);
-      return () => clearInterval(lastChatInterval);
-    } else {
-      console.log("No store found");
-    }
-  }, [myStore]);
+
+  //Update home as new chats arrive//
 
   const adsBox = useRef(null);
   useEffect(() => {
@@ -319,7 +303,7 @@ return {transform:[{scaleY:scale}]}})
 
                                 }}
                               >
-                                {newestChats[newestChats.length - 1].name.charAt(0) ??
+                                {chats.length>0?chats[chats.length - 1].name.charAt(0) :
                                   "JG"}
                               </Text>
                             </View>
@@ -331,8 +315,8 @@ return {transform:[{scaleY:scale}]}})
                                   : "black",
                               }}
                             >
-                              {newestChats.length > 0
-                                ? newestChats[newestChats.length-1].name
+                              {chats.length > 0
+                                ? chats[chats.length-1].name
                                 : "Nill custumer"}
                             </Text>
                           </View>
@@ -341,8 +325,8 @@ return {transform:[{scaleY:scale}]}})
                               color: dark ? "rgba(255,255,255,1)" : "black",
                             }}
                           >
-                            {newestChats.length > 0
-                              ? newestChats[newestChats.length - 1].msg
+                            {chats.length > 0
+                              ? chats[chats.length - 1].msg
                               : "No chats yet"}
                           </Text>
                           <View
@@ -377,10 +361,10 @@ return {transform:[{scaleY:scale}]}})
                               fontWeight: "bold",
                             }}
                           >
-                            {newestChats.length > 0
-                              ? newestChats[newestChats.length - 1].date
-                              : newestChats.date
-                                ? newestChats[newestChats.length - 1].date
+                            {chats.length > 0
+                              ? chats[chats.length - 1].date
+                              : chats.date
+                                ? chats[chats.length - 1].date
                                 : new Date().getHours()}
                           </Text>
 			  </View>
