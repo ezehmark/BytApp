@@ -11,8 +11,9 @@
   "dependencies": {
     "@expo/metro-runtime": "~4.0.1",
     "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-clipboard/clipboard": "^1.16.2",
     "@react-native-community/netinfo": "11.4.1",
-    "@react-native-masked-view/masked-view": "0.3.2",
+    "@react-native-masked-view/masked-view": "^0.2.8",
     "@react-native/metro-config": "^0.79.0",
     "@react-navigation/native": "^6.1.15",
     "@react-navigation/stack": "^6.3.23",

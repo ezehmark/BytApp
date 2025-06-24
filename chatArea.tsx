@@ -29,7 +29,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import BottomTab from "./bottomTab.tsx";
 import { MMKV } from "react-native-mmkv";
 import useStore from "./zustand";
-import * as Clipboard from "expo-clipboard";
+import Clipboard from "@react-native-clipboard/clipboard";
 
 export default function ChatArea({
 }) {
@@ -177,7 +177,7 @@ const [notice,setNotice] = useState("Message copied!");
 
             {chats.map((item, index) => {
 		    const handleCopy = async()=>{
-		await Clipboard.setStringAsync(item.msg);
+		await Clipboard.setString(item.msg);
 		    if(Platform.OS === "android"){
 		    ToastAndroid.show("Message copied"),
 		    ToastAndroid.SHORT}
