@@ -28,7 +28,7 @@ const useStore = create(
       inChats: [],
       setInChats: (data) => set({ inChats: data }),
       chats: [],
-      setChats: (data) => set({ chats: [...get().chats, ...data] }),
+      setChats: (data) => set({ chats: [...get().chats,...data] }),
       dark: false,
       setDark: (value) => set({ dark: value }),
       toggleDark: () => set((state) => ({ dark: !state.dark })),
@@ -37,6 +37,26 @@ const useStore = create(
         await NavigationBar.setBackgroundColorAsync(isDark ? "#131314" : "white");
         await NavigationBar.setButtonStyleAsync(isDark ? "light" : "dark");
       },
+      dateNow:()=>{
+	      const date = new Date();
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+  const thisMonth = months[date.getMonth()];
+  const thisDay = date.getDate();
+  const thisHour = date.getHours();
+  const thisMinute = date.getMinutes().toString().padStart(2, "0");
+  const meridian = thisHour >= 12 ? "pm" : "am";
+  let hour = thisHour % 12;
+  hour = hour ? hour : 12;
+  return `${thisDay} ${thisMonth}, ${hour}:${thisMinute} ${meridian}`;
+},
+id:null,
+setId:(data)=>set({id:data}),
+	ads:true,
+closeAds:()=>set({ads:false}),
+	toggleAds:()=>set(st=>({ads:!st.ads}))
     }),
     {
       name: "myStore",

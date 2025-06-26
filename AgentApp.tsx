@@ -31,6 +31,7 @@ export default function App() {
   const chats = useStore((state) => state.chats);
 
 const setChats = useStore((state) => state.setChats);
+const dark = useStore(st=>st.dark);
 
   const[appReady,setAppReady]=useState(false);
 
@@ -75,7 +76,7 @@ const onLayoutRootView=useCallback(async()=>{
   const [date, setDate] = useState(null);
 
 
-  const socket = io("https://mybackend-oftz.onrender.com");
+  const socket = io("http://192.168.0.200:3000");
 
   useEffect(() => {
     socket.on("connection", () =>
@@ -85,8 +86,6 @@ const onLayoutRootView=useCallback(async()=>{
       try {
         const mdata = Array.isArray(info) ? info : [info];
         console.log(info);
-        console.log(info);
-        console.error(info);
 
         setChats(mdata);
       } catch (error) {
@@ -100,28 +99,21 @@ const onLayoutRootView=useCallback(async()=>{
   const [savedChats, setSavedChats] = useState([]);
   const [myDate, setMyDate] = useState("");
   //Dark mode toggle
-  const [dark, setDark] = useState(true);
 
-  function toggleDark() {
-    setDark((dark) => !dark);
-  }
 
   const [isConnect, setIsConnect] = useState(false);
 
   if(!appReady)return;
 
   return (
-    <View style={{flex:1}}
+    <View style={{flex:1,backgroundColor:dark?"#131314":"white"}}
     onLayout={onLayoutRootView}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="welcome"
-          screenOptions={{ cardStyleInterpolator:CardStyleInterpolators.forHorizontalAndroid,gestureEnabled:true,headerShown: false }}
+          screenOptions={{ cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS,gestureEnabled:false,headerShown: false }}
         >
-          <Stack.Screen name="home"
-	  options={{
-    cardStyleInterpolator: CardStyleInterpolators.forHorizontalAndroid
-  }}>
+          <Stack.Screen name="home">
             {(props) => (
               <HomeComp
                 {...props}
@@ -142,9 +134,7 @@ const onLayoutRootView=useCallback(async()=>{
           </Stack.Screen>
 
           <Stack.Screen name="chatArea"
-	  options={{
-    cardStyleInterpolator: CardStyleInterpolators.forHorizontalAndroid,
-  }}>
+  >
             {(props) => (
               <ChatArea
                 {...props}
@@ -155,8 +145,7 @@ const onLayoutRootView=useCallback(async()=>{
             )}
           </Stack.Screen>
 	  <Stack.Screen name="adminPanel"                                             
-	  options={{                                                
-		  cardStyleInterpolator: CardStyleInterpolators.forHorizontalAndroid  }}>                                                                             
+		  >                                                                             
 		  {(props) => (
               <AdminPanel                                                             
 	      {...props}                                                          

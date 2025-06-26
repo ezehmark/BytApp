@@ -8,15 +8,16 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useFocusEffect } from "@react-navigation/native";
 import useStore from "./zustand";
 
 export default function BottomTab() {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(null);
 
-  const {dark}=useStore();
+  const dark =useStore(state=>state.dark);
 
   const navigation = useNavigation();
+  const id = useStore(st=>st.id);
 
   const tabs = [
     {
@@ -36,7 +37,7 @@ export default function BottomTab() {
     <View style={[styles.bottom, { backgroundColor: dark ? "#131314" : "white" }]}>
       
       {tabs.map((item, index) => {
-        const isTab = selected === index;
+        const isTab = index === id;
         return (
           <TouchableOpacity
             key={index}
@@ -89,10 +90,10 @@ const styles = StyleSheet.create({
 
     flexDirection: "row",
     alignItems: "center",
-    position: "absolute",
-    bottom: 0,
     height: 80,
+    zIndex:30,
     width: "100%",
+
   },
   tab: {
     width: sWidth / 2,

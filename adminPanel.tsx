@@ -1,40 +1,45 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useCallback } from "react";
 import { StyleSheet, Image, Text, View, Pressable } from "react-native";
 import useStore from "./zustand";
+import { useNavigation,useFocusEffect } from "@react-navigation/native"
 import BottomTab from "./bottomTab.tsx";
 
 const AdminPanel = ({ savedChats }) => {
 const dark = useStore((state) => state.dark);
-const toggleDark = useStore((state)=>state.toggleDark)
+const toggleDark = useStore((state)=>state.toggleDark);
+const toggleAds = useStore((state)=>state.toggleAds);
 
 const handleNav = useStore((state) => state.handleNav);
-// ✅ must call the hook
+const ads = useStore(st=>st.ads);
+
+const setId = useStore(s=>s.setId);
+
+useFocusEffect(useCallback(()=>{
+  setId(1)},[]));
+
+
 
   return (
     <View style={[styles.container, { backgroundColor: dark ? "#131314" : "white" }]}>
-    <View style={[styles.contents,{backgroundColor: dark?"black":"white"}]}>
+    <View style={[styles.contents,{backgroundColor: dark?"#131314":"white"}]}>
       <Text style={{ paddingVertical:10,paddingHorizontal:20,borderRadius:10,
-	      backgroundColor:"#4b9490",fontSize: 15,color:"rgba(255,255,255,0.8)",fontWeight:"bold" }}>Welcome to your admin panel</Text>
-     <View style={{width:"95%",marginTop:30,borderRadius:15,backgroundColor:dark?"#2d2d2e":"#edf3f7",justifyContent:"space-between",
+	      backgroundColor:"rgba(75,148,144,0.4)",fontSize: 15,color:"rgba(75,148,144,1)",fontWeight:"bold" }}>Welcome to your admin panel</Text>
+     <View style={{width:"95%",marginTop:30,paddingBottom:50,borderRadius:15,backgroundColor:dark?"#2d2d2e":"#edf3f7",justifyContent:"space-between",
      gap:0,alignItems:"center",flexDirection:"column"}}>
-     <Text style={{color:dark?"#ccc":"#4b9490",fontSize:20,
-	      marginTop:15,fontWeight:"bold"}}>Settings</Text>
+     <Text style={{color:dark?"#ccc":"#4b9490",marginBottom:20,fontSize:20,
+	      marginTop:20,fontWeight:"bold"}}>Settings</Text>
 
       <Pressable onPress={toggleDark} style={[styles.box1,{backgroundColor:dark?"#131314":"#d3e3ee"}]}>
-        <Text style={{color:dark?"#ccc":"rgba(0,0,0,0.8)",fontSize:14,fontWeight:"bold"}}>
-	Toggle mode</Text>
-	<View style={{ alignItems:"center",justifyContent:"center",height: 32, width: 74,borderRadius:20,backgroundColor:dark?"rgba(0,212,212,1)":"#ccc",overflow:"hidden" }}>
-	<Image
-          source={{
-            uri: !dark
-              ? "https://i.postimg.cc/mr0zD8g1/file-0000000069f8620abbe273ff6d464798.png"
-              : "https://i.postimg.cc/RF7F0mY2/file-000000003e0061f4a72b74b5dcbd3c49.png",
-          }}
-          style={{ opacity:0.9,height: "100%", width: "102%" }}
-        /></View>
+        <Text style={{color:dark?"#ccc":"rgba(0,0,0,0.4)",fontSize:14,fontWeight:"bold"}}>Toggle Mode</Text><Text style={{color:dark?"rgba(255,255,255,0.3)":"black",
+		fontSize:14}}>{dark?"Night 💤":"Day ⛅"}</Text>
+      </Pressable>
+      <Pressable onPress={toggleAds} style={[styles.box1,{backgroundColor:dark?"#131314":"#d3e3ee"}]}><Text style={{color:dark?"#ccc":"rgba(0,0,0,0.4)",fontSize:14,fontWeight:"bold"}}>Toggle Ads</Text><Text style={{color:dark?"rgba(255,255,255,0.3)":"black",
+  fontSize:14}}>{ads?"On":"Off"}</Text>
       </Pressable></View>
+      </View><View style={{alignItems:"center",position:"absolute",zIndex:27,justifyContent:"center",bottom:0,flexDirection:"column",flex:1}}>
+      <BottomTab dark={dark}/>
       </View>
-      <BottomTab/>
+
     </View>
   );
 };
@@ -53,19 +58,19 @@ const styles = StyleSheet.create({
     width:"100%",
     justifyContent: "space-between",
     padding:10,
-    backgroundColor: "white"},
+    backgroundColor: "white",
+  },
   box1: {
     width: "90%",
-    paddingVertical:10,
+    paddingVertical:15,
     borderRadius:15,
     borderWidth:1,
-    borderColor:"rgba(255,255,255,0.6)",
+    borderColor:"rgba(255,255,255,0.3)",
     paddingHorizontal:30,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems:"center",
-    marginBottom:20,
-    marginTop:20
+    marginBottom:15,
   },
 });
 

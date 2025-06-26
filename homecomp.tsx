@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef,useCallback } from "react";
 import {
   StyleSheet,
   FlatList,
@@ -19,28 +19,30 @@ import Animated, {
   useAnimatedScrollHandler,
   interpolate,
   Extrapolate,
+  Easing,
   withSpring,
 } from "react-native-reanimated";
 import { BallIndicator } from "react-native-indicators";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import ChatArea from "./chatArea.tsx";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useFocusEffect } from "@react-navigation/native";
 import BottomTab from "./bottomTab.tsx";
 import { LinearGradient } from "expo-linear-gradient";
 import useStore from "./zustand";
+import AdsPanel from "./adsPanel";
 
-export default function HomeComp({
-  updatedChats,
-  date,
-  myDate,
-}) {
+export default function HomeComp({ updatedChats, date, myDate }) {
   //calling items up from zustand:
 
   const chats = useStore((state) => state.chats);
-const dark = useStore((state) => state.dark);
+  const dark = useStore((state) => state.dark);
+  const ads = useStore(st=>st.ads);
+  const closeAds = useStore(s=>s.closeAds);
 
-const setChats = useStore((state) => state.setChats);
-const handleNav = useStore((state) => state.handleNav);
+  const setChats = useStore((state) => state.setChats);
+  const handleNav = useStore((state) => state.handleNav);
+  const setId = useStore(s=>s.setId);
+
   const navigation = useNavigation();
   useEffect(() => {
     handleNav();
@@ -48,54 +50,12 @@ const handleNav = useStore((state) => state.handleNav);
     console.log("time now:", new Date().getHours());
   }, [dark]);
 
-  //Animate dynaically the contents of scrollView as bottom is hit
-  //
-  const AnimatedScroll = Animated.createAnimatedComponent(ScrollView);
+  useFocusEffect(useCallback(()=>{
+  setId(0);
+  },[])
+		);
 
-  const scrollY = useSharedValue(0);
-  const contentHeight = useSharedValue(0);
-  const containerHeight = useSharedValue(0);
 
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (e) => {
-      scrollY.value = e.contentOffset.y;
-      contentHeight.value = e.contentSize.height;
-      containerHeight.value = e.layoutMeasurement.height;
-    },
-  });
-
-  /*const stretchStyle = useAnimatedStyle(()=>{
-const maxScroll = contentHeight.value - containerHeight.value;
-const extraScroll = scrollY.value - maxScroll;
-
-const scale = interpolate(extraScroll,
-			 [0,100],
-			 [1,1.2],
-			 Extrapolate.CLAMP);
-return {transform:[{scaleY:scale}]}})
-*/
-
-  //Update home as new chats arrive//
-
-  const adsBox = useRef(null);
-  useEffect(() => {
-    let distance = 0;
-    let rollInterval;
-    function handleAds() {
-      if (adsBox.current) {
-        rollInterval = setInterval(() => {
-          if (distance >= 300 * adsItem.length) {
-            adsBox.current.scrollTo({ x: 0, animated: false });
-          }
-          distance += 300;
-          adsBox.current.scrollTo({ x: distance, animated: true });
-        }, 4000);
-      }
-    }
-
-    handleAds();
-    return () => clearInterval(rollInterval);
-  }, []);
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 4000);
@@ -103,53 +63,39 @@ return {transform:[{scaleY:scale}]}})
 
   const [loading, setLoading] = useState(true);
 
-  const adsItem = [
-    {
-      name: "company",
-      img: "https://i.postimg.cc/SxH6Pr1w/Bytance-Tech-optimized.jpg",
-      link: "",
-    },
-    {
-      name: "company",
-      img: "https://i.postimg.cc/SxH6Pr1w/Bytance-Tech-optimized.jpg",
-      link: "",
-    },
-    {
-      name: "company",
-      img: "https://i.postimg.cc/SxH6Pr1w/Bytance-Tech-optimized.jpg",
-      link: "",
-    },
-    {
-      name: "company",
-      img: "https://i.postimg.cc/SxH6Pr1w/Bytance-Tech-optimized.jpg",
-      link: "",
-    },
-    {
-      name: "company",
-      img: "https://i.postimg.cc/SxH6Pr1w/Bytance-Tech-optimized.jpg",
-      link: "",
-    },
-    {
-      name: "company",
-      img: "https://i.postimg.cc/SxH6Pr1w/Bytance-Tech-optimized.jpg",
-      link: "",
-    },
-  ];
+  const rotateC = useSharedValue("0deg");
+  const rotateStyle = useAnimatedStyle(()=>{
+  return {transform:[{rotate:rotateC.value}]}});
+
+  useEffect(()=>{
+  rotateC.value = withTiming("360deg",{duration:2000,easing:Easing.ease})},[chats[chats.length - 1]]);
+
+
+
+
 
   return (
     <>
       <StatusBar
-        backgroundColor={dark ? "#2d2d2e" : "white"}
+        backgroundColor={dark ? "#131314" : "white"}
         barStyle={dark ? "light-content" : "dark-content"}
       />
 
       <View
-        style={[styles.main, { backgroundColor: dark ? "#2d2d2e" : "white" }]}
+        style={[
+          styles.main,
+          {
+            justifyContent: "space-between",
+            flexDirection: "column",
+            gap: 20,
+            backgroundColor: dark ? "#131314" : "white",
+          },
+        ]}
       >
         <View
           style={[
             styles.title,
-            { backgroundColor: dark ? "#2d2d2e" : "white" },
+            { backgroundColor: dark ? "#131314" : "white" },
           ]}
         >
           <Text
@@ -170,12 +116,13 @@ return {transform:[{scaleY:scale}]}})
         <View
           style={[
             styles.chatMain,
-            { backgroundColor: dark ? "transparent" : "white" },
+            { backgroundColor: dark ? "transparent" : "white",
+	    height:ads?"75%":"80%"},
           ]}
         >
           <LinearGradient
             style={{
-              height: 40,
+              height: 50,
               position: "absolute",
               zIndex: 20,
               top: 0,
@@ -183,38 +130,21 @@ return {transform:[{scaleY:scale}]}})
               pointerEvents: "none",
             }}
             colors={[
-              dark ? "#2d2d2e" : "white",
-              dark ? "rgba(19,19,20,0.5)" : "rgba(255,255,255,0.5)",
+              dark ? "#131314" : "white",
+              dark ? "rgba(19,19,20,0.3)" : "rgba(255,255,255,0.5)",
               "transparent",
             ]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
           />
 
-          <LinearGradient
-            style={{
-              height: 40,
-              position: "absolute",
-              zIndex: 20,
-              bottom: 0,
-              width: "100%",
-              pointerEvents: "none",
-            }}
-            colors={[
-              dark ? "#2d2d2e" : "white",
-              dark ? "rgba(19,19,20,0.5)" : "rgba(255,255,255,0.5)",
-              "transparent",
-            ]}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 0, y: 0 }}
-          />
           {loading ? (
             <SkeletonPlaceholder
               borderRadius={20}
               highlightColor={"rgba(0,212,212,0.5)"}
               backgroundColor={dark ? "gray" : "#ccc"}
             >
-              {Array(5)
+              {Array(7)
                 .fill(null)
                 .map((_, i) => (
                   <SkeletonPlaceholder.Item
@@ -230,18 +160,19 @@ return {transform:[{scaleY:scale}]}})
           ) : (
             <View
               style={{
-                height: 500,
-                backgroundColor: dark ? "#2d2d2e" : "rgba(237,243,247,0)",
+                height: "100%",
+                backgroundColor: dark ? "#131314" : "rgba(237,243,247,0)",
                 alignItems: "center",
                 justifyContent: "center",
                 width: "100%",
+		paddingBottom:ads?40:20,
               }}
             >
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{ flex: 1 }}
               >
-                {Array(25)
+                {Array(7)
                   .fill(null)
                   .map((_, index) => {
                     return (
@@ -250,24 +181,30 @@ return {transform:[{scaleY:scale}]}})
                         style={{ flex: 1 }}
                         onPress={() => navigation.navigate("chatArea")}
                       >
-                          <View
-			  style={{
-                            backgroundColor: dark ? "black" : "#d3e3ee",
+                        <View
+                          style={{
+                            backgroundColor: dark ? "#131314" : "white",
                             width: sWidth / 1.1,
+	    
+	    
                             alignSelf: "center",
                             justifyContent: "space-between",
                             flexDirection: "column",
+
                             borderRadius: 20,
-                            marginBottom: 10,
+	    
+	    
+	    
+                            marginBottom: 5,
                             overflow: "hidden",
                             padding: 10,
-                            marginTop: 10,
+                            marginTop: index === 0 ? 10 : 5,
                             height: 90,
                             zIndex: 25,
-                            borderWidth: 1,
-                            borderColor: dark
-                              ? "rgba(255,255,255,0.5)"
-                              : "#d3e3ee",
+                            borderWidth: 0.5,
+                            elevation: 2,
+                            shadowColor:dark?"rgba(255,255,255,0.4)":"rgba(0,0,0,0.2)",
+                            borderColor: dark ? "rgba(255,255,255,0.1)" : "#d3e3ee",
                           }}
                         >
                           <View
@@ -277,11 +214,11 @@ return {transform:[{scaleY:scale}]}})
                               flexDirection: "row",
                               padding: 0,
                               alignItems: "center",
-			      marginRight:10,
-			      width:100,
-			      maxWidth:120,
-			      ovwerflow:"hidden"
-
+                              marginRight: 10,
+                              width: 100,
+                              maxWidth: 120,
+                              overflow: "hidden",
+                              zIndex: 13,
                             }}
                           >
                             <View
@@ -290,8 +227,9 @@ return {transform:[{scaleY:scale}]}})
                                 alignItems: "center",
                                 height: 25,
                                 width: 25,
+                                borderColor: "rgba(0,0,0,0.1)",
                                 borderRadius: 12.5,
-                                backgroundColor: dark ? "#00d4d4" : "#4772a0",
+                                backgroundColor: dark ? "#00d4d4" : "#00d4d4",
                               }}
                             >
                               <Text
@@ -300,29 +238,33 @@ return {transform:[{scaleY:scale}]}})
                                   fontSize: "bold",
                                   fontSize: 16,
                                   fontWeight: "bold",
-
                                 }}
                               >
-                                {chats.length>0?chats[chats.length - 1].name.charAt(0) :
-                                  "JG"}
+                                {chats.length > 0
+                                  ? chats[chats.length - 1].name?.charAt(0)
+                                  : "JG"}
                               </Text>
                             </View>
                             <Text
                               style={{
                                 fontWeight: "bold",
-                                color: dark
-                                  ? "rgba(255,255,255,0.88)"
-                                  : "black",
+                                color: dark ? "rgba(255,255,255,0.8)" : "black",
                               }}
                             >
                               {chats.length > 0
-                                ? chats[chats.length-1].name
+                                ? chats[chats.length - 1].name
                                 : "Nill custumer"}
                             </Text>
                           </View>
                           <Text
                             style={{
-                              color: dark ? "rgba(255,255,255,1)" : "black",
+                              fontWeight: "",
+                              fontSize: 15,
+                              marginLeft: 32,
+                              marginBottom:12,
+                              color: dark
+                                ? "rgba(221,221,221,0.8)"
+                                : "rgba(0,0,0,0.8)",
                             }}
                           >
                             {chats.length > 0
@@ -334,31 +276,105 @@ return {transform:[{scaleY:scale}]}})
                               height: 20,
                               width: 20,
                               borderRadius: 10,
-                              backgroundColor: "rgba(213,2,4,0.4)",
-                              position:"absolute",
-			      alignItems: "center",
+                              backgroundColor: dark
+                                ? "rgba(213,2,4,0.2)"
+                                : "white",
+                              position: "absolute",
+                              alignItems: "center",
                               justifyContent: "center",
+                              borderColor: "red",
+                              borderWidth: 0.5,
                               right: 10,
-			      top:10
+                              elevation: 2,
+                              top: 10,
                             }}
                           >
                             <Text
                               style={{
                                 fontSize: 10,
                                 textAlign: "center",
-                                color: "white",
+                                color: dark ? "rgba(255,255,255,0.8)" : "red",
                               }}
                             >
-                              8
+			    {chats.length>0 ? chats.length : chats.length > 99?"99+":"0"}
                             </Text>
+                          </View>
+                          <View
+                            style={[
+                              styles.succesTrack,
+                              {
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                flexDirection: "column",
+                                backgroundColor: "transparent",
+                                height: 3,
+                                position: "absolute",
+                                left: 12.5,
+                                zIndex: 12,
+                                width: 20,
+                                top: 30,
+                              },
+                            ]}
+                          >
+                            <View
+                              style={{
+                                height: 16,
+                                width: 1,
+                                backgroundColor: "#00d4d4",
+                              }}
+                            />
+
+                            <Animated.View
+                              style={[{
+                                height: 25,
+                                width: 25,
+                                borderRadius: 12.5,
+                                backgroundColor: dark
+                                  ? "transparent"
+                                  : "white",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderColor: "rgba(0,212,212,1)",
+
+                                borderWidth: 0.6,
+                              },rotateStyle]}
+                            >
+                              <View
+                                style={{
+                                  height: 20,
+                                  width: 20,
+                                  borderRadius: 10,
+                                  backgroundColor: dark
+                                    ? "rgba(0,212,212,0.7)"
+                                    : "rgba(0,212,212,0.7)",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                
+                                <Text
+                                  style={{
+                                    fontSize: 10,
+                                    textAlign: "center",
+                                    color: dark ? "white" : "red",
+                                  }}
+                                >
+                                  🚀
+                                </Text>
+                              </View>
+                            </Animated.View>
                           </View>
                           <Text
                             style={{
-                              fontSize: 10,
+                              fontSize: 8,
                               color: dark
-                                ? "rgba(255,255,255,0.6)"
+                                ? "rgba(255,255,255,0.5)"
                                 : "rgba(0,0,0,0.8)",
                               fontWeight: "bold",
+			      position:"absolute",
+			      right:10,
+			      bottom:10,
+			      
                             }}
                           >
                             {chats.length > 0
@@ -367,7 +383,7 @@ return {transform:[{scaleY:scale}]}})
                                 ? chats[chats.length - 1].date
                                 : new Date().getHours()}
                           </Text>
-			  </View>
+                        </View>
                       </Pressable>
                     );
                   })}
@@ -375,39 +391,13 @@ return {transform:[{scaleY:scale}]}})
             </View>
           )}
         </View>
-        <View
-          style={{
-            height: 80,
-            width: sWidth,
-            bottom: 60,
-            position: "absolute",
-            backgroundColor: "transparent",
-            paddingLeft: 10,
-          }}
-        >
-          <ScrollView horizontal={true} ref={adsBox}>
-            {adsItem.map((item, index) => {
-              return (
-                <View
-                  key={index}
-                  style={{
-                    height: 80,
-                    width: 300,
-                    marginRight: 10,
-                    overflow: "hidden",
-                  }}
-                >
-                  <Image
-                    source={require("./assets/aditem1.jpg")}
-                    style={{ height: 80, resizeMode: "stretch", width: "100%" }}
-                  />
-                </View>
-              );
-            })}
-          </ScrollView>
-        </View>
       </View>
+      <View style={{alignItems:"center",position:"absolute"
+        ,justifyContent:"center",
+      bottom:0,flexDirection:"column",flex:1}}>
+      {ads&&<AdsPanel/>}
       <BottomTab dark={dark} />
+      </View>
     </>
   );
 }
@@ -416,7 +406,6 @@ const sWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   main: { height: "100%", width: "100%", backgroundColor: "#ccc" },
   chatMain: {
-    height: "70%",
     top: "10%",
     alignItems: "center",
     position: "absolute",

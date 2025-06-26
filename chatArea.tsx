@@ -8,11 +8,13 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Vibration,
   Pressable,
+  Clipboard,
   ScrollView,
   TextInput,
   ToastAndroid,
-  Platform
+  Platform,
 } from "react-native";
 import Animated, {
   useSharedValue,
@@ -25,46 +27,44 @@ import { BallIndicator } from "react-native-indicators";
 import Pusher from "pusher-js";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import LinearGradient from "react-native-linear-gradient";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation} from "@react-navigation/native";
 import BottomTab from "./bottomTab.tsx";
 import { MMKV } from "react-native-mmkv";
 import useStore from "./zustand";
-import Clipboard from "@react-native-clipboard/clipboard";
+import * as ImagePicker from "expo-image-picker";
+import AdsPanel from "./adsPanel";
+//import Clipboard from "@react-native-clipboard/clipboard";
 
-export default function ChatArea({
-}) {
-
-
+export default function ChatArea({}) {
   const [replying, setReplying] = useState(false);
 
   const listRef = useRef(null);
-  useFocusEffect(
-    React.useCallback(() => {
+  useEffect(() => {
       const scrollT = setTimeout(() => {
         listRef.current.scrollToEnd({ animated: false });
       }, 500);
       return () => clearTimeout(scrollT);
-    }, []),
-  );
-
+    }, []);
 
   const chats = useStore((state) => state.chats);
-const dark = useStore((state) => state.dark);
+  const dark = useStore((state) => state.dark);
 
-const setChats = useStore((state)=>state.setChats);
-const handleNav = useStore((state) => state.handleNav);
+  const setChats = useStore((state) => state.setChats);
+  const handleNav = useStore((state) => state.handleNav);
+  const dateNow = useStore(state=>state.dateNow);
+  const ads = useStore(s=>s.ads);
+  const closeAds = useStore(s=>s.closeAds);
 
-  const get = useStore.getState;
 
-useEffect(()=>{handleNav();},[dark]);
+
+  useEffect(() => {
+    handleNav();
+  }, [dark]);
   //Retrieving stored chatList
-
 
   /*Updating chatList when new chats come in from updatedChats*/
 
-
   const navigation = useNavigation();
-
 
   //Ensuring the chat liat moves up on thebevent of new chat
   useEffect(() => {
@@ -82,169 +82,339 @@ useEffect(()=>{handleNav();},[dark]);
   const [reply, setReply] = useState("");
   // Handler to send chat, setChat and store in MMKV
   function sendReply() {
-    const newReply = [{ msg: reply, mine: true,name:"Ezeh Mark" }];
+    const newReply = [{ msg: reply, mine: true, name: "Ezeh Mark",date:dateNow() }];
     if (reply.trim().length === 0) {
       return;
     }
 
-
-//Update zustand with new copy of chat list array
+    //Update zustand with new copy of chat list array
     setChats(newReply);
-    const updatedChats 	= get().chats;
-    console.log(chats);
+    listRef.current?.scrollToEnd({ animated: true });
     setReply("");
   }
   //Storing chat liat on the event of changes in chatlist
 
-
   //BottomTab
   //
-  const [selected, setSelected] = useState(0);
-  const tabs = [
-    {
-      name: "Reports",
-      nav: "home",
-      icon: dark?require("./assets/chatWhite.png"):require("./assets/chatBlack.png")
-    },
-    {
-      name: "Admin",
-      nav: "bubble",
-      icon: dark?require("./assets/adminWhite.png"):require("./assets/adminBlack.png")
-    },
-  ];
 
-  const noticeTop = useSharedValue(-50);
-  const noticeStyle=useAnimatedStyle(()=>{
-  return{translateY:noticeTop.value}});
+  const noticeTop = useSharedValue(-100);
+  const noticeStyle = useAnimatedStyle(() => {
+    return { translateY: noticeTop.value };
+  });
 
-  const noticeMover = ()=>{
-  noticeTop.value=withSequence(
-  withTiming(50,{duration:1000,easing:Easing.ease}),
-  withTiming(50,{duration:1000,easing:Easing.ease}),
-  withTiming(-50,{duration:1000,easing:Easing.ease}),)}
-const [notice,setNotice] = useState("Message copied!");
+  const noticeMover = () => {
+    noticeTop.value = withSequence(
+      withTiming(100, { duration: 1000, easing: Easing.ease }),
+      withTiming(100, { duration: 2000, easing: Easing.ease }),
+      withTiming(-100, { duration: 1000, easing: Easing.ease }),
+    );
+  };
+  const [notice, setNotice] = useState("");
+
+  const [selected, setSelected] = useState(null);
+  const [copy, setCopy] = useState("Copy");
+  const [url, setUrl] = useState("");
+
+  async function pickImage() {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      setNotice("Please allow permissions");
+      noticeMover();
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.4,
+    });
+    if (result.cancelled) {
+      setNotice("Select image to continue");
+      noticeMover();
+      return;
+    }
+    setUrl(result.assets[0].uri);
+    setChats([{ name: "Ezeh Mark", mine: true, uri: url }]);
+    console.log(result);
+  }
+
   return (
     <>
       <StatusBar
         backgroundColor={dark ? "#131314" : "white"}
         barStyle={dark ? "light-content" : "dark-content"}
       />
-      <Animated.Text style={[styles.notice,{                                                  paddingHorizontal:20,paddingVertical:40,backgroundColor:"#00d4d4",                      color:"white",alignSelf:"center",position:"absolute",                                                       borderRadius:15,fontSize:16,fontWeight:"bold",top:0},noticeStyle]}>{notice}</Animated.Text>
       <View
         style={[styles.outer, { backgroundColor: dark ? "#131314" : "white" }]}
       >
-        <View style={[styles.user ,{backgroundColor:dark?"#131314":"white"}]}>
-	<View style={{                                                                          justifyContent:"space-between",flexDirection:"row",gap:10,alignItems:"center"}}>
-          <Text
-            style={{
-              color: "#00d4d4",
-              fontSize: "bold",
-              fontSize: 16,
-              fontWeight: "bold",
-            }}
+        {notice && (
+          <Animated.Text
+            style={[
+              styles.notice,
+              {
+                paddingHorizontal: 20,
+                zIndex: 100,
+                paddingVertical: 10,
+                backgroundColor: "rgba(75,148,144,0.4)",
+                color: "rgba(75,148,144,1)",
+                alignSelf: "center",
+                position: "relative",
+                borderRadius: 10,
+                fontSize: 16,
+                fontWeight: "bold",
+                top: -50,
+                translateY: -100,
+              },
+              noticeStyle,
+            ]}
           >
-            {chats.length > 0 && chats[0].name}
-          </Text>
-
+            {notice}
+          </Animated.Text>
+        )}
+        <View
+          style={[styles.user, { height:50,backgroundColor: dark ? "#131314" : "white" }]}
+        >
           <View
             style={{
-              height: 30,
-              width: 30,
-              borderRadius: 15,
-              backgroundColor: "#00d4d4",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              gap: 10,
               alignItems: "center",
-              justifyContent: "center",
             }}
           >
             <Text
               style={{
-                fontSize: 14,
-                fontWeigh20t: "bold",
-                color: "white",
-                alignSelf: "center",
-                position: "absolute",
+                color: "#00d4d4",
+                fontSize: "bold",
+                fontSize: 16,
+                fontWeight: "bold",
               }}
             >
-              {chats.length > 0 && chats[0].name?.charAt(0)}
+              {chats.length > 0 && chats[0]?.name}
             </Text>
+
+            <View
+              style={{
+                height: 30,
+                width: 30,
+                borderRadius: 15,
+                backgroundColor: "#00d4d4",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeigh20t: "bold",
+                  color: "white",
+                  alignSelf: "center",
+                  position: "absolute",
+                }}
+              >
+                {chats.length > 0 && chats[0].name?.charAt(0)}
+              </Text>
+            </View>
           </View>
-	  </View>
         </View>
 
-        <View style={[styles.listBox1, {backgroundColor:dark?'black':'white',paddingBottom:replying?100:80}]}>
-          <ScrollView ref={listRef}
-	  overScrollMode={Platform.OS === "android"?"always":undefined}>
-
+        <View
+          style={[
+            styles.listBox1,
+            {
+              backgroundColor: dark ? "#131314" : "white",
+              paddingBottom: ads?100 : 20,
+            },
+          ]}
+        >
+          <ScrollView
+            ref={listRef}
+	    showsVerticalScrollIndicator={false}
+            overScrollMode={Platform.OS === "android" ? "always" : undefined}
+          >
             {chats.map((item, index) => {
-		    const handleCopy = async()=>{
-		await Clipboard.setString(item.msg);
-		    if(Platform.OS === "android"){
-		    ToastAndroid.show("Message copied"),
-		    ToastAndroid.SHORT}
-		    else{alert("Message copied")}}
+              const handleCopy = async () => {
+                await Clipboard.setString(item.msg);
+                setNotice("Chat copied!");
+              };
+
+              const isBox = index === selected;
               return (
                 <Pressable
-		onLongPress={()=>{handleCopy();noticeMover()}}
                   key={index}
+                  onLongPress={() => {
+			  Vibration.vibrate(100);setSelected(index)
+                  }}
+                  onPress={() => {
+                    if (selected == index) {
+                      setSelected(null);
+                    }
+                    setSelected(index);
+                  }}
                   style={[
                     styles.chatBox,
                     {
                       borderTopRightRadius: item.mine ? 15 : 15,
                       borderTopLeftRadius: item.mine ? 15 : 2,
-                      borderBottomLeftRadius: item.mine?15:2,
+                      borderBottomLeftRadius: item.mine ? 15 : 2,
                       borderBottomRightRadius: item.mine ? 2 : 15,
                       borderTopLeftRadius: 15,
-                      alignSelf: item.mine ?"flex-end":"flex-start",
-                      paddingVertical:  5,
+                      alignSelf: item.mine ? "flex-end" : "flex-start",
+                      paddingVertical: 5,
                       paddingHorizontal: 15,
-		      alignItems:"flex-start",
-                      backgroundColor: item.mine ?(dark?"#484c4f":"#edf3f7")
-                        : (dark?'#292e33':'#d3e3ee'),
+                      alignItems: "flex-start",
+                      backgroundColor: item.mine
+                        ? dark
+                          ? "#484c4f"
+                          : isBox
+                            ? "rgba(75,148,144,0.4)"
+                            : "#edf3f7"
+                        : (dark
+                            ? "#292e33"
+                            : isBox
+                              ? "rgba(75,148,144,0.4)"
+                              : "#d3e3ee") ||
+                          (isBox && "white"),
                     },
                   ]}
-                ><Pressable onPress={()=>{handleCopy();noticeMover()}}
-		style={{height:20,width:20,alignItems:"center",
-			position:"absolute",top:20,right:20,justifyContent:"center",
-		backgroundColor:"white",borderRadius:10}}>
-		<Text style={{fontSize:10}}>📎</Text></Pressable>
-                  <Text style={[styles.msg, {color:dark?'white':'rgba(0,0,0,0.8)'}]}>{item.msg}</Text>
-		  {item.date&&<Text style={[styles.date,{color:dark?"rgba(255,255,255,0.8)":"rgba(0,0,0,0.6)",fontWeight:'bold'}]}>{item.date}</Text>}
+                >
+                  {isBox && (
+                    <Pressable
+                      onPress={() => {
+                        handleCopy();
+                        noticeMover();
+                      }}
+                      style={{
+                        zIndex: 40,
+                        alignItems: "center",
+                        alignSelf: "flex-end",
+                        marginBottom: 5,
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                        padding: 5,
+                        gap: 5,
+                        backgroundColor: "#ffe0b2",
+                        borderRadius: 10,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "#feb919",
+                          fontSize: 12,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {copy}
+                      </Text>
+                      <Text
+                        style={{
+                          height: 20,
+                          width: 20,
+                          fontSize: 12,
+                          backgroundColor: "white",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontWeight: "bold",
+                          borderRadius: 10,
+                        }}
+                      >
+                        📎
+                      </Text>
+                    </Pressable>
+                  )}
+                  <Text
+                    style={[
+                      styles.msg,
+                      {
+                        margin: 2.5,
+                        fontSize: 15,
+                        color: dark ? "#dddddd" : "rgba(0,0,0,0.8)",
+                      },
+                    ]}
+                  >
+                    {item.msg}
+                  </Text>
+                  {item.date && (
+                    <Text
+                      style={[
+                        styles.date,
+                        {
+                          color: dark
+                            ? "rgba(255,255,255,0.8)"
+                            : "rgba(0,0,0,0.6)",
+                          fontWeight: "bold",
+                        },
+                      ]}
+                    >
+                      {item.date}
+                    </Text>
+                  )}
+                  {item.uri && (
+                    <Image
+                      soure={{ uri: item.uri }}
+                      style={{
+                        height: 200,
+                        width: 100,
+                        zIndex: 100,
+                        resizeMode: "contain",
+                      }}
+                    />
+                  )}
                 </Pressable>
               );
             })}
           </ScrollView>
         </View>
       </View>
+      <View style={{alignItems:"center",position:"absolute"
+        ,zIndex:27,justifyContent:"center",
+      bottom:0,flexDirection:"column",flex:1}}>
+      {ads&&<AdsPanel/>}
       <View
         style={{
           justifyContent: "space-around",
-          padding:10,
-          width: "100%",
+          padding: 10,
+          width: width,
           alignItems: "center",
-          position: "absolute",
-          bottom: 80,
-	  gap:8,
-	  height:100,
-	  backgroundColor:dark?"#131314":"white",
+          gap: 8,
+          height: 100,
+          backgroundColor: dark ? "#131314" : "white",
           flexDirection: "row",
+	  zIndex:27
         }}
-      >{replying&&<TouchableOpacity style={{height:40,width:40,borderRadius:20,backgroundColor:"black"}}/>}
+      >
+        {replying && (
+          <TouchableOpacity
+            onPress={() => pickImage()}
+            style={{
+              height: 40,
+              width: 40,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 20,
+              backgroundColor: "#484c4f",
+            }}
+          >
+            <Text style={{ fontSize: 20 }}>📸</Text>
+          </TouchableOpacity>
+        )}
         <TextInput
           value={reply}
+	  autoFocus={false}
           style={{
-            width: replying? width*0.65 : width*0.7,
-            height:reply.length>=1?80: 50,
-            borderRadius: reply.legth>=1?15:25,
+            width: replying ? width * 0.65 : width * 0.7,
+            height: reply.length >0 ? 80 : 50,
+            borderRadius: reply.legth >0 ? 15 : 25,
             borderWidth: replying ? 1 : 0,
-            textAlignVertical: reply.length>=1 ?"top" : "center",
+            textAlignVertical: reply.length >0 ? "top" : "center",
             paddingLeft: 10,
             paddingBottom: 10,
             paddingRight: 10,
             paddingTop: 10,
             textAlign: "top",
-            backgroundColor: dark ? "#131314" :"white",
-	    borderWidth:reply.length >0?1.5:0.5,
-	    borderColor:"#4b9490",
+            backgroundColor: dark ? "#131314" : "white",
+            borderWidth: reply.length > 0 ? 1.5 : 0.5,
+            borderColor: "#4b9490",
             color: dark ? "white" : "rgba(0,0,0,0.8)",
           }}
           multiline={true}
@@ -265,22 +435,29 @@ const [notice,setNotice] = useState("Message copied!");
             sendReply();
           }}
           style={{
-            height: replying?40:50,
-            width: replying?40:50,
-            backgroundColor: dark ? "black" :"#4b9490",
-            borderRadius:replying?20:25,
-	    borderWidth:1,
-	    borderColor:"rgba(255,255,255,0.5)",
+            height: replying ? 40 : 50,
+            width: replying ? 40 : 50,
+            backgroundColor: dark ? "black" : "#4b9490",
+            borderRadius: replying ? 20 : 25,
+            borderWidth: 1,
+            borderColor: "#00d4d4",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Text style={{ fontSize: 12,fontWeight:"bold", color: dark ? "white" : "white" }}>
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: "bold",
+              color: dark ? "#00d4d4" : "white",
+            }}
+          >
             Send
           </Text>
         </TouchableOpacity>
+	</View>
+
       </View>
-<BottomTab/>
     </>
   );
 }
@@ -299,22 +476,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: "white",
-    width:width,
-    justifyContent:"center",
+    width: width,
+    justifyContent: "center",
     position: "absolute",
     top: 0,
-    zIndex:50,
+    zIndex: 50,
   },
   name: { color: "white" },
 
   listBox1: {
     position: "absolute",
-    top: "5%",
-    height: "80%",
+    bottom: 80,
+    height: "85%",
     width: "100%",
     backgroundColor: "",
     padding: 10,
-    paddingBottom:80
+    paddingBottom: 20,
   },
   chatBox: {
     borderTopRightRadius: 15,
@@ -335,13 +512,18 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     alignItems: "center",
     marginRight: 10,
-    marginBottom:10,
+    marginBottom: 10,
     justifyContent: "space-between",
     flexDirection: "column",
   },
 
   msg: { color: "rgba(0,0,0,0.8)", fontSize: 14 },
-  date: { fontSize: 6, color: "rgb(0,0,0,0.1)", marginTop:4,alignSelf:"flex-end"},
+  date: {
+    fontSize: 6,
+    color: "rgb(0,0,0,0.1)",
+    marginTop: 4,
+    alignSelf: "flex-end",
+  },
   bottom: {
     justifyContent: "space-between",
     elevation: 4,
