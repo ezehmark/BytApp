@@ -76,7 +76,7 @@ const onLayoutRootView=useCallback(async()=>{
   const [date, setDate] = useState(null);
 
 
-  const socket = io("http://192.168.0.200:3000");
+  const socket = io("https://mybackend-oftz.onrender.com");
 
   useEffect(() => {
     socket.on("connection", () =>
