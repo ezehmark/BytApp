@@ -3,9 +3,11 @@ import { persist } from "zustand/middleware";
 import { MMKV } from "react-native-mmkv";
 import * as NavigationBar from "expo-navigation-bar";
 
+import {io} from "socket.io-client";
+
 // Initialize MMKV storage
 const mmkvStore = new MMKV();
-
+const socket = io("https://mybackend-oftz.onrender.com");
 function getDateTime() {
   const date = new Date();
   const months = [
@@ -25,6 +27,7 @@ function getDateTime() {
 const useStore = create(
   persist(
     (set, get) => ({
+	socket,
       inChats: [],
       setInChats: (data) => set({ inChats: data }),
       chats: [],
@@ -72,6 +75,9 @@ closeAds:()=>set({ads:false}),
         setItem: (key, value) => mmkvStore.set(key, JSON.stringify(value)),
         removeItem: (key) => mmkvStore.delete(key),
       },
+	partialize:(state)=>{
+    const{socket,handleNav,dateNow,...rest}=state;
+    return rest}
     }
   )
 );

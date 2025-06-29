@@ -1,3 +1,4 @@
+import Ripple from "react-native-material-ripple";
 import { useState, useEffect,useCallback } from "react";
 import { StyleSheet, Image, Text, View, Pressable } from "react-native";
 import useStore from "./zustand";
@@ -29,13 +30,13 @@ useFocusEffect(useCallback(()=>{
      <Text style={{color:dark?"#ccc":"#4b9490",marginBottom:20,fontSize:20,
 	      marginTop:20,fontWeight:"bold"}}>Settings</Text>
 
-      <Pressable onPress={toggleDark} style={[styles.box1,{backgroundColor:dark?"#131314":"#d3e3ee"}]}>
+      <Ripple onPress={toggleDark} style={[styles.box1,{backgroundColor:dark?"#131314":"#d3e3ee"}]}>
         <Text style={{color:dark?"#ccc":"rgba(0,0,0,0.4)",fontSize:14,fontWeight:"bold"}}>Toggle Mode</Text><Text style={{color:dark?"rgba(255,255,255,0.3)":"black",
 		fontSize:14}}>{dark?"Night 💤":"Day ⛅"}</Text>
-      </Pressable>
-      <Pressable onPress={toggleAds} style={[styles.box1,{backgroundColor:dark?"#131314":"#d3e3ee"}]}><Text style={{color:dark?"#ccc":"rgba(0,0,0,0.4)",fontSize:14,fontWeight:"bold"}}>Toggle Ads</Text><Text style={{color:dark?"rgba(255,255,255,0.3)":"black",
+      </Ripple>
+      <Ripple onPress={toggleAds} style={[styles.box1,{backgroundColor:dark?"#131314":"#d3e3ee"}]}><Text style={{color:dark?"#ccc":"rgba(0,0,0,0.4)",fontSize:14,fontWeight:"bold"}}>Toggle Ads</Text><Text style={{color:dark?"rgba(255,255,255,0.3)":"black",
   fontSize:14}}>{ads?"On":"Off"}</Text>
-      </Pressable></View>
+      </Ripple></View>
       </View><View style={{alignItems:"center",position:"absolute",zIndex:27,justifyContent:"center",bottom:0,flexDirection:"column",flex:1}}>
       <BottomTab dark={dark}/>
       </View>

@@ -1,3 +1,4 @@
+import Ripple from "react-native-material-ripple";
 import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
@@ -13,7 +14,9 @@ import {
   Clipboard,
   ScrollView,
   TextInput,
+  Video,
   ToastAndroid,
+  ActivityIndicator,
   Platform,
 } from "react-native";
 import Animated, {
@@ -27,35 +30,34 @@ import { BallIndicator } from "react-native-indicators";
 import Pusher from "pusher-js";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import LinearGradient from "react-native-linear-gradient";
-import { useNavigation} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import BottomTab from "./bottomTab.tsx";
 import { MMKV } from "react-native-mmkv";
 import useStore from "./zustand";
 import * as ImagePicker from "expo-image-picker";
 import AdsPanel from "./adsPanel";
+import axios from "axios";
 //import Clipboard from "@react-native-clipboard/clipboard";
 
 export default function ChatArea({}) {
   const [replying, setReplying] = useState(false);
-
   const listRef = useRef(null);
   useEffect(() => {
-      const scrollT = setTimeout(() => {
-        listRef.current.scrollToEnd({ animated: false });
-      }, 500);
-      return () => clearTimeout(scrollT);
-    }, []);
+    const scrollT = setTimeout(() => {
+      listRef.current.scrollToEnd({ animated: false });
+    }, 500);
+    return () => clearTimeout(scrollT);
+  }, []);
 
   const chats = useStore((state) => state.chats);
   const dark = useStore((state) => state.dark);
 
   const setChats = useStore((state) => state.setChats);
   const handleNav = useStore((state) => state.handleNav);
-  const dateNow = useStore(state=>state.dateNow);
-  const ads = useStore(s=>s.ads);
-  const closeAds = useStore(s=>s.closeAds);
-
-
+  const dateNow = useStore((state) => state.dateNow);
+  const ads = useStore((s) => s.ads);
+  const closeAds = useStore((s) => s.closeAds);
+  const socket = useStore(s=>s.socket);
 
   useEffect(() => {
     handleNav();
@@ -82,7 +84,9 @@ export default function ChatArea({}) {
   const [reply, setReply] = useState("");
   // Handler to send chat, setChat and store in MMKV
   function sendReply() {
-    const newReply = [{ msg: reply, mine: true, name: "Ezeh Mark",date:dateNow() }];
+    const newReply = [
+      { msg: reply, mine: true, name: "Ezeh Mark", date: dateNow() },
+    ];
     if (reply.trim().length === 0) {
       return;
     }
@@ -114,29 +118,100 @@ export default function ChatArea({}) {
   const [selected, setSelected] = useState(null);
   const [copy, setCopy] = useState("Copy");
   const [url, setUrl] = useState("");
+  const [picUrl, setPicUrl] = useState("");
 
-  async function pickImage() {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      setNotice("Please allow permissions");
-      noticeMover();
-      return;
-    }
+  const [vurl, setvurl] = useState("");
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.4,
-    });
-    if (result.cancelled) {
-      setNotice("Select image to continue");
-      noticeMover();
-      return;
-    }
-    setUrl(result.assets[0].uri);
-    setChats([{ name: "Ezeh Mark", mine: true, uri: url }]);
-    console.log(result);
+
+const [loading, setLoading] = useState(false);
+
+async function pickImage() {
+  const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (!permission.granted) {
+    setNotice("Please allow permissions");
+    noticeMover();
+    return;
   }
+
+  const result = await ImagePicker.launchImageLibraryAsync({
+    allowsEditing: true,
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    quality: 0.4,
+  });
+
+  if (result.canceled || !result.assets || result.assets.length === 0) {
+    setNotice("Select an image to continue");
+    noticeMover();
+    return;
+  }
+
+  const iurl = result.assets[0].uri;
+  setUrl(iurl);
+  setChats([{ name: "Ezeh Mark", mine: true, uri: iurl }]);
+  console.log(result);
+
+  const splits = iurl.split(".");
+  const ext = splits[splits.length - 1];
+
+  const chatForm = new FormData();
+  chatForm.append("file",{
+  uri: iurl,                                                            type: `image/${ext}`,                                                 name: "chatImage",});
+  chatForm.append("upload_preset", "bitbankers_upload");
+
+  setLoading(true);
+
+  try {
+    const response = await axios.post(
+      "https://api.cloudinary.com/v1_1/dadvxxgl1/image/upload",
+      chatForm,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    const imgUrl = response.data.secure_url;
+    setNotice("Picture sent to customer");
+    noticeMover();
+    socket.emit("AdmminReply", imgUrl);
+  } catch (err) {
+    setNotice(err.message || "Upload failed");
+  } finally {
+    setLoading(false);
+  }
+}
+
+//Picking, uploading and sending video
+//
+async function pickVideo() {                                            const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();                                                                 if (!permission.granted) {                                              setNotice("Please allow permissions");                                noticeMover();                                                        return;                                                             }                                                                                                                                           const result = await ImagePicker.launchVideoLibraryAsync({
+    allowsEditing: true,                                                  mediaTypes: ImagePicker.MediaTypeOptions.Videos,                      quality: 0.4,                                                       });
+                                                                        if (result.canceled || !result.assets || result.assets.length === 0) {                                                                        setNotice("Select an image to continue");                             noticeMover();                                                        return;                                                             }                                                                   
+  const iurl = result.assets[0].uri;                                    setvurl(iurl);
+  setChats([{ name: "Ezeh Mark", mine: true, uri: vurl }]);
+  console.log(result);
+
+  const splits = iurl.split(".");
+  const ext = splits[splits.length - 1];
+
+  const chatForm = new FormData();
+  chatForm.append("file",{
+  uri: vurl,                                                            type: `video/${ext}`,                                                 name: "chatVideo",});
+  chatForm.append("upload_preset", "bitbankers_upload");
+
+  setLoading(true);
+
+  try {
+    const response = await axios.post(
+      "https://api.cloudinary.com/v1_1/dadvxxgl1/image/upload",
+      chatForm,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+    const imgUrl = response.data.secure_url;
+    setNotice("Picture sent to customer");
+    noticeMover();
+    socket.emit("AdmminReply", imgUrl);
+  } catch (err) {
+    setNotice(err.message || "Upload failed");
+  } finally {
+    setLoading(false);
+  }
+}
 
   return (
     <>
@@ -155,8 +230,8 @@ export default function ChatArea({}) {
                 paddingHorizontal: 20,
                 zIndex: 100,
                 paddingVertical: 10,
-                backgroundColor: "rgba(75,148,144,0.4)",
-                color: "rgba(75,148,144,1)",
+                backgroundColor: "rgba(75,148,144,0.6)",
+                color: "rgba(255,255,255,0.9)",
                 alignSelf: "center",
                 position: "relative",
                 borderRadius: 10,
@@ -172,7 +247,10 @@ export default function ChatArea({}) {
           </Animated.Text>
         )}
         <View
-          style={[styles.user, { height:50,backgroundColor: dark ? "#131314" : "white" }]}
+          style={[
+            styles.user,
+            { height: 50, backgroundColor: dark ? "#131314" : "white" },
+          ]}
         >
           <View
             style={{
@@ -223,13 +301,13 @@ export default function ChatArea({}) {
             styles.listBox1,
             {
               backgroundColor: dark ? "#131314" : "white",
-              paddingBottom: ads?100 : 20,
+              paddingBottom: ads ? 100 : 20,
             },
           ]}
         >
           <ScrollView
             ref={listRef}
-	    showsVerticalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
             overScrollMode={Platform.OS === "android" ? "always" : undefined}
           >
             {chats.map((item, index) => {
@@ -239,11 +317,23 @@ export default function ChatArea({}) {
               };
 
               const isBox = index === selected;
+
               return (
+		      <View stylw={{flex:1,overflow:"hdden"}}>
                 <Pressable
+                  android_ripple={{
+                    borderless: false,
+                    radius: 150,
+                    color: dark
+                      ? "white"
+                      : item.uri
+                        ? "white"
+                        : "white",
+                  }}
                   key={index}
                   onLongPress={() => {
-			  Vibration.vibrate(100);setSelected(index)
+                    Vibration.vibrate(100);
+                    setSelected(index);
                   }}
                   onPress={() => {
                     if (selected == index) {
@@ -252,23 +342,28 @@ export default function ChatArea({}) {
                     setSelected(index);
                   }}
                   style={[
+			  	
                     styles.chatBox,
                     {
+                      overflow: "hidden",
+                      zIndex: 30,
                       borderTopRightRadius: item.mine ? 15 : 15,
                       borderTopLeftRadius: item.mine ? 15 : 2,
                       borderBottomLeftRadius: item.mine ? 15 : 2,
                       borderBottomRightRadius: item.mine ? 2 : 15,
                       borderTopLeftRadius: 15,
                       alignSelf: item.mine ? "flex-end" : "flex-start",
-                      paddingVertical: 5,
-                      paddingHorizontal: 15,
-                      alignItems: "flex-start",
+                      paddingVertical: item.uri ? 0 : 5,
+                      paddingHorizontal: item.uri ? 0 : 15,
+                      alignItems: item.uri ? "center" : "flex-start",
                       backgroundColor: item.mine
                         ? dark
                           ? "#484c4f"
-                          : isBox
-                            ? "rgba(75,148,144,0.4)"
-                            : "#edf3f7"
+                          : item.uri
+                            ? "black"
+                            : isBox
+                              ? "rgba(75,148,144,0.4)"
+                              : "#edf3f7"
                         : (dark
                             ? "#292e33"
                             : isBox
@@ -279,48 +374,52 @@ export default function ChatArea({}) {
                   ]}
                 >
                   {isBox && (
-                    <Pressable
-                      onPress={() => {
-                        handleCopy();
-                        noticeMover();
-                      }}
-                      style={{
-                        zIndex: 40,
-                        alignItems: "center",
-                        alignSelf: "flex-end",
-                        marginBottom: 5,
-                        justifyContent: "space-between",
-                        flexDirection: "row",
-                        padding: 5,
-                        gap: 5,
-                        backgroundColor: "#ffe0b2",
-                        borderRadius: 10,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "#feb919",
-                          fontSize: 12,
-                          fontWeight: "bold",
+			  <View>
+		     <Pressable
+                        onPress={() => {
+                          handleCopy();
+                          noticeMover();
                         }}
-                      >
-                        {copy}
-                      </Text>
-                      <Text
                         style={{
-                          height: 20,
-                          width: 20,
-                          fontSize: 12,
-                          backgroundColor: "white",
+                          zIndex: 40,
                           alignItems: "center",
-                          justifyContent: "center",
-                          fontWeight: "bold",
+                          alignSelf: "flex-end",
+                          marginBottom: 5,
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          padding: 5,
+                          gap: 5,
+			  elevation:4,
+			  shadowColor:dark?"white":"black",
+                          backgroundColor: "#f2fff3",
                           borderRadius: 10,
                         }}
                       >
-                        📎
-                      </Text>
-                    </Pressable>
+                        <Text
+                          style={{
+                            color: "#4b9490",
+                            fontSize: 12,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {copy}
+                        </Text>
+                        <Text
+                          style={{
+                            height: 20,
+                            width: 20,
+                            fontSize: 12,
+                            backgroundColor: "white",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontWeight: "bold",
+                            borderRadius: 10,
+                          }}
+                        >
+                          📎
+                        </Text>
+                      </Pressable>
+                    </View>
                   )}
                   <Text
                     style={[
@@ -350,113 +449,134 @@ export default function ChatArea({}) {
                     </Text>
                   )}
                   {item.uri && (
-                    <Image
-                      soure={{ uri: item.uri }}
-                      style={{
-                        height: 200,
-                        width: 100,
-                        zIndex: 100,
-                        resizeMode: "contain",
-                      }}
-                    />
+                    <View style={{ padding: 2, alignSelf: "center" }}>
+                      <Image
+                        source={{ uri: item.uri }}
+                        style={{
+                          height: undefined,
+                          width:"100%",
+			  aspectRatio: 1,
+                          resizeMode: "contain",
+                          alignSelf: "center",
+                        }}
+                      />
+		      {(loading && index==chats.length-1)&&(<ActivityIndicator size={40}
+			      style={{zIndex:40,top:20,
+				      right:20,backgroundColor:"rgba(75,148,144,0.4)",
+			     padding:5,borderRadius:10,
+			     position:"absolute",
+			      alignSelf:"center"}}/>)}
+                    </View>
                   )}
-                </Pressable>
+                </Pressable></View>
               );
             })}
+
+
           </ScrollView>
-        </View>
+	  </View>
       </View>
-      <View style={{alignItems:"center",position:"absolute"
-        ,zIndex:27,justifyContent:"center",
-      bottom:0,flexDirection:"column",flex:1}}>
-      {ads&&<AdsPanel/>}
       <View
         style={{
-          justifyContent: "space-around",
-          padding: 10,
-          width: width,
           alignItems: "center",
-          gap: 8,
-          height: 100,
-          backgroundColor: dark ? "#131314" : "white",
-          flexDirection: "row",
-	  zIndex:27
+          position: "absolute",
+          zIndex: 27,
+          justifyContent: "center",
+          bottom: 0,
+          flexDirection: "column",
+          flex: 1,
         }}
       >
-        {replying && (
-          <TouchableOpacity
-            onPress={() => pickImage()}
-            style={{
-              height: 40,
-              width: 40,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 20,
-              backgroundColor: "#484c4f",
-            }}
-          >
-            <Text style={{ fontSize: 20 }}>📸</Text>
-          </TouchableOpacity>
-        )}
-        <TextInput
-          value={reply}
-	  autoFocus={false}
+        {ads && <AdsPanel />}
+        <View
           style={{
-            width: replying ? width * 0.65 : width * 0.7,
-            height: reply.length >0 ? 80 : 50,
-            borderRadius: reply.legth >0 ? 15 : 25,
-            borderWidth: replying ? 1 : 0,
-            textAlignVertical: reply.length >0 ? "top" : "center",
-            paddingLeft: 10,
-            paddingBottom: 10,
-            paddingRight: 10,
-            paddingTop: 10,
-            textAlign: "top",
-            backgroundColor: dark ? "#131314" : "white",
-            borderWidth: reply.length > 0 ? 1.5 : 0.5,
-            borderColor: "#4b9490",
-            color: dark ? "white" : "rgba(0,0,0,0.8)",
-          }}
-          multiline={true}
-          onFocus={() => {
-            setReplying(true);
-          }}
-          onBlur={() => {
-            setReplying(false);
-          }}
-          onChangeText={(e) => {
-            setReply(e);
-          }}
-          placeholder="Reply customer ..."
-          placeholderTextColor={"#4b9490"}
-        />
-        <TouchableOpacity
-          onPress={() => {
-            sendReply();
-          }}
-          style={{
-            height: replying ? 40 : 50,
-            width: replying ? 40 : 50,
-            backgroundColor: dark ? "black" : "#4b9490",
-            borderRadius: replying ? 20 : 25,
-            borderWidth: 1,
-            borderColor: "#00d4d4",
-            justifyContent: "center",
+            justifyContent: "space-around",
+            padding: 10,
+            width: width,
             alignItems: "center",
+            gap: 8,
+            height: 100,
+            backgroundColor: dark ? "#131314" : "white",
+            flexDirection: "row",
+            zIndex: 27,
           }}
         >
-          <Text
+          {replying && (
+            <TouchableOpacity
+              onPress={() => pickImage()}
+              style={{
+                height: 40,
+                width: 40,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 20,
+                backgroundColor: "#484c4f",
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>📸</Text>
+            </TouchableOpacity>
+          )}
+          <TextInput
+            value={reply}
+            autoFocus={false}
             style={{
-              fontSize: 12,
-              fontWeight: "bold",
-              color: dark ? "#00d4d4" : "white",
+              width: replying ? width * 0.65 : width * 0.7,
+              height: reply.length > 0 ? 80 : 50,
+              borderRadius: reply.legth > 0 ? 15 : 25,
+              borderWidth: replying ? 1 : 0,
+              textAlignVertical: reply.length > 0 ? "top" : "center",
+              paddingLeft: 10,
+              paddingBottom: 10,
+              paddingRight: 10,
+              paddingTop: 10,
+              textAlign: "top",
+              backgroundColor: dark ? "#131314" : "white",
+              borderWidth: reply.length > 0 ? 1.5 : 0.5,
+              borderColor: "#4b9490",
+              color: dark ? "white" : "rgba(0,0,0,0.8)",
+            }}
+            multiline={true}
+            onFocus={() => {
+              setReplying(true);
+            }}
+            onBlur={() => {
+              setReplying(false);
+            }}
+            onChangeText={(e) => {
+              setReply(e);
+            }}
+            placeholder="Reply customer ..."
+            placeholderTextColor={"#4b9490"}
+          />
+          <Pressable
+	  android_ripple={{color:"white",radius:40,overflow:"hidden"
+	  }}
+            onPress={() => {
+              sendReply();
+            }}
+            style={{
+              height: replying ? 40 : 50,
+              width: replying ? 40 : 50,
+              backgroundColor: dark ? "black" : "#4b9490",
+              borderRadius: replying ? 20 : 25,
+              borderWidth: 1,
+              borderColor: "#00d4d4",
+              justifyContent: "center",
+              alignItems: "center",
+	      overflow:"hidden"
             }}
           >
-            Send
-          </Text>
-        </TouchableOpacity>
-	</View>
-
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "bold",
+                color: dark ? "#00d4d4" : "white",
+              }}
+            >
+              Send
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </>
   );

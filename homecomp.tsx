@@ -1,3 +1,4 @@
+import Ripple from "react-native-material-ripple";
 import { useState, useEffect, useRef,useCallback } from "react";
 import {
   StyleSheet,
@@ -176,8 +177,9 @@ export default function HomeComp({ updatedChats, date, myDate }) {
                   .fill(null)
                   .map((_, index) => {
                     return (
-                      <Pressable
+                      <Ripple
                         key={index}
+			rippleColor={dark?"#ccc":"black"}
                         style={{ flex: 1 }}
                         onPress={() => navigation.navigate("chatArea")}
                       >
@@ -384,7 +386,7 @@ export default function HomeComp({ updatedChats, date, myDate }) {
                                 : new Date().getHours()}
                           </Text>
                         </View>
-                      </Pressable>
+                      </Ripple>
                     );
                   })}
               </ScrollView>

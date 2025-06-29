@@ -1,3 +1,4 @@
+import Ripple from "react-native-material-ripple";
 import { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,                                                                             FlatList,
@@ -99,11 +100,11 @@ return(<View
         >
 	<TouchableOpacity
 	onPress={()=>closeAds()}
-	style={{backgroundColor:"#ffe0b2",paddingVertical:5,
+	style={{backgroundColor:"#f2fff3",paddingVertical:5,
 		position:"absolute",top:5,zIndex:35,right:5,
 	borderWidth:1,borderColor:"#c77700",
 	paddingHorizontal:10,borderRadius:10}}>
-	<Text style={{fontWight:"bold",alignSelf:"center",color:"#c77700",fontSize:10,}}>Close Ads ❌</Text>
+	<Text style={{fontWight:"bold",alignSelf:"center",color:"#rgba(0,0,0,0.7)",fontSize:8,}}>Close Ads ❌</Text>
 	</TouchableOpacity>
           <ScrollView horizontal={true} ref={adsBox}>
             {adsItem.map((item, index) => {

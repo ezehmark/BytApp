@@ -31,6 +31,7 @@ export default function App() {
   const chats = useStore((state) => state.chats);
 
 const setChats = useStore((state) => state.setChats);
+const socket = useStore(s=>s.socket);
 const dark = useStore(st=>st.dark);
 
   const[appReady,setAppReady]=useState(false);
@@ -76,7 +77,6 @@ const onLayoutRootView=useCallback(async()=>{
   const [date, setDate] = useState(null);
 
 
-  const socket = io("https://mybackend-oftz.onrender.com");
 
   useEffect(() => {
     socket.on("connection", () =>
