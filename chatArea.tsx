@@ -319,7 +319,6 @@ async function pickVideo() {                                            const pe
               const isBox = index === selected;
 
               return (
-		      <View stylw={{flex:1,overflow:"hdden"}}>
                 <Pressable
                   android_ripple={{
                     borderless: false,
@@ -468,7 +467,7 @@ async function pickVideo() {                                            const pe
 			      alignSelf:"center"}}/>)}
                     </View>
                   )}
-                </Pressable></View>
+                </Pressable>
               );
             })}
 

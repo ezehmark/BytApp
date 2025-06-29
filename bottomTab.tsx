@@ -19,6 +19,7 @@ export default function BottomTab() {
 
   const navigation = useNavigation();
   const id = useStore(st=>st.id);
+  const ads = useStore(st=>st.ads);
 
   const tabs = [
     {
@@ -35,7 +36,9 @@ export default function BottomTab() {
   ];
 
   return (
-    <View style={[styles.bottom, { backgroundColor: dark ? "#131314" : "white" }]}>
+    <View style={[styles.bottom, { 
+	    borderTopWidth:0.6,
+	    borderColor:dark?(ads?"transparent":"rgba(255,255,255,0.2)"):(ads?"transparent":"rgba(0,0,0,0.2)"),backgroundColor: dark ? "#131314" : "white" }]}>
       
       {tabs.map((item, index) => {
         const isTab = index === id;

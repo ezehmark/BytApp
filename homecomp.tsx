@@ -166,7 +166,7 @@ export default function HomeComp({ updatedChats, date, myDate }) {
                 alignItems: "center",
                 justifyContent: "center",
                 width: "100%",
-		paddingBottom:ads?40:20,
+		paddingBottom:ads?40:5,
               }}
             >
               <ScrollView
@@ -177,13 +177,11 @@ export default function HomeComp({ updatedChats, date, myDate }) {
                   .fill(null)
                   .map((_, index) => {
                     return (
-                      <Ripple
+                      <Pressable
                         key={index}
-			rippleColor={dark?"#ccc":"black"}
-                        style={{ flex: 1 }}
+			android_ripple={{color:dark?"rgba(255,255,255,0.4)":"black",radius:160}}
                         onPress={() => navigation.navigate("chatArea")}
-                      >
-                        <View
+                      
                           style={{
                             backgroundColor: dark ? "#131314" : "white",
                             width: sWidth / 1.1,
@@ -385,8 +383,7 @@ export default function HomeComp({ updatedChats, date, myDate }) {
                                 ? chats[chats.length - 1].date
                                 : new Date().getHours()}
                           </Text>
-                        </View>
-                      </Ripple>
+                      </Pressable>
                     );
                   })}
               </ScrollView>

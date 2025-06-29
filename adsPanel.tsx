@@ -91,7 +91,7 @@ return(<View
             alignItems:"center",
 	    zIndex:25,
 
-            elevation:25,
+            elevation:5,
             justifyContent:"center",
             shadowColor:dark?"white":"black",
             overflow:"hidden",
@@ -106,7 +106,8 @@ return(<View
 	paddingHorizontal:10,borderRadius:10}}>
 	<Text style={{fontWight:"bold",alignSelf:"center",color:"#rgba(0,0,0,0.7)",fontSize:8,}}>Close Ads ❌</Text>
 	</TouchableOpacity>
-          <ScrollView horizontal={true} ref={adsBox}>
+          <ScrollView horizontal={true} 
+	  showsHorizontalScrollIndicator={false} ref={adsBox}>
             {adsItem.map((item, index) => {
               return (
                 <View
