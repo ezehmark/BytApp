@@ -4,6 +4,7 @@ import { StyleSheet, Image, Text, View, Switch, Pressable } from "react-native";
 import useStore from "./zustand";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import BottomTab from "./bottomTab.tsx";
+import SearchBar from "./searchBar";
 
 const AdminPanel = ({ savedChats }) => {
   const dark = useStore((state) => state.dark);
@@ -155,6 +156,7 @@ const AdminPanel = ({ savedChats }) => {
             </Text>
             <Switch value={ads} onValueChange={toggleAds} />
           </Ripple>
+	  <SearchBar/>
         </View>
       </View>
       <View

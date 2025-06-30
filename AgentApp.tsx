@@ -73,13 +73,7 @@ const dark = useStore(st=>st.dark);
             {(props) => (
               <HomeComp
                 {...props}
-                myDate={myDate}
-                date={date}
-                updatedChats={chats}
                 dark={dark}
-                newestChats={newestChats}
-                setNewestChats={setNewestChats}
-                savedChats={savedChats}
               />
             )}
           </Stack.Screen>
@@ -95,8 +89,6 @@ const dark = useStore(st=>st.dark);
               <ChatArea
                 {...props}
                 dark={dark}
-                setNewestChats={setNewestChats}
-                updatedChats={chats}
               />
             )}
           </Stack.Screen>

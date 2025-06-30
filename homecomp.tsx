@@ -164,7 +164,7 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
                     marginBottom:20,
 		    overflow:"hidden",
 		    borderRadius:20,
-		    backgroundColor:"#2d2d2e",
+		    backgroundColor:dark?"#2d2d2e":"#eee",
                     alignSelf:"center"}}
                   >
 		  <AnimatedGradient
@@ -198,7 +198,7 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
                     return (
                       <Pressable
                         key={index}
-			android_ripple={{color:dark?"rgba(255,255,255,0.4)":"black",radius:160}}
+			android_ripple={{color:"rgba(75,148,144,0.2)",radius:160}}
                         onPress={() => navigation.navigate("chatArea")}
                       
                           style={{

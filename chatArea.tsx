@@ -37,6 +37,8 @@ import useStore from "./zustand";
 import * as ImagePicker from "expo-image-picker";
 import AdsPanel from "./adsPanel";
 import axios from "axios";
+import SearchBar from "./searchBar";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 //import Clipboard from "@react-native-clipboard/clipboard";
 
 export default function ChatArea({}) {
@@ -58,6 +60,9 @@ export default function ChatArea({}) {
   const ads = useStore((s) => s.ads);
   const closeAds = useStore((s) => s.closeAds);
   const socket = useStore((s) => s.socket);
+
+  const refineChats = useStore((s) => s.refineChats);
+  const refinedChats = useStore((s) => s.refinedChats);
 
   useEffect(() => {
     handleNav();
@@ -232,8 +237,25 @@ export default function ChatArea({}) {
       setLoading(false);
     }
   }
+  //Seearching chats:
 
+  const [query, setQuery] = useState("");
 
+  const searchChats = (query) => {
+	  setQuery(query);
+    if (query.trim().length < 1) {
+      refineChats([]);
+      return;
+    }
+    const filteredChats = chats.filter((item) => item.msg?.includes(query));
+    console.log(filteredChats);
+    refineChats(filteredChats);
+
+  };
+  useEffect(()=>{
+  refineChats([])},[]);
+
+  const[searching,setSearching]=useState(false);
 
   return (
     <>
@@ -243,13 +265,17 @@ export default function ChatArea({}) {
       />
       <View
         style={[styles.outer, { backgroundColor: dark ? "#131314" : "white" }]}
-      >
+      ><Pressable style={{padding:5,zIndex:55,left:20,}}
+        onPress={()=>navigation.goBack()}>
+        <AntDesign name="back"
+        size={20}/>
+        </Pressable>
         {notice && (
           <Animated.Text
             style={[
               styles.notice,
               {
-                paddingHorizontal: 20,
+                paddingHorizontal: 18,
                 zIndex: 100,
                 paddingVertical: 10,
                 backgroundColor: "rgba(75,148,144,0.6)",
@@ -271,7 +297,8 @@ export default function ChatArea({}) {
         <View
           style={[
             styles.user,
-            { height: 50, backgroundColor: dark ? "#131314" : "white" },
+            { height: 50, backgroundColor: dark ? "#131314" : "white" ,
+	    flexDirection:"row"},
           ]}
         >
           <View
@@ -293,7 +320,7 @@ export default function ChatArea({}) {
               {chats.length > 0 && chats[0]?.name}
             </Text>
 
-            <View
+	    {!searching&&<View
               style={{
                 height: 30,
                 width: 30,
@@ -314,7 +341,20 @@ export default function ChatArea({}) {
               >
                 {chats.length > 0 && chats[0].name?.charAt(0)}
               </Text>
-            </View>
+            </View>}
+	    
+	    {searching ?
+		<SearchBar
+              value={query}
+              height={40}
+              picSize={30}
+	      handleClose={()=>setSearching(false)}
+              onChangeText={(txt) => {
+                searchChats(txt);
+              }}
+            />:
+	    <Pressable onPress={()=>setSearching(true)}>                     
+	    <AntDesign name="search1" size={20}/></Pressable>}
           </View>
         </View>
 
@@ -324,6 +364,7 @@ export default function ChatArea({}) {
             {
               backgroundColor: dark ? "#131314" : "white",
               paddingBottom: ads ? 100 : 20,
+              paddingTop: 20,
             },
           ]}
         >
@@ -332,170 +373,337 @@ export default function ChatArea({}) {
             showsVerticalScrollIndicator={false}
             overScrollMode={Platform.OS === "android" ? "always" : undefined}
           >
-            {chats.map((item, index) => {
-              const handleCopy = async () => {
-                await Clipboard.setString(item.msg);
-                setNotice("Chat copied!");
-              };
+            {refinedChats.length > 0
+              ? refinedChats.map((item, index) => {
+                  const handleCopy = async () => {
+                    await Clipboard.setString(item.msg);
+                    setNotice("Chat copied!");
+                  };
+                  const isBox = index === selected;
 
-              const isBox = index === selected;
-
-              return (
-                <Pressable
-                  android_ripple={{
-                    borderless: false,
-                    radius: 150,
-                    color: dark ? "white" : item.uri ? "white" : "white",
-                  }}
-                  key={index}
-                  onLongPress={() => {
-                    Vibration.vibrate(100);
-                    setSelected(index);
-                  }}
-                  onPress={() => {
-                    if (selected == index) {
-                      setSelected(null);
-                    }
-                    setSelected(index);
-                  }}
-                  style={[
-                    styles.chatBox,
-                    {
-                      overflow: "hidden",
-                      zIndex: 30,
-                      borderTopRightRadius: item.mine ? 15 : 15,
-                      borderTopLeftRadius: item.mine ? 15 : 2,
-                      borderBottomLeftRadius: item.mine ? 15 : 2,
-                      borderBottomRightRadius: item.mine ? 2 : 15,
-                      borderTopLeftRadius: 15,
-                      alignSelf: item.mine ? "flex-end" : "flex-start",
-                      paddingVertical: item.uri ? 0 : 5,
-                      paddingHorizontal: item.uri ? 0 : 15,
-                      alignItems: item.uri ? "center" : "flex-start",
-                      backgroundColor: item.mine
-                        ? dark
-                          ? "#484c4f"
-                          : item.uri
-                            ? "black"
-                            : isBox
-                              ? "rgba(75,148,144,0.4)"
-                              : "#edf3f7"
-                        : (dark
-                            ? "#292e33"
-                            : isBox
-                              ? "rgba(75,148,144,0.4)"
-                              : "#d3e3ee") ||
-                          (isBox && "white"),
-                    },
-                  ]}
-                >
-                  {isBox && (
-                    <View>
-                      <Pressable
-                        onPress={() => {
-                          handleCopy();
-                          noticeMover();
-                        }}
-                        style={{
-                          zIndex: 40,
-                          alignItems: "center",
-                          alignSelf: "flex-end",
-                          marginBottom: 5,
-                          justifyContent: "space-between",
-                          flexDirection: "row",
-                          padding: 5,
-                          gap: 5,
-                          elevation: 4,
-                          shadowColor: dark ? "white" : "black",
-                          backgroundColor: "#f2fff3",
-                          borderRadius: 10,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: "#4b9490",
-                            fontSize: 12,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {copy}
-                        </Text>
-                        <Text
-                          style={{
-                            height: 20,
-                            width: 20,
-                            fontSize: 12,
-                            backgroundColor: "white",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontWeight: "bold",
-                            borderRadius: 10,
-                          }}
-                        >
-                          📎
-                        </Text>
-                      </Pressable>
-                    </View>
-                  )}
-                  <Text
-                    style={[
-                      styles.msg,
-                      {
-                        margin: 2.5,
-                        fontSize: 15,
-                        color: dark ? "#dddddd" : "rgba(0,0,0,0.8)",
-                      },
-                    ]}
-                  >
-                    {item.msg}
-                  </Text>
-                  {item.date && (
-                    <Text
+                  return (
+                    <Pressable
+                      android_ripple={{
+                        borderless: false,
+                        radius: 150,
+                        color: dark ? "white" : item.uri ? "white" : "white",
+                      }}
+                      key={index}
+                      onLongPress={() => {
+                        Vibration.vibrate(100);
+                        setSelected(index);
+                      }}
+                      onPress={() => {
+                        if (selected == index) {
+                          setSelected(null);
+                        }
+                        setSelected(index);
+                      }}
                       style={[
-                        styles.date,
+                        styles.chatBox,
                         {
-                          color: dark
-                            ? "rgba(255,255,255,0.8)"
-                            : "rgba(0,0,0,0.6)",
-                          fontWeight: "bold",
+                          marginTop: index == 0 ? 50 : 0,
+                          overflow: "hidden",
+                          zIndex: 30,
+                          borderTopRightRadius: item.mine ? 15 : 15,
+                          borderTopLeftRadius: item.mine ? 15 : 2,
+                          borderBottomLeftRadius: item.mine ? 15 : 2,
+                          borderBottomRightRadius: item.mine ? 2 : 15,
+                          borderTopLeftRadius: 15,
+                          alignSelf: item.mine ? "flex-end" : "flex-start",
+                          paddingVertical: item.uri ? 0 : 5,
+                          paddingHorizontal: item.uri ? 0 : 15,
+                          alignItems: item.uri ? "center" : "flex-start",
+                          backgroundColor: item.mine
+                            ? dark
+                              ? "#484c4f"
+                              : item.uri
+                                ? "black"
+                                : isBox
+                                  ? "rgba(75,148,144,0.4)"
+                                  : "#edf3f7"
+                            : (dark
+                                ? "#292e33"
+                                : isBox
+                                  ? "rgba(75,148,144,0.4)"
+                                  : "#d3e3ee") ||
+                              (isBox && "white"),
                         },
                       ]}
                     >
-                      {item.date}
-                    </Text>
-                  )}
-                  {item.uri && (
-                    <View style={{ padding: 2, alignSelf: "center" }}>
-                      <Image
-                        source={{ uri: item.uri }}
-                        style={{
-                          height: undefined,
-                          width: "100%",
-                          aspectRatio: 1,
-                          resizeMode: "contain",
-                          alignSelf: "center",
-                        }}
-                      />
-                      {loading && index == chats.length - 1 && (
-                        <ActivityIndicator
-                          size={40}
-                          style={{
-                            zIndex: 40,
-                            top: 20,
-                            right: 20,
-                            backgroundColor: "rgba(75,148,144,0.4)",
-                            padding: 5,
-                            borderRadius: 10,
-                            position: "absolute",
-                            alignSelf: "center",
-                          }}
-                        />
+                      {isBox && (
+                        <View>
+                          <Pressable
+                            onPress={() => {
+                              handleCopy();
+                              noticeMover();
+                            }}
+                            style={{
+                              zIndex: 40,
+                              alignItems: "center",
+                              alignSelf: "flex-end",
+                              marginBottom: 5,
+                              justifyContent: "space-between",
+                              flexDirection: "row",
+                              padding: 5,
+                              gap: 5,
+                              elevation: 4,
+                              shadowColor: dark ? "white" : "black",
+                              backgroundColor: "#f2fff3",
+                              borderRadius: 10,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: "#4b9490",
+                                fontSize: 12,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {copy}
+                            </Text>
+                            <Text
+                              style={{
+                                height: 20,
+                                width: 20,
+                                fontSize: 12,
+                                backgroundColor: "white",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontWeight: "bold",
+                                borderRadius: 10,
+                              }}
+                            >
+                              📎
+                            </Text>
+                          </Pressable>
+                        </View>
                       )}
-                    </View>
-                  )}
-                </Pressable>
-              );
-            })}
+                      <Text
+                        style={[
+                          styles.msg,
+                          {
+                            margin: 2.5,
+                            fontSize: 15,
+                            color: dark ? "#dddddd" : "rgba(0,0,0,0.8)",
+                          },
+                        ]}
+                      >
+                        
+                        {item.msg}
+                      </Text>
+                      {item.date && (
+                        <Text
+                          style={[
+                            styles.date,
+                            {
+                              color: dark
+                                ? "rgba(255,255,255,0.8)"
+                                : "rgba(0,0,0,0.6)",
+                              fontWeight: "bold",
+                            },
+                          ]}
+                        >
+                          {item.date}
+                        </Text>
+                      )}
+                      {item.uri && (
+                        <View style={{ padding: 2, alignSelf: "center" }}>
+                          <Image
+                            source={{ uri: item.uri }}
+                            style={{
+                              height: undefined,
+                              width: "100%",
+                              aspectRatio: 1,
+                              resizeMode: "contain",
+                              alignSelf: "center",
+                            }}
+                          />
+                          {loading && index == chats.length - 1 && (
+                            <ActivityIndicator
+                              size={25}
+                              style={{
+                                zIndex: 40,
+                                top: 20,
+                                right: 20,
+                                backgroundColor: "rgba(242,255,243,0.6)",
+                                padding: 5,
+                                borderRadius: 10,
+                                position: "absolute",
+                                alignSelf: "center",
+                              }}
+                            />
+                          )}
+                        </View>
+                      )}
+                    </Pressable>
+                  );
+                })
+              : chats.map((item, index) => {
+                  const handleCopy = async () => {
+                    await Clipboard.setString(item.msg);
+                    setNotice("Chat copied!");
+                  };
+
+                  const isBox = index === selected;
+
+                  return (
+                    <Pressable
+                      android_ripple={{
+                        borderless: false,
+                        radius: 150,
+                        color: dark ? "white" : item.uri ? "white" : "white",
+                      }}
+                      key={index}
+                      onLongPress={() => {
+                        Vibration.vibrate(100);
+                        setSelected(index);
+                      }}
+                      onPress={() => {
+                        if (selected == index) {
+                          setSelected(null);
+                        }
+                        setSelected(index);
+                      }}
+                      style={[
+                        styles.chatBox,
+                        {
+                          maeginTop: index == 0 ? 50 : 0,
+                          overflow: "hidden",
+                          zIndex: 30,
+                          borderTopRightRadius: item.mine ? 15 : 15,
+                          borderTopLeftRadius: item.mine ? 15 : 2,
+                          borderBottomLeftRadius: item.mine ? 15 : 2,
+                          borderBottomRightRadius: item.mine ? 2 : 15,
+                          borderTopLeftRadius: 15,
+                          alignSelf: item.mine ? "flex-end" : "flex-start",
+                          paddingVertical: item.uri ? 0 : 5,
+                          paddingHorizontal: item.uri ? 0 : 15,
+                          alignItems: item.uri ? "center" : "flex-start",
+                          backgroundColor: item.mine
+                            ? dark
+                              ? "#484c4f"
+                              : item.uri
+                                ? "black"
+                                : isBox
+                                  ? "rgba(75,148,144,0.4)"
+                                  : "#edf3f7"
+                            : (dark
+                                ? "#292e33"
+                                : isBox
+                                  ? "rgba(75,148,144,0.4)"
+                                  : "#d3e3ee") ||
+                              (isBox && "white"),
+                        },
+                      ]}
+                    >
+                      {isBox && (
+                        <View>
+                          <Pressable
+                            onPress={() => {
+                              handleCopy();
+                              noticeMover();
+                            }}
+                            style={{
+                              zIndex: 40,
+                              alignItems: "center",
+                              alignSelf: "flex-end",
+                              marginBottom: 5,
+                              justifyContent: "space-between",
+                              flexDirection: "row",
+                              padding: 5,
+                              gap: 5,
+                              elevation: 4,
+                              shadowColor: dark ? "white" : "black",
+                              backgroundColor: "#f2fff3",
+                              borderRadius: 10,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                color: "#4b9490",
+                                fontSize: 12,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {copy}
+                            </Text>
+                            <Text
+                              style={{
+                                height: 20,
+                                width: 20,
+                                fontSize: 12,
+                                backgroundColor: "white",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontWeight: "bold",
+                                borderRadius: 10,
+                              }}
+                            >
+                              📎
+                            </Text>
+                          </Pressable>
+                        </View>
+                      )}
+                      <Text
+                        style={[
+                          styles.msg,
+                          {
+                            margin: 2.5,
+                            fontSize: 15,
+                            color: dark ? "#dddddd" : "rgba(0,0,0,0.8)",
+                          },
+                        ]}
+                      >
+                        {item.msg}
+                      </Text>
+                      {item.date && (
+                        <Text
+                          style={[
+                            styles.date,
+                            {
+                              color: dark
+                                ? "rgba(255,255,255,0.8)"
+                                : "rgba(0,0,0,0.6)",
+                              fontWeight: "bold",
+                            },
+                          ]}
+                        >
+                          {item.date}
+                        </Text>
+                      )}
+                      {item.uri && (
+                        <View style={{ padding: 2, alignSelf: "center" }}>
+                          <Image
+                            source={{ uri: item.uri }}
+                            style={{
+                              height: undefined,
+                              width: "100%",
+                              aspectRatio: 1,
+                              resizeMode: "contain",
+                              alignSelf: "center",
+                            }}
+                          />
+                          {loading && index == chats.length - 1 && (
+                            <ActivityIndicator
+                              size={25}
+                              style={{
+                                zIndex: 40,
+                                top: 20,
+                                right: 20,
+                                backgroundColor: "rgba(242,255,243,0.6)",
+                                padding: 5,
+                                borderRadius: 10,
+                                position: "absolute",
+                                alignSelf: "center",
+                              }}
+                            />
+                          )}
+                        </View>
+                      )}
+                    </Pressable>
+                  );
+                })}
           </ScrollView>
         </View>
       </View>

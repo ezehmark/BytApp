@@ -59,7 +59,8 @@ id:null,
 setId:(data)=>set({id:data}),
 	ads:true,
 closeAds:()=>set({ads:false}),
-	toggleAds:()=>set(st=>({ads:!st.ads}))
+	toggleAds:()=>set(st=>({ads:!st.ads})),
+	refinedChats:[],                                                                        refineChats:(data)=>set({refinedChats:data}),
     }),
     {
       name: "myStore",
