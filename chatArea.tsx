@@ -234,10 +234,6 @@ export default function ChatArea({}) {
   }
 
 
-  const searchChats = ()=>{
-
-const found = chats.find(s=>)
-  }
 
   return (
     <>
