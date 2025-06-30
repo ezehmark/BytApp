@@ -19,10 +19,8 @@ import ChatArea from "./chatArea.tsx";
 import { MMKV } from "react-native-mmkv";
 import io from "socket.io-client";
 import AdminPanel from "./adminPanel.tsx";
-import * as SplashScreen from "expo-splash-screen";
 import useStore from "./zustand";
 //const myStore = new MMKV();
-SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -34,47 +32,8 @@ const setChats = useStore((state) => state.setChats);
 const socket = useStore(s=>s.socket);
 const dark = useStore(st=>st.dark);
 
-  const[appReady,setAppReady]=useState(false);
 
-useEffect(()=>{
-async function prepareApp(){
-try {
-await new Promise(res=>setTimeout(res,2000))}
-catch(e){console.warn(e)}
-finally{setAppReady(true)}}
 
-prepareApp();
-},[]);
-
-const onLayoutRootView=useCallback(async()=>{
-	if(appReady){await SplashScreen.hideAsync()}},[appReady]);
-  const [newestChats, setNewestChats] = useState([]);
-  function getDateTime() {
-    const date = new Date();
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const thisMonth = months[date.getMonth()];
-    const thisDay = date.getDate();
-    const thisHour = date.getHours();
-    const thisMinute = date.getMinutes().toString().padStart(2, "0");
-    const meridian = thisHour >= 12 ? "pm" : "am";
-    let hour = thisHour % 12;
-    hour = hour ? hour : 12;
-    return `${thisDay} ${thisMonth}, ${hour}:${thisMinute} ${meridian}`;
-  }
-  const [date, setDate] = useState(null);
 
 
 
@@ -103,11 +62,8 @@ const onLayoutRootView=useCallback(async()=>{
 
   const [isConnect, setIsConnect] = useState(false);
 
-  if(!appReady)return;
 
   return (
-    <View style={{flex:1,backgroundColor:dark?"#131314":"white"}}
-    onLayout={onLayoutRootView}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="welcome"
@@ -155,6 +111,5 @@ const onLayoutRootView=useCallback(async()=>{
         </Stack.Navigator>
       </NavigationContainer>
 
-    </View>
   );
 }

@@ -57,7 +57,7 @@ export default function ChatArea({}) {
   const dateNow = useStore((state) => state.dateNow);
   const ads = useStore((s) => s.ads);
   const closeAds = useStore((s) => s.closeAds);
-  const socket = useStore(s=>s.socket);
+  const socket = useStore((s) => s.socket);
 
   useEffect(() => {
     handleNav();
@@ -122,96 +122,122 @@ export default function ChatArea({}) {
 
   const [vurl, setvurl] = useState("");
 
+  const [loading, setLoading] = useState(false);
 
-const [loading, setLoading] = useState(false);
+  async function pickImage() {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      setNotice("Please allow permissions");
+      noticeMover();
+      return;
+    }
 
-async function pickImage() {
-  const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  if (!permission.granted) {
-    setNotice("Please allow permissions");
-    noticeMover();
-    return;
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.4,
+    });
+
+    if (result.canceled || !result.assets || result.assets.length === 0) {
+      setNotice("Select an image to continue");
+      noticeMover();
+      return;
+    }
+
+    const iurl = result.assets[0].uri;
+    setUrl(iurl);
+    setChats([{ name: "Ezeh Mark", mine: true, uri: iurl }]);
+    console.log(result);
+
+    const splits = iurl.split(".");
+    const ext = splits[splits.length - 1];
+
+    const chatForm = new FormData();
+    chatForm.append("file", {
+      uri: iurl,
+      type: `image/${ext}`,
+      name: "chatImage",
+    });
+    chatForm.append("upload_preset", "bitbankers_upload");
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dadvxxgl1/image/upload",
+        chatForm,
+        { headers: { "Content-Type": "multipart/form-data" } },
+      );
+      const imgUrl = response.data.secure_url;
+      setNotice("Picture sent to customer");
+      noticeMover();
+      socket.emit("AdmminReply", imgUrl);
+    } catch (err) {
+      setNotice(err.message || "Upload failed");
+    } finally {
+      setLoading(false);
+    }
   }
 
-  const result = await ImagePicker.launchImageLibraryAsync({
-    allowsEditing: true,
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    quality: 0.4,
-  });
+  //Picking, uploading and sending video
+  //
+  async function pickVideo() {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      setNotice("Please allow permissions");
+      noticeMover();
+      return;
+    }
+    const result = await ImagePicker.launchVideoLibraryAsync({
+      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      quality: 0.4,
+    });
+    if (result.canceled || !result.assets || result.assets.length === 0) {
+      setNotice("Select an image to continue");
+      noticeMover();
+      return;
+    }
+    const iurl = result.assets[0].uri;
+    setvurl(iurl);
+    setChats([{ name: "Ezeh Mark", mine: true, uri: vurl }]);
+    console.log(result);
 
-  if (result.canceled || !result.assets || result.assets.length === 0) {
-    setNotice("Select an image to continue");
-    noticeMover();
-    return;
+    const splits = iurl.split(".");
+    const ext = splits[splits.length - 1];
+
+    const chatForm = new FormData();
+    chatForm.append("file", {
+      uri: vurl,
+      type: `video/${ext}`,
+      name: "chatVideo",
+    });
+    chatForm.append("upload_preset", "bitbankers_upload");
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dadvxxgl1/image/upload",
+        chatForm,
+        { headers: { "Content-Type": "multipart/form-data" } },
+      );
+      const imgUrl = response.data.secure_url;
+      setNotice("Picture sent to customer");
+      noticeMover();
+      socket.emit("AdmminReply", imgUrl);
+    } catch (err) {
+      setNotice(err.message || "Upload failed");
+    } finally {
+      setLoading(false);
+    }
   }
 
-  const iurl = result.assets[0].uri;
-  setUrl(iurl);
-  setChats([{ name: "Ezeh Mark", mine: true, uri: iurl }]);
-  console.log(result);
 
-  const splits = iurl.split(".");
-  const ext = splits[splits.length - 1];
+  const searchChats = ()=>{
 
-  const chatForm = new FormData();
-  chatForm.append("file",{
-  uri: iurl,                                                            type: `image/${ext}`,                                                 name: "chatImage",});
-  chatForm.append("upload_preset", "bitbankers_upload");
-
-  setLoading(true);
-
-  try {
-    const response = await axios.post(
-      "https://api.cloudinary.com/v1_1/dadvxxgl1/image/upload",
-      chatForm,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-    const imgUrl = response.data.secure_url;
-    setNotice("Picture sent to customer");
-    noticeMover();
-    socket.emit("AdmminReply", imgUrl);
-  } catch (err) {
-    setNotice(err.message || "Upload failed");
-  } finally {
-    setLoading(false);
+const found = chats.find(s=>)
   }
-}
-
-//Picking, uploading and sending video
-//
-async function pickVideo() {                                            const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();                                                                 if (!permission.granted) {                                              setNotice("Please allow permissions");                                noticeMover();                                                        return;                                                             }                                                                                                                                           const result = await ImagePicker.launchVideoLibraryAsync({
-    allowsEditing: true,                                                  mediaTypes: ImagePicker.MediaTypeOptions.Videos,                      quality: 0.4,                                                       });
-                                                                        if (result.canceled || !result.assets || result.assets.length === 0) {                                                                        setNotice("Select an image to continue");                             noticeMover();                                                        return;                                                             }                                                                   
-  const iurl = result.assets[0].uri;                                    setvurl(iurl);
-  setChats([{ name: "Ezeh Mark", mine: true, uri: vurl }]);
-  console.log(result);
-
-  const splits = iurl.split(".");
-  const ext = splits[splits.length - 1];
-
-  const chatForm = new FormData();
-  chatForm.append("file",{
-  uri: vurl,                                                            type: `video/${ext}`,                                                 name: "chatVideo",});
-  chatForm.append("upload_preset", "bitbankers_upload");
-
-  setLoading(true);
-
-  try {
-    const response = await axios.post(
-      "https://api.cloudinary.com/v1_1/dadvxxgl1/image/upload",
-      chatForm,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-    const imgUrl = response.data.secure_url;
-    setNotice("Picture sent to customer");
-    noticeMover();
-    socket.emit("AdmminReply", imgUrl);
-  } catch (err) {
-    setNotice(err.message || "Upload failed");
-  } finally {
-    setLoading(false);
-  }
-}
 
   return (
     <>
@@ -323,11 +349,7 @@ async function pickVideo() {                                            const pe
                   android_ripple={{
                     borderless: false,
                     radius: 150,
-                    color: dark
-                      ? "white"
-                      : item.uri
-                        ? "white"
-                        : "white",
+                    color: dark ? "white" : item.uri ? "white" : "white",
                   }}
                   key={index}
                   onLongPress={() => {
@@ -341,7 +363,6 @@ async function pickVideo() {                                            const pe
                     setSelected(index);
                   }}
                   style={[
-			  	
                     styles.chatBox,
                     {
                       overflow: "hidden",
@@ -373,8 +394,8 @@ async function pickVideo() {                                            const pe
                   ]}
                 >
                   {isBox && (
-			  <View>
-		     <Pressable
+                    <View>
+                      <Pressable
                         onPress={() => {
                           handleCopy();
                           noticeMover();
@@ -388,8 +409,8 @@ async function pickVideo() {                                            const pe
                           flexDirection: "row",
                           padding: 5,
                           gap: 5,
-			  elevation:4,
-			  shadowColor:dark?"white":"black",
+                          elevation: 4,
+                          shadowColor: dark ? "white" : "black",
                           backgroundColor: "#f2fff3",
                           borderRadius: 10,
                         }}
@@ -453,27 +474,34 @@ async function pickVideo() {                                            const pe
                         source={{ uri: item.uri }}
                         style={{
                           height: undefined,
-                          width:"100%",
-			  aspectRatio: 1,
+                          width: "100%",
+                          aspectRatio: 1,
                           resizeMode: "contain",
                           alignSelf: "center",
                         }}
                       />
-		      {(loading && index==chats.length-1)&&(<ActivityIndicator size={40}
-			      style={{zIndex:40,top:20,
-				      right:20,backgroundColor:"rgba(75,148,144,0.4)",
-			     padding:5,borderRadius:10,
-			     position:"absolute",
-			      alignSelf:"center"}}/>)}
+                      {loading && index == chats.length - 1 && (
+                        <ActivityIndicator
+                          size={40}
+                          style={{
+                            zIndex: 40,
+                            top: 20,
+                            right: 20,
+                            backgroundColor: "rgba(75,148,144,0.4)",
+                            padding: 5,
+                            borderRadius: 10,
+                            position: "absolute",
+                            alignSelf: "center",
+                          }}
+                        />
+                      )}
                     </View>
                   )}
                 </Pressable>
               );
             })}
-
-
           </ScrollView>
-	  </View>
+        </View>
       </View>
       <View
         style={{
@@ -548,8 +576,7 @@ async function pickVideo() {                                            const pe
             placeholderTextColor={"#4b9490"}
           />
           <Pressable
-	  android_ripple={{color:"white",radius:40,overflow:"hidden"
-	  }}
+            android_ripple={{ color: "white", radius: 40, overflow: "hidden" }}
             onPress={() => {
               sendReply();
             }}
@@ -562,7 +589,7 @@ async function pickVideo() {                                            const pe
               borderColor: "#00d4d4",
               justifyContent: "center",
               alignItems: "center",
-	      overflow:"hidden"
+              overflow: "hidden",
             }}
           >
             <Text

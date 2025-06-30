@@ -20,6 +20,7 @@ import Animated, {
   useAnimatedScrollHandler,
   interpolate,
   Extrapolate,
+  withRepeat,
   Easing,
   withSpring,
 } from "react-native-reanimated";
@@ -69,9 +70,18 @@ export default function HomeComp({ updatedChats, date, myDate }) {
   return {transform:[{rotate:rotateC.value}]}});
 
   useEffect(()=>{
-  rotateC.value = withTiming("360deg",{duration:2000,easing:Easing.ease})},[chats[chats.length - 1]]);
+  rotateC.value = withTiming("360deg",{duration:2000,easing:Easing.linear})},[chats[chats.length - 1]]);
 
+  const shadePoint = useSharedValue(0);
+  const shadeAnim = useAnimatedStyle(()=>{
+  return{translateX:shadePoint.value}});
 
+  useEffect(()=>{
+  shadePoint.value = withRepeat(
+	  withTiming(450,{duration:600,easing:Easing.linear}),8)
+  },[loading]);
+
+const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
 
 
 
@@ -140,24 +150,33 @@ export default function HomeComp({ updatedChats, date, myDate }) {
           />
 
           {loading ? (
-            <SkeletonPlaceholder
-              borderRadius={20}
-              highlightColor={"rgba(0,212,212,0.5)"}
-              backgroundColor={dark ? "gray" : "#ccc"}
-            >
+            <View
+	    style={{flex:1}}
+	    >
               {Array(7)
                 .fill(null)
                 .map((_, i) => (
-                  <SkeletonPlaceholder.Item
+                  <View
                     key={i}
-                    height={70}
-                    width={sWidth * 0.9}
-                    marginTop={i == 0 ? 20 : 0}
-                    marginBottom={20}
-                    alignSelf="center"
-                  />
+                    style={{height:80,
+                    width:sWidth * 0.9,
+                    marginTop:i == 0 ? 20 : 0,
+                    marginBottom:20,
+		    overflow:"hidden",
+		    borderRadius:20,
+		    backgroundColor:"#2d2d2e",
+                    alignSelf:"center"}}
+                  >
+		  <AnimatedGradient
+		  start={{ x: 0, y: 0 }}                                                                  end={{ x: 1, y: 0 }}
+		  colors={["transparent","rgba(0,212,212,0.2)",
+			  "rgba(0,212,212,0.4)",
+		  "rgba(0,212,212,0.2)","transparent"]}
+		  style={[{height:1000,left:-40,width:210},shadeAnim]}
+		  />
+		  </View>
                 ))}
-            </SkeletonPlaceholder>
+            </View>
           ) : (
             <View
               style={{
