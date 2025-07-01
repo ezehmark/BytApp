@@ -32,6 +32,7 @@ const useStore = create(
       setInChats: (data) => set({ inChats: data }),
       chats: [],
       setChats: (data) => set({ chats: [...get().chats,...data] }),
+      updateChats:(d)=>set({chats:d}),
       dark: false,
       setDark: (value) => {set({ dark: value });mmkvStore.set("isDarkTheme",values)},
       toggleDark: () => set((state) => ({ dark: !state.dark })),
@@ -40,6 +41,11 @@ const useStore = create(
         await NavigationBar.setBackgroundColorAsync(isDark ? "#131314" : "white");
         await NavigationBar.setButtonStyleAsync(isDark ? "light" : "dark");
       },
+      typed:"",
+      setType:(txt)=>set({typed:txt}),
+
+      query:"",
+      setQuery:(txt)=>set({query:txt}),
       dateNow:()=>{
 	      const date = new Date();
   const months = [

@@ -107,7 +107,6 @@ const AdminPanel = ({ savedChats }) => {
               { backgroundColor: dark ? "#292e33" : "#d3e3ee" },
             ]}
           >
-            
             <Text
               style={{
                 color: dark ? "#ccc" : "rgba(0,0,0,0.4)",
@@ -124,7 +123,6 @@ const AdminPanel = ({ savedChats }) => {
                 alignItems: "center",
               }}
             >
-              
               backgroundColor={dark ? "gray" : "#ccc"}
               <Switch value={ads} onValueChange={toggleAds} />
               <Text
@@ -156,7 +154,7 @@ const AdminPanel = ({ savedChats }) => {
             </Text>
             <Switch value={ads} onValueChange={toggleAds} />
           </Ripple>
-	  <SearchBar/>
+          <SearchBar />
         </View>
       </View>
       <View

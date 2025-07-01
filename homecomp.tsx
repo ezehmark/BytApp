@@ -228,16 +228,13 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
                         >
                           <View
                             style={{
-                              justifyContent: "space-between",
                               position: "relative",
                               flexDirection: "row",
                               padding: 0,
                               alignItems: "center",
                               marginRight: 10,
-                              width: 100,
-                              maxWidth: 120,
                               overflow: "hidden",
-                              zIndex: 13,
+                              zIndex: 20,
                             }}
                           >
                             <View
@@ -261,24 +258,24 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
                               >
                                 {chats.length > 0
                                   ? chats[chats.length - 1].name?.charAt(0)
-                                  : "JG"}
+                                  : "CS"}
                               </Text>
                             </View>
                             <Text
                               style={{
                                 fontWeight: "bold",
+				left:8,
                                 color: dark ? "rgba(255,255,255,0.8)" : "black",
                               }}
-                            >
-                              {chats.length > 0
+                            >{chats.length > 0
                                 ? chats[chats.length - 1].name
-                                : "Nill custumer"}
+                                : "No User"}
                             </Text>
                           </View>
                           <Text
                             style={{
                               fontWeight: "",
-                              fontSize: 15,
+                              fontSize: 14,
                               marginLeft: 32,
                               marginBottom:12,
                               color: dark

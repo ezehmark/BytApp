@@ -1,31 +1,83 @@
-import React from 'react';
-import { View, TextInput, Pressable,Text,Image, StyleSheet } from 'react-native';
+import React from "react";
+import {
+  View,
+  TextInput,
+  Pressable,
+  Text,
+  Image,
+  StyleSheet,
+} from "react-native";
 import useStore from "./zustand";
 
-
-const SearchBar= ({
+const SearchBar = ({
   profileImage,
-  placeholder = 'Search...',
+  placeholder = "Search...",
   onChangeText,
   value,
   height,
   handleClose,
-  picSize
+  picSize,
 }) => {
-	const dark = useStore(s=>s.dark);
+  const dark = useStore((s) => s.dark);
+  const chats = useStore((c) => c.chats);
   return (
     <View style={styles.wrapper}>
-      <View style={[styles.searchBar,{backgroundColor:"#d3e3ee",
-	      height:height ?? 50}]}>
-        <Image source={{ uri: profileImage }} style={[styles.profileImage,{height:picSize??40,width:picSize??40,borderRadius:picSize/2??20}]} />
+      <View
+        style={[
+          styles.searchBar,
+          {
+            borderWidth: 1.5,
+            backgroundColor: dark ? "#131314" : "white",
+            borderColor: dark ? "#eee" : "#4b9490",
+            height: height ?? 50,
+          },
+        ]}
+      >
+        <View
+          style={{
+            height: 30,
+            width: 30,
+            borderRadius: 15,
+            backgroundColor: "#ccc",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeigh20t: "bold",
+              color: "white",
+              alignSelf: "center",
+              position: "absolute",
+            }}
+          >
+            {chats.length > 0 && chats[0].name?.charAt(0)}
+          </Text>
+        </View>
         <TextInput
           style={styles.input}
           placeholder={placeholder}
           placeholderTextColor="#888"
           onChangeText={onChangeText}
           value={value}
+          autoFocus={true}
         />
-	<Pressable onPress={handleClose}><Text style={{fontSize:10,padding:4,backgroundColor:"#d3e3ee",borderRadius:4,elevation:4,marginRight:100}}>❌</Text></Pressable>
+        <Pressable onPress={handleClose}>
+          <Text
+            style={{
+              fontSize: 10,
+              padding: 4,
+              backgroundColor: "#eee",
+              borderRadius: 4,
+              elevation: 4,
+              marginRight: 100,
+            }}
+          >
+            ❌
+          </Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -36,9 +88,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
   },
   searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#eee',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#eee",
     borderRadius: 30,
     paddingHorizontal: 10,
     height: 50,
@@ -49,12 +101,12 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 12.5,
     marginRight: 5,
-    backgroundColor:"black",
+    backgroundColor: "black",
   },
   input: {
     width: 100,
-    fontSize: 16,
-    color: '#333',
+    fontSize: 14,
+    color: "#eee",
   },
 });
 

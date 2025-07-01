@@ -28,7 +28,6 @@ import Animated, {
 } from "react-native-reanimated";
 import { BallIndicator } from "react-native-indicators";
 import Pusher from "pusher-js";
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import LinearGradient from "react-native-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import BottomTab from "./bottomTab.tsx";
@@ -39,10 +38,13 @@ import AdsPanel from "./adsPanel";
 import axios from "axios";
 import SearchBar from "./searchBar";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome5  from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome6  from 'react-native-vector-icons/FontAwesome6';
 //import Clipboard from "@react-native-clipboard/clipboard";
+import TopBtns from "./topbtns.tsx";
 
 export default function ChatArea({}) {
-  const [replying, setReplying] = useState(false);
+  const [typing, setTyping] = useState(false);
   const listRef = useRef(null);
   useEffect(() => {
     const scrollT = setTimeout(() => {
@@ -63,6 +65,9 @@ export default function ChatArea({}) {
 
   const refineChats = useStore((s) => s.refineChats);
   const refinedChats = useStore((s) => s.refinedChats);
+  const typed = useStore(t=>t.typed);
+  const setTyped = useStore(st=>st.setTyped);
+  
 
   useEffect(() => {
     handleNav();
@@ -86,20 +91,19 @@ export default function ChatArea({}) {
     }
   }, []);
 
-  const [reply, setReply] = useState("");
   // Handler to send chat, setChat and store in MMKV
   function sendReply() {
     const newReply = [
-      { msg: reply, mine: true, name: "Ezeh Mark", date: dateNow() },
+      { msg: typed, mine: true, name: "Ezeh Mark", date: dateNow() },
     ];
-    if (reply.trim().length === 0) {
+    if (typed.trim().length === 0) {
       return;
     }
 
     //Update zustand with new copy of chat list array
     setChats(newReply);
     listRef.current?.scrollToEnd({ animated: true });
-    setReply("");
+    setTyped("");
   }
   //Storing chat liat on the event of changes in chatlist
 
@@ -237,12 +241,10 @@ export default function ChatArea({}) {
       setLoading(false);
     }
   }
-  //Seearching chats:
 
-  const [query, setQuery] = useState("");
 
-  const searchChats = (query) => {
-	  setQuery(query);
+  const searchChats = (txt) => {
+	  setQuery(txt);
     if (query.trim().length < 1) {
       refineChats([]);
       return;
@@ -255,7 +257,6 @@ export default function ChatArea({}) {
   useEffect(()=>{
   refineChats([])},[]);
 
-  const[searching,setSearching]=useState(false);
 
   return (
     <>
@@ -265,98 +266,25 @@ export default function ChatArea({}) {
       />
       <View
         style={[styles.outer, { backgroundColor: dark ? "#131314" : "white" }]}
-      ><Pressable style={{padding:5,zIndex:55,left:20,}}
-        onPress={()=>navigation.goBack()}>
-        <AntDesign name="back"
-        size={20}/>
-        </Pressable>
-        {notice && (
-          <Animated.Text
-            style={[
-              styles.notice,
-              {
+      >
+      {notice && (
+          <Animated.Text                                                                                         style={[
+              styles.notice,                                                                                       {
                 paddingHorizontal: 18,
-                zIndex: 100,
-                paddingVertical: 10,
+                zIndex: 100,                                                                                         paddingVertical: 10,
                 backgroundColor: "rgba(75,148,144,0.6)",
-                color: "rgba(255,255,255,0.9)",
-                alignSelf: "center",
+                color: "rgba(255,255,255,0.9)",                                                                      alignSelf: "center",
                 position: "relative",
                 borderRadius: 10,
-                fontSize: 16,
-                fontWeight: "bold",
+                fontSize: 16,                                                                                        fontWeight: "bold",
                 top: -50,
                 translateY: -100,
               },
               noticeStyle,
-            ]}
-          >
-            {notice}
+            ]}                                                                                                 >                                                                                                      {notice}
           </Animated.Text>
         )}
-        <View
-          style={[
-            styles.user,
-            { height: 50, backgroundColor: dark ? "#131314" : "white" ,
-	    flexDirection:"row"},
-          ]}
-        >
-          <View
-            style={{
-              justifyContent: "space-between",
-              flexDirection: "row",
-              gap: 10,
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                color: "#00d4d4",
-                fontSize: "bold",
-                fontSize: 16,
-                fontWeight: "bold",
-              }}
-            >
-              {chats.length > 0 && chats[0]?.name}
-            </Text>
-
-	    {!searching&&<View
-              style={{
-                height: 30,
-                width: 30,
-                borderRadius: 15,
-                backgroundColor: "#00d4d4",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeigh20t: "bold",
-                  color: "white",
-                  alignSelf: "center",
-                  position: "absolute",
-                }}
-              >
-                {chats.length > 0 && chats[0].name?.charAt(0)}
-              </Text>
-            </View>}
-	    
-	    {searching ?
-		<SearchBar
-              value={query}
-              height={40}
-              picSize={30}
-	      handleClose={()=>setSearching(false)}
-              onChangeText={(txt) => {
-                searchChats(txt);
-              }}
-            />:
-	    <Pressable onPress={()=>setSearching(true)}>                     
-	    <AntDesign name="search1" size={20}/></Pressable>}
-          </View>
-        </View>
+      <TopBtns/>
 
         <View
           style={[
@@ -568,7 +496,7 @@ export default function ChatArea({}) {
                       style={[
                         styles.chatBox,
                         {
-                          maeginTop: index == 0 ? 50 : 0,
+                          marginTop: index == 0 ? 50 : 0,
                           overflow: "hidden",
                           zIndex: 30,
                           borderTopRightRadius: item.mine ? 15 : 15,
@@ -732,7 +660,7 @@ export default function ChatArea({}) {
             zIndex: 27,
           }}
         >
-          {replying && (
+          {typing && (
             <TouchableOpacity
               onPress={() => pickImage()}
               style={{
@@ -748,47 +676,47 @@ export default function ChatArea({}) {
             </TouchableOpacity>
           )}
           <TextInput
-            value={reply}
+            value={typed}
             autoFocus={false}
             style={{
-              width: replying ? width * 0.65 : width * 0.7,
-              height: reply.length > 0 ? 80 : 50,
-              borderRadius: reply.legth > 0 ? 15 : 25,
-              borderWidth: replying ? 1 : 0,
-              textAlignVertical: reply.length > 0 ? "top" : "center",
+              width: typing ? width * 0.65 : width * 0.7,
+              height: typed.length > 0 ? 80 : 50,
+              borderRadius: typed.length > 0 ? 15 : 25,
+              borderWidth: typing ? 1 : 0,
+              textAlignVertical: typed.length > 0 ? "top" : "center",
               paddingLeft: 10,
               paddingBottom: 10,
               paddingRight: 10,
               paddingTop: 10,
               textAlign: "top",
               backgroundColor: dark ? "#131314" : "white",
-              borderWidth: reply.length > 0 ? 1.5 : 0.5,
+              borderWidth: typed.length > 0 ? 1.5 : 0.5,
               borderColor: "#4b9490",
               color: dark ? "white" : "rgba(0,0,0,0.8)",
             }}
             multiline={true}
             onFocus={() => {
-              setReplying(true);
+              setTyping(true);
             }}
             onBlur={() => {
-              setReplying(false);
+              setTyping(false);
             }}
             onChangeText={(e) => {
-              setReply(e);
+              setTyped(e);
             }}
             placeholder="Reply customer ..."
             placeholderTextColor={"#4b9490"}
           />
           <Pressable
-            android_ripple={{ color: "white", radius: 40, overflow: "hidden" }}
+            android_ripple={{ color: "white", radius: 20, overflow: "hidden" }}
             onPress={() => {
               sendReply();
             }}
             style={{
-              height: replying ? 40 : 50,
-              width: replying ? 40 : 50,
+              height: typing ? 40 : 50,
+              width: typing ? 40 : 50,
               backgroundColor: dark ? "black" : "#4b9490",
-              borderRadius: replying ? 20 : 25,
+              borderRadius: typing ? 20 : 25,
               borderWidth: 1,
               borderColor: "#00d4d4",
               justifyContent: "center",
@@ -856,7 +784,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
 
-  replyBox: {
+  typedBox: {
     width: "70%",
     borderRadius: 15,
     backgroundColor: "black",

@@ -44,7 +44,8 @@ export default function App() {
 const Stack = createStackNavigator();
 	const handleNav = async()=>{
 await NavigationBar.setBackgroundColorAsync(darkTheme?"#022d36":"white");               await NavigationBar.setButtonStyleAsync(darkTheme?"light":"dark")}
-                                                                      useEffect(()=>{handleNav()},[]);
+                                                                      
+	useEffect(()=>{handleNav()},[]);
 
 
   const [nav, setNav] = useState(null);
@@ -91,7 +92,8 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
 
   return (
     <>
-	  <StatusBar barStyle={darkTheme?"light-content":"dark-content"} backgroundColor={darkTheme?"black":"white"}/>
+	  <StatusBar barStyle={darkTheme?"light-content":"dark-content"} 
+	  backgroundColor={darkTheme?"black":"white"}/>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="home"
