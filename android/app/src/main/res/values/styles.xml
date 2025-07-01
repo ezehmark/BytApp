@@ -1,20 +1,20 @@
 <resources>
     <!-- Light Mode Theme -->
     <style name="AppTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">#FFFFFF</item>
-        <item name="colorPrimary">#FFFFFF</item>
-        <item name="colorPrimaryDark">#E0E0E0</item>
-        <item name="colorAccent">#4b9490</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">#FFFFFF</item> <!-- White background -->
+        <item name="colorPrimary">#FFFFFF</item> <!-- Primary color for Light mode -->
+        <item name="colorPrimaryDark">#E0E0E0</item> <!-- Primary dark color for Light mode -->
+        <item name="colorAccent">#4b9490</item> <!-- Accent color -->
+        <item name="android:windowLightStatusBar">true</item> <!-- Light status bar text/icons -->
     </style>
 
     <!-- Dark Mode Theme -->
     <style name="AppTheme.Dark" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">#000000</item>
-        <item name="colorPrimary">#121212</item>
-        <item name="colorPrimaryDark">#000000</item>
-        <item name="colorAccent">#4b9490</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">#000000</item> <!-- Black background -->
+        <item name="colorPrimary">#121212</item> <!-- Primary color for Dark mode -->
+        <item name="colorPrimaryDark">#000000</item> <!-- Primary dark color for Dark mode -->
+        <item name="colorAccent">#4b9490</item> <!-- Accent color -->
+        <item name="android:windowLightStatusBar">false</item> <!-- Dark status bar text/icons -->
     </style>
 
     <!-- Default Theme (fallback, optional) -->
@@ -26,9 +26,7 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <!-- 🔧 Add this Splash Screen theme -->
-    <style name="Theme.App.SplashScreen" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
+    <!-- Aliases for Kotlin usage -->
+    <style name="AppTheme_Light" parent="AppTheme.Light" />
+    <style name="AppTheme_Dark" parent="AppTheme.Dark" />
 </resources>
