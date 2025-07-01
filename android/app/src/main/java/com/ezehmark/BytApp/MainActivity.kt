@@ -2,6 +2,7 @@ package com.ezehmark.BytApp
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -12,24 +13,33 @@ import com.tencent.mmkv.MMKV
 class MainActivity : ReactActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // ✅ Initialize MMKV (only once, safe here)
+        // Initialize MMKV
         MMKV.initialize(this)
-
-        // ✅ Read the theme flag saved by your JS app
         val mmkv = MMKV.defaultMMKV()
         val isDark = mmkv.decodeBool("isDarkTheme", false)
 
-        // ✅ Dynamically set splash background before React mounts
-        window.decorView.setBackgroundColor(if (isDark) Color.BLACK else Color.WHITE)
+        val bgColor = if (isDark) Color.BLACK else Color.WHITE
 
-        // ✅ Optionally apply theme for native elements (if using styles.xml for that)
+        // Set background between splash and app
+        window.decorView.setBackgroundColor(bgColor)
+
+        // Set status bar and nav bar color
+        window.statusBarColor = bgColor
+        window.navigationBarColor = bgColor
+
+        // Optional: extend content behind bars
+        window.decorView.systemUiVisibility = (
+            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        )
+
+        // Set the theme
         setTheme(if (isDark) R.style.AppTheme_Dark else R.style.AppTheme_Light)
 
-        // ✅ `null` prevents React splash re-init flickers
         super.onCreate(null)
     }
 
-    override fun getMainComponentName(): String = "main" // must match JS entry point
+    override fun getMainComponentName(): String = "main"
 
     override fun createReactActivityDelegate(): ReactActivityDelegate {
         return ReactActivityDelegateWrapper(
@@ -44,7 +54,6 @@ class MainActivity : ReactActivity() {
     }
 
     override fun invokeDefaultOnBackPressed() {
-        // Better back press handling for older Android
         if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.R) {
             if (!moveTaskToBack(false)) {
                 super.invokeDefaultOnBackPressed()
