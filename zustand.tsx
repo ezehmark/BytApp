@@ -33,7 +33,7 @@ const useStore = create(
       chats: [],
       setChats: (data) => set({ chats: [...get().chats,...data] }),
       dark: false,
-      setDark: (value) => set({ dark: value }),
+      setDark: (value) => {set({ dark: value });mmkvStore.set("isDarkTheme",values)},
       toggleDark: () => set((state) => ({ dark: !state.dark })),
       handleNav: async () => {
         const isDark = get().dark;
@@ -60,7 +60,8 @@ setId:(data)=>set({id:data}),
 	ads:true,
 closeAds:()=>set({ads:false}),
 	toggleAds:()=>set(st=>({ads:!st.ads})),
-	refinedChats:[],                                                                        refineChats:(data)=>set({refinedChats:data}),
+	refinedChats:[],                                                                        
+refineChats:(data)=>set({refinedChats:data}),
     }),
     {
       name: "myStore",
