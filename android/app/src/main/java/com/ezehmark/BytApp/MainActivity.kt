@@ -12,23 +12,24 @@ import com.tencent.mmkv.MMKV
 class MainActivity : ReactActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Initialize MMKV
+        // ✅ Initialize MMKV (only once, safe here)
         MMKV.initialize(this)
 
-        // Access the 'isDarkTheme' value from MMKV
+        // ✅ Read the theme flag saved by your JS app
         val mmkv = MMKV.defaultMMKV()
         val isDark = mmkv.decodeBool("isDarkTheme", false)
 
-        // Set the background color dynamically based on the saved theme
+        // ✅ Dynamically set splash background before React mounts
         window.decorView.setBackgroundColor(if (isDark) Color.BLACK else Color.WHITE)
 
-        // Dynamically set the app theme
+        // ✅ Optionally apply theme for native elements (if using styles.xml for that)
         setTheme(if (isDark) R.style.AppTheme_Dark else R.style.AppTheme_Light)
 
+        // ✅ `null` prevents React splash re-init flickers
         super.onCreate(null)
     }
 
-    override fun getMainComponentName(): String = "main"
+    override fun getMainComponentName(): String = "main" // must match JS entry point
 
     override fun createReactActivityDelegate(): ReactActivityDelegate {
         return ReactActivityDelegateWrapper(
@@ -43,6 +44,7 @@ class MainActivity : ReactActivity() {
     }
 
     override fun invokeDefaultOnBackPressed() {
+        // Better back press handling for older Android
         if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.R) {
             if (!moveTaskToBack(false)) {
                 super.invokeDefaultOnBackPressed()
