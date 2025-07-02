@@ -1,65 +1,61 @@
 package com.ezehmark.BytApp
 
-import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.view.View
+
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+
 import expo.modules.ReactActivityDelegateWrapper
-import com.tencent.mmkv.MMKV
 
 class MainActivity : ReactActivity() {
+  override fun onCreate(savedInstanceState: Bundle?) {
+    // Set the theme to AppTheme BEFORE onCreate to support
+    // coloring the background, status bar, and navigation bar.
+    // This is required for expo-splash-screen.
+    setTheme(R.style.AppTheme);
+    super.onCreate(null)
+  }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        // Initialize MMKV
-        MMKV.initialize(this)
-        val mmkv = MMKV.defaultMMKV()
-        val isDark = mmkv.decodeBool("isDarkTheme", false)
+  /**
+   * Returns the name of the main component registered from JavaScript. This is used to schedule
+   * rendering of the component.
+   */
+  override fun getMainComponentName(): String = "main"
 
-        val bgColor = if (isDark) Color.BLACK else Color.WHITE
+  /**
+   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
+   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
+   */
+  override fun createReactActivityDelegate(): ReactActivityDelegate {
+    return ReactActivityDelegateWrapper(
+          this,
+          BuildConfig.IS_NEW_ARCHITECTURE_ENABLED,
+          object : DefaultReactActivityDelegate(
+              this,
+              mainComponentName,
+              fabricEnabled
+          ){})
+  }
 
-        // Set background between splash and app
-        window.decorView.setBackgroundColor(bgColor)
+  /**
+    * Align the back button behavior with Android S
+    * where moving root activities to background instead of finishing activities.
+    * @see <a href="https://developer.android.com/reference/android/app/Activity#onBackPressed()">onBackPressed</a>
+    */
+  override fun invokeDefaultOnBackPressed() {
+      if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+          if (!moveTaskToBack(false)) {
+              // For non-root activities, use the default implementation to finish them.
+              super.invokeDefaultOnBackPressed()
+          }
+          return
+      }
 
-        // Set status bar and nav bar color
-        window.statusBarColor = bgColor
-        window.navigationBarColor = bgColor
-
-        // Optional: extend content behind bars
-        window.decorView.systemUiVisibility = (
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        )
-
-        // Set the theme
-        setTheme(if (isDark) R.style.AppTheme_Dark else R.style.AppTheme_Light)
-
-        super.onCreate(null)
-    }
-
-    override fun getMainComponentName(): String = "main"
-
-    override fun createReactActivityDelegate(): ReactActivityDelegate {
-        return ReactActivityDelegateWrapper(
-            this,
-            BuildConfig.IS_NEW_ARCHITECTURE_ENABLED,
-            object : DefaultReactActivityDelegate(
-                this,
-                mainComponentName,
-                fabricEnabled
-            ) {}
-        )
-    }
-
-    override fun invokeDefaultOnBackPressed() {
-        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.R) {
-            if (!moveTaskToBack(false)) {
-                super.invokeDefaultOnBackPressed()
-            }
-            return
-        }
-        super.invokeDefaultOnBackPressed()
-    }
+      // Use the default back button implementation on Android S
+      // because it's doing more than [Activity.moveTaskToBack] in fact.
+      super.invokeDefaultOnBackPressed()
+  }
 }
