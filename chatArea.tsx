@@ -17,6 +17,7 @@ import {
   Video,
   ToastAndroid,
   ActivityIndicator,
+  useColorScheme,
   Platform,
 } from "react-native";
 import Animated, {
@@ -37,11 +38,11 @@ import * as ImagePicker from "expo-image-picker";
 import AdsPanel from "./adsPanel";
 import axios from "axios";
 import SearchBar from "./searchBar";
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import FontAwesome5  from 'react-native-vector-icons/FontAwesome5';
-import FontAwesome6  from 'react-native-vector-icons/FontAwesome6';
+import AntDesign from "react-native-vector-icons/AntDesign";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 //import Clipboard from "@react-native-clipboard/clipboard";
-import TopBtns from "./topbtns.tsx";
 
 export default function ChatArea({}) {
   const [typing, setTyping] = useState(false);
@@ -64,10 +65,12 @@ export default function ChatArea({}) {
   const socket = useStore((s) => s.socket);
 
   const refineChats = useStore((s) => s.refineChats);
+  const updateChats = useStore((s) => s.updateChats);
   const refinedChats = useStore((s) => s.refinedChats);
-  const typed = useStore(t=>t.typed);
-  const setTyped = useStore(st=>st.setTyped);
-  
+  const typed = useStore((t) => t.typed);
+  const setTyped = useStore((st) => st.setTyped);
+
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     handleNav();
@@ -190,7 +193,7 @@ export default function ChatArea({}) {
 
   //Picking, uploading and sending video
   //
-  async function pickVideo() {
+  /*async function pickVideo() {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
       setNotice("Please allow permissions");
@@ -241,22 +244,57 @@ export default function ChatArea({}) {
       setLoading(false);
     }
   }
-
-
+*/
   const searchChats = (txt) => {
-	  setQuery(txt);
-    if (query.trim().length < 1) {
+    setQuery(txt);
+    if (txt.trim().length === 0) {
       refineChats([]);
       return;
     }
-    const filteredChats = chats.filter((item) => item.msg?.includes(query));
+    const filteredChats = chats.filter((item) =>
+      item.msg?.toLowerCase().includes(txt.toLowerCase()),
+    );
     console.log(filteredChats);
     refineChats(filteredChats);
-
   };
-  useEffect(()=>{
-  refineChats([])},[]);
+  useEffect(() => {
+    refineChats([]);
+  }, []);
 
+  const [searching, setSearching] = useState(false);
+  const [readyDelete, setReadyDelete] = useState(false);
+
+  const [marked, setMarked] = useState([]);
+  const [pressed, setPressed] = useState(false);
+
+  const[noticeColor,setNoticeColor]=useState("rgba(75,148,144,0.6)")
+  function deleteChats() {
+    if (marked.length > 0) {
+      updateChats(chats.filter((item) => !marked.includes(item)));
+    setNotice("Chats deleted");
+    setNoticeColor("rgba(234,7,7,0.6)");
+    noticeMover()
+    setTimeout(()=>setPressed(false),1000)}
+  }
+
+  const copyMarked = async()=>{
+if(marked.length ==0){return}
+ const markedMsgs = marked.map(i=>({allMsg:i.msg})) 
+  await Clipboard.setString(JSON.stringify(markedMsgs));
+  setNotice("Chats copied");
+  setNoticeColor("rgba(0,212,212,0.6)");
+  noticeMover()}
+
+  const rippleRadii = useRef({});
+  const scaleT = useSharedValue(0.5);
+  const scaleAnim = useAnimatedStyle(()=>{
+  return{transform:[{scale:scaleT.value}]}});
+
+  useEffect(()=>{
+  scaleT.value = withSequence(
+  withTiming(1.4,{duration:500,easing:Easing.ease}),
+  withTiming(1,{duration:500,easing:Easing.ease}))
+  },[marked]);
 
   return (
     <>
@@ -267,30 +305,189 @@ export default function ChatArea({}) {
       <View
         style={[styles.outer, { backgroundColor: dark ? "#131314" : "white" }]}
       >
-      {notice && (
-          <Animated.Text                                                                                         style={[
-              styles.notice,                                                                                       {
+        <View
+          style={[
+            {
+              height: 50,
+              backgroundColor: dark ? "#131314" : "white",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              top: 0,
+              zIndex: 60,
+              paddingHorizontal: 15,
+            },
+            styles.topButtons,
+          ]}
+        >
+          <Ionicons
+            name="arrow-back-circle"
+            size={35}
+            onPress={() => navigation.goBack()}
+            color={dark ? "#eee" : "#131314"}
+          />
+
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexDirection: "row",
+              gap: 10,
+              backgroundColor: "transparent",
+            }}
+          >
+            <Text
+              style={{ fontSize: 15, fontWeight: "bold", color: "#00d4d3" }}
+            >
+              {chats.length > 0 ? chats[0].name : "No user"}
+            </Text>
+            {!searching && (
+              <View
+                style={{
+                  height: 30,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 30,
+                  borderRadius: 15,
+                  backgroundColor: "#00d4d4",
+                }}
+              >
+                <Text
+                  style={{ color: "white", fontSize: 16, fontWeight: "bold" }}
+                >
+                  {chats.length > 0 ? chats[0].name.charAt(0) : "CS"}
+                </Text>
+              </View>
+            )}
+          </View>
+          {searching && (
+            <View style={styles.wrapper}>
+              <View
+                style={[
+                  styles.searchBar,
+                  {
+                    borderWidth: 1.5,
+                    backgroundColor: dark ? "#131314" : "white",
+                    borderColor: dark ? "#eee" : "#4b9490",
+                    height: 40,
+                    width: 170,
+                  },
+                ]}
+              >
+                <View
+                  style={{
+                    height: 30,
+                    width: 30,
+                    borderRadius: 15,
+                    backgroundColor: "#ccc",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      color: "white",
+                      alignSelf: "center",
+                      position: "absolute",
+                    }}
+                  >
+                    {chats.length > 0 && chats[0].name?.charAt(0)}
+                  </Text>
+                </View>
+                <TextInput
+                  style={[styles.input, { color: dark ? "#eee" : "black" }]}
+                  placeholder="Searh..."
+                  placeholderTextColor="#888"
+                  onChangeText={(txt) => searchChats(txt)}
+                  value={query}
+                  autoFocus={true}
+		  onBlur={()=>{if(query.length <1)setSearching(false)}}
+                />
+                <Pressable
+                  onPress={() => {
+                    setQuery("");
+                    refineChats([]);
+                    setSearching(false);
+                  }}
+                >
+		{query.length >0&&<Text
+                    style={{
+                      fontSize: 10,
+                      padding: 4,
+                      backgroundColor: "#eee",
+                      borderRadius: 4,
+                      elevation: 4,
+                      marginRight: 100,
+                    }}
+                  >
+                    ❌
+                  </Text>}
+                </Pressable>
+              </View>
+            </View>
+          )}
+          {!searching && !pressed &&  (
+            <FontAwesome5
+              onPress={() => setSearching(true)}
+              name="search"
+              size={20}
+              color={dark ? "#eee" : "#131314"}
+            />
+          )}
+	  {pressed&&<Pressable 
+		  onPress={()=>copyMarked()}
+		  onLayout={(e)=>{const {width,height}=e.nativeEvent.layout;const rippleRadii = Math.max(width,height) }}
+		  android_ripple={{color:"#131314",radius:rippleRadii*0.7,
+		  }}
+		  style={{height:30,width:30,borderRadius:15,
+                  backgroundColor:dark?"#131314":"#eee",alignItems:'center',justifyContent:"center"}}/>}
+          {pressed && (
+		  <View style={{}}>
+		  <View style={{height:15,width:15,borderRadius:7.5,
+		  backgroundColor:"red",alignItems:'center',justifyContent:"center"}}><Animated.Text style={[{color:"#eee",fontSize:10},scaleAnim]}>{marked.length}</Animated.Text></View>
+            <AntDesign
+              onPress={() => deleteChats()}
+              name="delete"
+              size={25}
+              color={dark ? "#eee" : "#131314"}
+            /></View>
+          )}
+        </View>
+
+        {notice && (
+          <Animated.Text
+            style={[
+              styles.notice,
+              {
                 paddingHorizontal: 18,
-                zIndex: 100,                                                                                         paddingVertical: 10,
-                backgroundColor: "rgba(75,148,144,0.6)",
-                color: "rgba(255,255,255,0.9)",                                                                      alignSelf: "center",
+                zIndex: 100,
+                paddingVertical: 10,
+                backgroundColor: noticeColor,
+                color: "rgba(255,255,255,0.9)",
+                alignSelf: "center",
                 position: "relative",
                 borderRadius: 10,
-                fontSize: 16,                                                                                        fontWeight: "bold",
+                fontSize: 16,
+                fontWeight: "bold",
                 top: -50,
                 translateY: -100,
               },
               noticeStyle,
-            ]}                                                                                                 >                                                                                                      {notice}
+            ]}
+          >
+            {notice}
           </Animated.Text>
         )}
-      <TopBtns/>
 
         <View
           style={[
             styles.listBox1,
             {
               backgroundColor: dark ? "#131314" : "white",
+              padding: 15,
               paddingBottom: ads ? 100 : 20,
               paddingTop: 20,
             },
@@ -303,27 +500,39 @@ export default function ChatArea({}) {
           >
             {refinedChats.length > 0
               ? refinedChats.map((item, index) => {
-                  const handleCopy = async () => {
-                    await Clipboard.setString(item.msg);
-                    setNotice("Chat copied!");
-                  };
+		      const handleCopy = async () => {                                        await Clipboard.setString(item.msg);                                  setNotice("Chat copied!");                                            setNoticeColor("rgba(75,148,144,0.6)");                               noticeMover();                                                      };
                   const isBox = index === selected;
+                  const handleMarked = () => {
+                    if (marked.includes(item)) {
+                      const newMarked = marked.filter((i) => i !== item);
+                      setMarked(newMarked);
+                      if (newMarked.length === 0) {
+                        setPressed(false);
+                      }
+                      return;
+                    }
+
+                    setMarked([...marked, item]);
+                    setPressed(true);
+                  };
 
                   return (
                     <Pressable
-                      android_ripple={{
-                        borderless: false,
-                        radius: 150,
-                        color: dark ? "white" : item.uri ? "white" : "white",
-                      }}
                       key={index}
+		      android_ripple={{                         
+			      borderless: false,                         
+			      color: dark ? "white" : item.uri ? "white" : "white",                       }}
                       onLongPress={() => {
                         Vibration.vibrate(100);
-                        setSelected(index);
+                        setPressed(true);
+                        setMarked([...marked, item]);
                       }}
                       onPress={() => {
                         if (selected == index) {
                           setSelected(null);
+                        }
+                        if (pressed) {
+                          handleMarked();
                         }
                         setSelected(index);
                       }}
@@ -341,83 +550,83 @@ export default function ChatArea({}) {
                           alignSelf: item.mine ? "flex-end" : "flex-start",
                           paddingVertical: item.uri ? 0 : 5,
                           paddingHorizontal: item.uri ? 0 : 15,
-                          alignItems: item.uri ? "center" : "flex-start",
+                          alignItems: item.uri ? "flex-end" : "flex-start",
                           backgroundColor: item.mine
-                            ? dark
-                              ? "#484c4f"
-                              : item.uri
-                                ? "black"
-                                : isBox
-                                  ? "rgba(75,148,144,0.4)"
-                                  : "#edf3f7"
-                            : (dark
+                            ? marked.includes(item)
+                              ? "#00d4d4"
+                              : dark
+                                ? "#484c4f"
+                                : item.uri
+                                  ? "black"
+                                  : isBox
+                                    ? "rgba(75,148,144,0.4)"
+                                    : "#edf3f7"
+                            : marked.includes(item)
+                              ? "#4b9490"
+                              : dark
                                 ? "#292e33"
                                 : isBox
                                   ? "rgba(75,148,144,0.4)"
-                                  : "#d3e3ee") ||
-                              (isBox && "white"),
+                                  : "#d3e3ee",
                         },
                       ]}
-                    >
-                      {isBox && (
-                        <View>
-                          <Pressable
-                            onPress={() => {
-                              handleCopy();
-                              noticeMover();
-                            }}
+                    ><View>
+                      {isBox && !pressed && (
+                        <Pressable
+                          onPress={() => {
+                            handleCopy();
+                            noticeMover();
+                          }}
+                          style={{
+                            zIndex: 40,
+                            alignItems: "center",
+                            alignSelf: "flex-end",
+                            marginBottom: 5,
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                            padding: 5,
+                            gap: 5,
+                            elevation: 4,
+                            shadowColor: dark ? "white" : "black",
+                            backgroundColor: "#f2fff3",
+                            borderRadius: 10,
+                          }}
+                        >
+                          <Text
                             style={{
-                              zIndex: 40,
+                              color: "#4b9490",
+                              fontSize: 12,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {copy}
+                          </Text>
+                          <Text
+                            style={{
+                              height: 20,
+                              width: 20,
+                              fontSize: 12,
+                              backgroundColor: "white",
                               alignItems: "center",
-                              alignSelf: "flex-end",
-                              marginBottom: 5,
-                              justifyContent: "space-between",
-                              flexDirection: "row",
-                              padding: 5,
-                              gap: 5,
-                              elevation: 4,
-                              shadowColor: dark ? "white" : "black",
-                              backgroundColor: "#f2fff3",
+                              justifyContent: "center",
+                              fontWeight: "bold",
                               borderRadius: 10,
                             }}
                           >
-                            <Text
-                              style={{
-                                color: "#4b9490",
-                                fontSize: 12,
-                                fontWeight: "bold",
-                              }}
-                            >
-                              {copy}
-                            </Text>
-                            <Text
-                              style={{
-                                height: 20,
-                                width: 20,
-                                fontSize: 12,
-                                backgroundColor: "white",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontWeight: "bold",
-                                borderRadius: 10,
-                              }}
-                            >
-                              📎
-                            </Text>
-                          </Pressable>
-                        </View>
+                            📎
+                          </Text>
+                        </Pressable>
                       )}
                       <Text
                         style={[
                           styles.msg,
                           {
                             margin: 2.5,
-                            fontSize: 15,
-                            color: dark ? "#dddddd" : "rgba(0,0,0,0.8)",
+                            fontSize: 16,
+                            color: dark ? "#eee" : "rgba(0,0,0,0.8)",
                           },
                         ]}
                       >
-                        
                         {item.msg}
                       </Text>
                       {item.date && (
@@ -438,12 +647,9 @@ export default function ChatArea({}) {
                       {item.uri && (
                         <View style={{ padding: 2, alignSelf: "center" }}>
                           <Image
+			  onLayout={e=>{const {w,h}=e.nativeEvent.layout}}
                             source={{ uri: item.uri }}
                             style={{
-                              height: undefined,
-                              width: "100%",
-                              aspectRatio: 1,
-                              resizeMode: "contain",
                               alignSelf: "center",
                             }}
                           />
@@ -463,7 +669,7 @@ export default function ChatArea({}) {
                             />
                           )}
                         </View>
-                      )}
+                      )}</View>
                     </Pressable>
                   );
                 })
@@ -471,25 +677,44 @@ export default function ChatArea({}) {
                   const handleCopy = async () => {
                     await Clipboard.setString(item.msg);
                     setNotice("Chat copied!");
+		    setNoticeColor("rgba(75,148,144,0.6)");
+		    noticeMover();
                   };
 
                   const isBox = index === selected;
+                  const handleMarked = () => {
+                    if (marked.includes(item)) {
+                      const newMarked = marked.filter((i) => i !== item);
+                      setMarked(newMarked);
+                      if (newMarked.length === 0) {
+                        setPressed(false);
+                      }
+                      return;
+                    }
 
+                    setMarked([...marked, item]);
+                    setPressed(true);
+                  };
                   return (
                     <Pressable
-                      android_ripple={{
-                        borderless: false,
-                        radius: 150,
-                        color: dark ? "white" : item.uri ? "white" : "white",
-                      }}
+		    onLayout={(e)=>{
+		    const {width,height}=e.nativeEvent.layout;
+		    rippleRadii.current[index]=Math.max(width,height);}}
+		    android_ripple={{                                                                               borderless: false,                                                                        radius:rippleRadii.current[index] *0.5,                                                                          
+			    color: dark ? "white" : item.uri ? "white" : "white",                       }}
                       key={index}
                       onLongPress={() => {
                         Vibration.vibrate(100);
-                        setSelected(index);
+                        setPressed(true);
+                        setMarked([...marked, item]);
                       }}
                       onPress={() => {
-                        if (selected == index) {
+                        if (pressed) {
+                          handleMarked();
+                        }
+			if (isBox) {
                           setSelected(null);
+			  return;
                         }
                         setSelected(index);
                       }}
@@ -509,76 +734,77 @@ export default function ChatArea({}) {
                           paddingHorizontal: item.uri ? 0 : 15,
                           alignItems: item.uri ? "center" : "flex-start",
                           backgroundColor: item.mine
-                            ? dark
-                              ? "#484c4f"
-                              : item.uri
-                                ? "black"
-                                : isBox
-                                  ? "rgba(75,148,144,0.4)"
-                                  : "#edf3f7"
-                            : (dark
+                            ? marked.includes(item)
+                              ? "#00d4d4"
+                              : dark
+                                ? "#484c4f"
+                                : item.uri
+                                  ? "black"
+                                  : isBox
+                                    ? "rgba(75,148,144,0.4)"
+                                    : "#edf3f7"
+                            : marked.includes(item)
+                              ? "#4b9490"
+                              : dark
                                 ? "#292e33"
                                 : isBox
                                   ? "rgba(75,148,144,0.4)"
-                                  : "#d3e3ee") ||
-                              (isBox && "white"),
+                                  : "#d3e3ee",
                         },
                       ]}
-                    >
-                      {isBox && (
-                        <View>
-                          <Pressable
-                            onPress={() => {
-                              handleCopy();
-                              noticeMover();
-                            }}
+                    ><View>
+                      {isBox && !pressed && (
+                        <Pressable
+                          onPress={() => {
+                            handleCopy();
+                          }}
+                          style={{
+                            zIndex: 40,
+                            alignItems: "center",
+                            alignSelf: "flex-end",
+                            marginBottom: 5,
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                            padding: 5,
+                            gap: 5,
+                            elevation: 4,
+                            shadowColor: dark ? "white" : "black",
+                            backgroundColor: "#f2fff3",
+                            borderRadius: 10,
+                          }}
+                        >
+                          <Text
                             style={{
-                              zIndex: 40,
+                              color: "#4b9490",
+                              fontSize: 12,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {copy}
+                          </Text>
+                          <Text
+                            style={{
+                              height: 20,
+                              width: 20,
+                              fontSize: 12,
+                              backgroundColor: "white",
                               alignItems: "center",
-                              alignSelf: "flex-end",
-                              marginBottom: 5,
-                              justifyContent: "space-between",
-                              flexDirection: "row",
-                              padding: 5,
-                              gap: 5,
-                              elevation: 4,
-                              shadowColor: dark ? "white" : "black",
-                              backgroundColor: "#f2fff3",
+                              justifyContent: "center",
+                              fontWeight: "bold",
                               borderRadius: 10,
                             }}
                           >
-                            <Text
-                              style={{
-                                color: "#4b9490",
-                                fontSize: 12,
-                                fontWeight: "bold",
-                              }}
-                            >
-                              {copy}
-                            </Text>
-                            <Text
-                              style={{
-                                height: 20,
-                                width: 20,
-                                fontSize: 12,
-                                backgroundColor: "white",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontWeight: "bold",
-                                borderRadius: 10,
-                              }}
-                            >
-                              📎
-                            </Text>
-                          </Pressable>
-                        </View>
+                            📎
+                          </Text>
+                        </Pressable>
                       )}
+
                       <Text
                         style={[
                           styles.msg,
                           {
                             margin: 2.5,
-                            fontSize: 15,
+                            fontSize: 16,
                             color: dark ? "#dddddd" : "rgba(0,0,0,0.8)",
                           },
                         ]}
@@ -594,6 +820,7 @@ export default function ChatArea({}) {
                                 ? "rgba(255,255,255,0.8)"
                                 : "rgba(0,0,0,0.6)",
                               fontWeight: "bold",
+			      fontSize:10
                             },
                           ]}
                         >
@@ -628,7 +855,7 @@ export default function ChatArea({}) {
                             />
                           )}
                         </View>
-                      )}
+                      )}</View>
                     </Pressable>
                   );
                 })}
@@ -715,9 +942,9 @@ export default function ChatArea({}) {
             style={{
               height: typing ? 40 : 50,
               width: typing ? 40 : 50,
-              backgroundColor: dark ? "black" : "#4b9490",
+              backgroundColor: dark ? "#eee" : "#131314",
               borderRadius: typing ? 20 : 25,
-              borderWidth: 1,
+              borderWidth: 0,
               borderColor: "#00d4d4",
               justifyContent: "center",
               alignItems: "center",
@@ -728,7 +955,7 @@ export default function ChatArea({}) {
               style={{
                 fontSize: 12,
                 fontWeight: "bold",
-                color: dark ? "#00d4d4" : "white",
+                color: dark ? "#00d4d4" : "#00d4d4",
               }}
             >
               Send
@@ -761,6 +988,25 @@ const styles = StyleSheet.create({
     zIndex: 50,
   },
   name: { color: "white" },
+
+  wrapper: { paddingHorizontal: 2 },
+  searchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#eee",
+    borderRadius: 30,
+    paddingHorizontal: 8,
+    height: 50,
+    width: 160,
+  },
+  profileImage: {
+    width: 25,
+    height: 25,
+    borderRadius: 12.5,
+    marginRight: 5,
+    backgroundColor: "black",
+  },
+  input: { width: 100, fontSize: 14, color: "black" },
 
   listBox1: {
     position: "absolute",

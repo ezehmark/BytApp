@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { MMKV } from "react-native-mmkv";
 import * as NavigationBar from "expo-navigation-bar";
+import {useColorScheme} from "react-native";
 
 import {io} from "socket.io-client";
 
@@ -24,6 +25,7 @@ function getDateTime() {
   return `${thisDay} ${thisMonth}, ${hour}:${thisMinute} ${meridian}`;
 }
 
+
 const useStore = create(
   persist(
     (set, get) => ({
@@ -34,7 +36,7 @@ const useStore = create(
       setChats: (data) => set({ chats: [...get().chats,...data] }),
       updateChats:(d)=>set({chats:d}),
       dark: false,
-      setDark: (value) => {set({ dark: value });mmkvStore.set("isDarkTheme",values)},
+      setDark: (value) => set({ dark: value }),
       toggleDark: () => set((state) => ({ dark: !state.dark })),
       handleNav: async () => {
         const isDark = get().dark;
@@ -42,9 +44,11 @@ const useStore = create(
         await NavigationBar.setButtonStyleAsync(isDark ? "light" : "dark");
       },
       typed:"",
-      setType:(txt)=>set({typed:txt}),
+      setTyped:(txt)=>set({typed:txt}),
 
       query:"",
+      draft:"",
+      setDraft:(d)=>set({draft:d}),
       setQuery:(txt)=>set({query:txt}),
       dateNow:()=>{
 	      const date = new Date();

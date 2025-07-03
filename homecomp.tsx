@@ -70,8 +70,9 @@ export default function HomeComp({ updatedChats, date, myDate }) {
   return {transform:[{rotate:rotateC.value}]}});
 
   useEffect(()=>{
-  rotateC.value = withTiming("360deg",{duration:2000,easing:Easing.linear})},[chats[chats.length - 1]]);
+  rotateC.value = withTiming("360deg",{duration:4000,easing:Easing.linear})},[chats]);
 
+  //Animating the skeleton before rendering main
   const shadePoint = useSharedValue(0);
   const shadeAnim = useAnimatedStyle(()=>{
   return{translateX:shadePoint.value}});
@@ -82,7 +83,18 @@ export default function HomeComp({ updatedChats, date, myDate }) {
   },[loading]);
 
 const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
+const typed = useStore(state=>state.typed);
+const draft = useStore(s=>s.draft);
+const setDraft = useStore(s=>s.setDraft);
 
+useEffect(()=>{
+const lastChat = chats[chats.length-1];
+if (lastChat.mine !== null){
+
+if(lastChat.msg !== typed){
+setDraft(`Draft : ${typed}...`)}}
+else{setDraft("")}
+},[typed]);
 
 
   return (
@@ -91,7 +103,6 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
         backgroundColor={dark ? "#131314" : "white"}
         barStyle={dark ? "light-content" : "dark-content"}
       />
-
       <View
         style={[
           styles.main,
@@ -172,7 +183,7 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
 		  colors={["transparent","rgba(0,212,212,0.2)",
 			  "rgba(0,212,212,0.4)",
 		  "rgba(0,212,212,0.2)","transparent"]}
-		  style={[{height:1000,left:-40,width:210},shadeAnim]}
+		  style={[{height:400,left:-40,width:210},shadeAnim]}
 		  />
 		  </View>
                 ))}
@@ -210,7 +221,7 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
                             justifyContent: "space-between",
                             flexDirection: "column",
 
-                            borderRadius: 20,
+                            borderRadius: 15,
 	    
 	    
 	    
@@ -220,10 +231,10 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
                             marginTop: index === 0 ? 10 : 5,
                             height: 90,
                             zIndex: 25,
-                            borderWidth: 0.5,
+                            borderWidth: 0.2,
                             elevation: 2,
-                            shadowColor:dark?"rgba(255,255,255,0.4)":"rgba(0,0,0,0.2)",
-                            borderColor: dark ? "rgba(255,255,255,0.1)" : "#d3e3ee",
+                            shadowColor:dark?"rgba(255,255,255,0.6)":"rgba(0,0,0,0.6)",
+                            borderColor: dark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.2)",
                           }}
                         >
                           <View
@@ -272,7 +283,7 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
                                 : "No User"}
                             </Text>
                           </View>
-                          <Text
+			  {draft.trim().length == 11 &&<Text
                             style={{
                               fontWeight: "",
                               fontSize: 14,
@@ -286,7 +297,19 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
                             {chats.length > 0
                               ? chats[chats.length - 1].msg
                               : "No chats yet"}
-                          </Text>
+                          </Text>}
+			  {draft.length >11&&<Text
+                            style={{
+                              fontWeight: "",
+                              fontSize: 14,
+                              marginLeft: 32,                                                                         
+			      marginBottom:12,
+                              color: dark
+                                ? "rgba(221,221,221,0.6)"
+                                : "rgba(0,0,0,0.6)",
+                            }}
+                          >{draft}
+                          </Text>}
                           <View
                             style={{
                               height: 20,

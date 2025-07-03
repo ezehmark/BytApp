@@ -121,10 +121,8 @@ const AdminPanel = ({ savedChats }) => {
                 justifyContent: "space-between",
                 flexDirection: "row",
                 alignItems: "center",
-              }}
-            >
-              backgroundColor={dark ? "gray" : "#ccc"}
-              <Switch value={ads} onValueChange={toggleAds} />
+              }}>
+	      <Switch value={ads} onValueChange={toggleAds} />
               <Text
                 style={{
                   fontSize: 12,
@@ -154,7 +152,6 @@ const AdminPanel = ({ savedChats }) => {
             </Text>
             <Switch value={ads} onValueChange={toggleAds} />
           </Ripple>
-          <SearchBar />
         </View>
       </View>
       <View
@@ -168,7 +165,7 @@ const AdminPanel = ({ savedChats }) => {
           flex: 1,
         }}
       >
-        <BottomTab dark={dark} />
+      <BottomTab dark={dark} />
       </View>
     </View>
   );

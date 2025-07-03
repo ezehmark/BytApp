@@ -82,7 +82,7 @@ return(<View
           style={{
             height: 90,
             width: sWidth,
-            backgroundColor: dark ? "#131314" : "white",
+            backgroundColor: dark ? "#212123" : "white",
             borderTopLeftRadius:20,
             borderTopRightRadius:20,
             paddinRight:10,

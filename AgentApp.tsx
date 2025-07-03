@@ -3,9 +3,11 @@ import {
   StyleSheet,
   Text,
   View,
+  Appearance,
   Dimensions,
   Image,
   TouchableOpacity,
+  useColorScheme,
 } from "react-native";
 import Welcome from "./welcome";
 import { useState, useEffect, useRef,useCallback } from "react";
@@ -15,6 +17,7 @@ import { NavigationContainer, useNavigation} from "@react-navigation/native";
 import NetInfo from "@react-native-community/netinfo";
 import HomeComp from "./homecomp";
 import ChatArea from "./chatArea.tsx";
+import BottomTab from "./bottomTab.tsx";
 
 import { MMKV } from "react-native-mmkv";
 import io from "socket.io-client";
@@ -34,6 +37,21 @@ const dark = useStore(st=>st.dark);
 
 
 
+// AND set dark mode inside a component like:
+const setDark = useStore(state=>state.setDark);
+
+  useEffect(() => {
+    const colorScheme = Appearance.getColorScheme();
+    console.log("Initial color scheme:", colorScheme);
+    setDark(colorScheme === "dark");
+
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      console.log("Appearance changed to:", colorScheme);
+      setDark(colorScheme === "dark");
+    });
+
+    return () => subscription.remove();
+  }, []);
 
 
 
@@ -64,6 +82,7 @@ const dark = useStore(st=>st.dark);
 
 
   return (
+	  <View style={{flex:1}}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="welcome"
@@ -102,6 +121,7 @@ const dark = useStore(st=>st.dark);
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
+      </View>
 
   );
 }

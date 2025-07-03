@@ -15,11 +15,12 @@ const SearchBar = ({
   onChangeText,
   value,
   height,
-  handleClose,
+  onPress,
   picSize,
 }) => {
   const dark = useStore((s) => s.dark);
   const chats = useStore((c) => c.chats);
+  const query=useStore(q=>q.query);
   return (
     <View style={styles.wrapper}>
       <View
@@ -61,10 +62,10 @@ const SearchBar = ({
           placeholder={placeholder}
           placeholderTextColor="#888"
           onChangeText={onChangeText}
-          value={value}
+          value={query}
           autoFocus={true}
         />
-        <Pressable onPress={handleClose}>
+        <Pressable onPress={onPress}>
           <Text
             style={{
               fontSize: 10,
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   input: {
     width: 100,
     fontSize: 14,
-    color: "#eee",
+    color: "black",
   },
 });
 
