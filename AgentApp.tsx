@@ -26,7 +26,7 @@ import AdminPanel from "./adminPanel.tsx";
 import useStore from "./zustand";
 import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
-import {requestUserPermission} from "./firebasenotifymanager.tsx";
+import {requestUserPermission} from "./firebaseNotify.tsx";
 
 
 //const myStore = new MMKV();
