@@ -27,6 +27,7 @@
     "expo-splash-screen": "~0.29.24",
     "expo-status-bar": "^2.0.1",
     "expo-system-ui": "~4.0.9",
+    "fs-extra": "^11.3.0",
     "metro": "0.81.0",
     "metro-config": "0.81.0",
     "metro-resolver": "0.81.0",
@@ -51,6 +52,7 @@
     "react-native-view-shot": "~4.0.3",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
+    "sharp": "^0.34.2",
     "socket.io-client": "^4.8.1",
     "typescript": "^5.3.3",
     "zustand": "^5.0.5"

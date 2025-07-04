@@ -8,19 +8,8 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnable
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 import expo.modules.ReactActivityDelegateWrapper
 
-// ✅ Import splash screen library
-import org.devio.rn.splashscreen.SplashScreen
-
 class MainActivity : ReactActivity() {
-  
   override fun onCreate(savedInstanceState: Bundle?) {
-    // ✅ Apply theme before splash to avoid black background
-    setTheme(R.style.AppTheme)
-
-    // ✅ Show native splash screen before React loads
-    SplashScreen.show(this)
-
-    // ✅ Call superclass after splash is shown
     super.onCreate(null)
   }
 

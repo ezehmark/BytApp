@@ -31,6 +31,15 @@
         "projectId": "426c636f-b7ae-401b-9b3d-af6364917788"
       }
     },
-    "owner": "ezehmark"
+    "owner": "ezehmark",
+
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "preventAutoHide": true
+        }
+      ]
+    ]
   }
 }
