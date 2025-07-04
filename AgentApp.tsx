@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   useColorScheme,
+  Alert,
 } from "react-native";
 import Welcome from "./welcome";
 import { useState, useEffect, useRef,useCallback } from "react";
@@ -23,14 +24,32 @@ import { MMKV } from "react-native-mmkv";
 import io from "socket.io-client";
 import AdminPanel from "./adminPanel.tsx";
 import useStore from "./zustand";
+import * as SplashScreen from "expo-splash-screen";
+import * as Notifications from "expo-notifications";
+import {requestUserPermission} from "./firebasenotifymanager.tsx";
+
+
 //const myStore = new MMKV();
 
 export default function App() {
   const Stack = createStackNavigator();
 
 useEffect(() => {
-  SplashScreen.hide(); // hides splash when JS is ready
+	requestUserPermission();
+
+  SplashScreen.hideAsync(); // hides splash when JS is ready
 }, []);
+
+//handling foregroundNotifications
+
+useEffect(()=>{
+registerPushNotification();
+
+const subscription = Notifications.addNotificationReceivedListener((notification)=>console.log("Notification:", notification));
+
+return ()=> sunscription.remove();
+
+},[]);
 
   //Initialize zustand variables and functions
   const chats = useStore((state) => state.chats);
