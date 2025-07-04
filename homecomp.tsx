@@ -121,7 +121,7 @@ else{setDraft("")}}}
             { backgroundColor: dark ? "#0d131a" : "white" },
           ]}
         >
-          <Image source={require("./assets/myIcon.png")}
+          <Image source={require("./assets/agentLogo.png")}
 	  style={{height:65,width:70,resizeMode:"stretch"}}/>
 	  <Text style={{ bottom: 5, fontSize: 8, right: 10, color: "grey" }}>
             ...by BytanceTech
