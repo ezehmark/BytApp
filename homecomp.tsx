@@ -121,17 +121,9 @@ else{setDraft("")}}}
             { backgroundColor: dark ? "#0d131a" : "white" },
           ]}
         >
-          <Text
-            style={{
-              color: "#00d4d4",
-              fontSize: 25,
-              left: 10,
-              fontWeight: "bold",
-            }}
-          >
-            CS Agent
-          </Text>
-          <Text style={{ bottom: 5, fontSize: 8, right: 10, color: "grey" }}>
+          <Image source={require("./assets/myIcon.png")}
+	  style={{height:65,width:70,resizeMode:"stretch"}}/>
+	  <Text style={{ bottom: 5, fontSize: 8, right: 10, color: "grey" }}>
             ...by BytanceTech
           </Text>
         </View>
@@ -176,7 +168,7 @@ else{setDraft("")}}}
                     marginBottom:20,
 		    overflow:"hidden",
 		    borderRadius:20,
-		    backgroundColor:dark?"#2d2d2e":"#eee",
+		    backgroundColor:dark?"#2d2d2e":"white",
                     alignSelf:"center"}}
                   >
 		  <AnimatedGradient
@@ -460,7 +452,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     top: 0,
-    padding: 10,
+    padding: 15,
     paddingBottom: 20,
     alignItems: "center",
     width: "100%",

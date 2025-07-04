@@ -944,8 +944,8 @@ if(marked.length ==0){return}
               width: typing ? 40 : 50,
               backgroundColor: dark ? "#eee" : "#0d131a",
               borderRadius: typing ? 20 : 25,
-              borderWidth: 0,
-              borderColor: "#00d4d4",
+              borderWidth: 1,
+              borderColor: "#131314",
               justifyContent: "center",
               alignItems: "center",
               overflow: "hidden",
@@ -960,7 +960,7 @@ if(marked.length ==0){return}
             >
               Send
             </Text>:<Image source={require("./assets/iconBW.png")}
-	    style={{resizeMode:"contain",height:"95%",width:"95%"}}/>}
+	    style={{resizeMode:"contain",height:"100%",width:"100%"}}/>}
           </Pressable>
         </View>
       </View>

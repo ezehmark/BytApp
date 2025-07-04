@@ -20,7 +20,7 @@ export default function Welcome() {
 const {dark}=useStore();
   useEffect(()=>{
 	const handleNavBar = async () => {
-    await NavigationBar.setBackgroundColorAsync("#00bfbf");
+    await NavigationBar.setBackgroundColorAsync("white");
     await NavigationBar.setButtonStyleAsync("light");
   };handleNavBar()},[]);
 
@@ -178,9 +178,9 @@ if(!load)return (<>
 		</>);
   return (
     <>
-      <StatusBar backgroundColor={"#00bfbf"} barStyle={"light-content"} />
+      <StatusBar backgroundColor={"white"} barStyle={"light-content"} />
       <LinearGradient
-      colors={["#00bfbf","#00bfbf","#00d4d4","#00d4d4","#00bfbf","#00bfbf"]}
+      colors={["white","white","white","white","white","white"]}
       start={{x:0,y:1}}
       end={{x:0,y:0}}
       style={styles.main}>
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
 
-    backgroundColor: "#00d4d4",
+    backgroundColor: "white",
   },
   logo: {
     fontSize: 35,
