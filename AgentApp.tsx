@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import Welcome from "./welcome";
 import { useState, useEffect, useRef,useCallback } from "react";
-import SplashScreen from 'react-native-splash-screen';
 
 import { createStackNavigator,CardStyleInterpolators } from "@react-navigation/stack";
 import { NavigationContainer, useNavigation} from "@react-navigation/native";
