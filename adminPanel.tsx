@@ -26,13 +26,13 @@ const AdminPanel = ({ savedChats }) => {
     <View
       style={[
         styles.container,
-        { backgroundColor: dark ? "#131314" : "white" },
+        { backgroundColor: dark ? "#0d131a" : "white" },
       ]}
     >
       <View
         style={[
           styles.contents,
-          { backgroundColor: dark ? "#131314" : "white" },
+          { backgroundColor: dark ? "#0d131a" : "white" },
         ]}
       >
         <Text

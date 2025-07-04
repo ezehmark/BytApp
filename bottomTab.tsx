@@ -38,7 +38,7 @@ export default function BottomTab() {
   return (
     <View style={[styles.bottom, { 
 	    borderTopWidth:0,
-	    borderColor:dark?(ads?"transparent":"rgba(255,255,255,0.2)"):(ads?"transparent":"rgba(0,0,0,0.2)"),backgroundColor: dark ? "#131314" : "white" }]}>
+	    borderColor:dark?(ads?"transparent":"rgba(255,255,255,0.2)"):(ads?"transparent":"rgba(0,0,0,0.2)"),backgroundColor: dark ? "#0d131a" : "white" }]}>
       
       {tabs.map((item, index) => {
         const isTab = index === id;

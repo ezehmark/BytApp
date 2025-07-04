@@ -299,17 +299,17 @@ if(marked.length ==0){return}
   return (
     <>
       <StatusBar
-        backgroundColor={dark ? "#131314" : "white"}
+        backgroundColor={dark ? "#0d131a" : "white"}
         barStyle={dark ? "light-content" : "dark-content"}
       />
       <View
-        style={[styles.outer, { backgroundColor: dark ? "#131314" : "white" }]}
+        style={[styles.outer, { backgroundColor: dark ? "#0d131a" : "white" }]}
       >
         <View
           style={[
             {
               height: 50,
-              backgroundColor: dark ? "#131314" : "white",
+              backgroundColor: dark ? "#0d131a" : "white",
               width: "100%",
               alignItems: "center",
               justifyContent: "space-between",
@@ -325,7 +325,7 @@ if(marked.length ==0){return}
             name="arrow-back-circle"
             size={35}
             onPress={() => navigation.goBack()}
-            color={dark ? "#eee" : "#131314"}
+            color={dark ? "#eee" : "#0d131a"}
           />
 
           <View
@@ -368,7 +368,7 @@ if(marked.length ==0){return}
                   styles.searchBar,
                   {
                     borderWidth: 1.5,
-                    backgroundColor: dark ? "#131314" : "white",
+                    backgroundColor: dark ? "#0d131a" : "white",
                     borderColor: dark ? "#eee" : "#4b9490",
                     height: 40,
                     width: 170,
@@ -434,16 +434,16 @@ if(marked.length ==0){return}
               onPress={() => setSearching(true)}
               name="search"
               size={20}
-              color={dark ? "#eee" : "#131314"}
+              color={dark ? "#eee" : "#0d131a"}
             />
           )}
 	  {pressed&&<Pressable 
 		  onPress={()=>copyMarked()}
 		  onLayout={(e)=>{const {width,height}=e.nativeEvent.layout;const rippleRadii = Math.max(width,height) }}
-		  android_ripple={{color:"#131314",radius:rippleRadii*0.7,
+		  android_ripple={{color:"#0d131a",radius:rippleRadii*0.7,
 		  }}
 		  style={{height:30,width:30,borderRadius:15,
-                  backgroundColor:dark?"#131314":"#eee",alignItems:'center',justifyContent:"center"}}/>}
+                  backgroundColor:dark?"#0d131a":"#eee",alignItems:'center',justifyContent:"center"}}/>}
           {pressed && (
 		  <View style={{}}>
 		  <View style={{height:15,width:15,borderRadius:7.5,
@@ -452,7 +452,7 @@ if(marked.length ==0){return}
               onPress={() => deleteChats()}
               name="delete"
               size={25}
-              color={dark ? "#eee" : "#131314"}
+              color={dark ? "#eee" : "#0d131a"}
             /></View>
           )}
         </View>
@@ -486,7 +486,7 @@ if(marked.length ==0){return}
           style={[
             styles.listBox1,
             {
-              backgroundColor: dark ? "#131314" : "white",
+              backgroundColor: dark ? "#0d131a" : "white",
               padding: 15,
               paddingBottom: ads ? 100 : 20,
               paddingTop: 20,
@@ -882,25 +882,25 @@ if(marked.length ==0){return}
             alignItems: "center",
             gap: 8,
             height: 100,
-            backgroundColor: dark ? "#131314" : "white",
+            backgroundColor: dark ? "#0d131a" : "white",
             flexDirection: "row",
             zIndex: 27,
           }}
         >
           {typing && (
-            <TouchableOpacity
+            <FontAwesome5 
+	    name="images"
+	    color={"#0d131a"}
+	    size={25}
               onPress={() => pickImage()}
               style={{
-                height: 40,
-                width: 40,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 20,
-                backgroundColor: "#484c4f",
+		padding:6,
+		height:40,
+		width:40,
+		borderRadius: 20,
+                backgroundColor: "#eee",
               }}
-            >
-              <Text style={{ fontSize: 20 }}>📸</Text>
-            </TouchableOpacity>
+            />
           )}
           <TextInput
             value={typed}
@@ -916,7 +916,7 @@ if(marked.length ==0){return}
               paddingRight: 10,
               paddingTop: 10,
               textAlign: "top",
-              backgroundColor: dark ? "#131314" : "white",
+              backgroundColor: dark ? "#0d131a" : "white",
               borderWidth: typed.length > 0 ? 1.5 : 0.5,
               borderColor: "#4b9490",
               color: dark ? "white" : "rgba(0,0,0,0.8)",
@@ -934,7 +934,7 @@ if(marked.length ==0){return}
             placeholder="Reply customer ..."
             placeholderTextColor={"#4b9490"}
           />
-          <Pressable
+	  <Pressable
             android_ripple={{ color: "white", radius: 20, overflow: "hidden" }}
             onPress={() => {
               sendReply();
@@ -942,7 +942,7 @@ if(marked.length ==0){return}
             style={{
               height: typing ? 40 : 50,
               width: typing ? 40 : 50,
-              backgroundColor: dark ? "#eee" : "#131314",
+              backgroundColor: dark ? "#eee" : "#0d131a",
               borderRadius: typing ? 20 : 25,
               borderWidth: 0,
               borderColor: "#00d4d4",
@@ -951,7 +951,7 @@ if(marked.length ==0){return}
               overflow: "hidden",
             }}
           >
-            <Text
+	  {typed.length>0?<Text
               style={{
                 fontSize: 12,
                 fontWeight: "bold",
@@ -959,7 +959,8 @@ if(marked.length ==0){return}
               }}
             >
               Send
-            </Text>
+            </Text>:<Image source={require("./assets/iconBW.png")}
+	    style={{resizeMode:"contain",height:"95%",width:"95%"}}/>}
           </Pressable>
         </View>
       </View>

@@ -29,7 +29,7 @@ const TopBtns = () => {
     <View
       style={[
         styles.container,
-        { backgroundColor: dark ? "#131314" : "white" },
+        { backgroundColor: dark ? "#0d131a" : "white" },
       ]}
     >
       {/* Back button */}

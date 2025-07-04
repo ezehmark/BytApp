@@ -28,7 +28,7 @@ const SearchBar = ({
           styles.searchBar,
           {
             borderWidth: 1.5,
-            backgroundColor: dark ? "#131314" : "white",
+            backgroundColor: dark ? "#0d131a" : "white",
             borderColor: dark ? "#eee" : "#4b9490",
             height: height ?? 50,
           },

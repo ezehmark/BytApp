@@ -88,19 +88,20 @@ const draft = useStore(s=>s.draft);
 const setDraft = useStore(s=>s.setDraft);
 
 useEffect(()=>{
-const lastChat = chats[chats.length-1];
-if (lastChat.mine !== null){
+if(chats.length>0){const lastChat = chats[chats.length-1];
+if (lastChat.length > 0){
+if(mine !== null){
 
 if(lastChat.msg !== typed){
 setDraft(`Draft : ${typed}...`)}}
-else{setDraft("")}
+else{setDraft("")}}}	
 },[typed]);
 
 
   return (
     <>
       <StatusBar
-        backgroundColor={dark ? "#131314" : "white"}
+        backgroundColor={dark ? "#0d131a" : "white"}
         barStyle={dark ? "light-content" : "dark-content"}
       />
       <View
@@ -110,14 +111,14 @@ else{setDraft("")}
             justifyContent: "space-between",
             flexDirection: "column",
             gap: 20,
-            backgroundColor: dark ? "#131314" : "white",
+            backgroundColor: dark ? "#0d131a" : "white",
           },
         ]}
       >
         <View
           style={[
             styles.title,
-            { backgroundColor: dark ? "#131314" : "white" },
+            { backgroundColor: dark ? "#0d131a" : "white" },
           ]}
         >
           <Text
@@ -152,7 +153,7 @@ else{setDraft("")}
               pointerEvents: "none",
             }}
             colors={[
-              dark ? "#131314" : "white",
+              dark ? "#0d131a" : "white",
               dark ? "rgba(19,19,20,0.3)" : "rgba(255,255,255,0.5)",
               "transparent",
             ]}
@@ -192,7 +193,7 @@ else{setDraft("")}
             <View
               style={{
                 height: "100%",
-                backgroundColor: dark ? "#131314" : "rgba(237,243,247,0)",
+                backgroundColor: dark ? "#0d131a" : "rgba(237,243,247,0)",
                 alignItems: "center",
                 justifyContent: "center",
                 width: "100%",
@@ -213,7 +214,7 @@ else{setDraft("")}
                         onPress={() => navigation.navigate("chatArea")}
                       
                           style={{
-                            backgroundColor: dark ? "#131314" : "white",
+                            backgroundColor: dark ? "#0d131a" : "white",
                             width: sWidth / 1.1,
 	    
 	    

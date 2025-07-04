@@ -164,13 +164,13 @@ if(!load)return (<>
 	 }}>Do you want to exit?</Text>
 	 <View style={{alignItems:"center",justifyContent:"space-between",                        flexDirection:"row",gap:40,padding:20}}>
 	 <Pressable                                                            onPress ={()=>BackHandler.exitApp()}
-         style={{height:40,width:80,borderRadius:15,backgroundColor:dark?"#131314":"#d3e3ee",alignItems:"center",justifyContent:"center"}}>
+         style={{height:40,width:80,borderRadius:15,backgroundColor:dark?"#0d131a":"#d3e3ee",alignItems:"center",justifyContent:"center"}}>
          <Text style={{color:dark?"white":"black",fontWeight:"bold"}}>Exit</Text>
          </Pressable>
 	 <Pressable 
 	 onPress={()=>navigation.navigate("home")}
 	 style={{height:40,width:80,
-		 borderRadius:15,backgroundColor:dark?"#131314":"#8db3ca",alignItems:"center",justifyContent:"center"}}>
+		 borderRadius:15,backgroundColor:dark?"#0d131a":"#8db3ca",alignItems:"center",justifyContent:"center"}}>
 	 <Text style={{color:dark?"white":"black",fontWeight:"bold"}}>Go back</Text>
 	 </Pressable>
 	 </View></View>

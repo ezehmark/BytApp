@@ -40,7 +40,7 @@ const useStore = create(
       toggleDark: () => set((state) => ({ dark: !state.dark })),
       handleNav: async () => {
         const isDark = get().dark;
-        await NavigationBar.setBackgroundColorAsync(isDark ? "#131314" : "white");
+        await NavigationBar.setBackgroundColorAsync(isDark ? "#0d131a" : "white");
         await NavigationBar.setButtonStyleAsync(isDark ? "light" : "dark");
       },
       typed:"",
