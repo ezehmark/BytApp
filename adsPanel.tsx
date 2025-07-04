@@ -120,7 +120,7 @@ return(<View
                     borderRadius:20,
                     backgeoundColor:"white",                                                              }}
                 >
-                  <Image                                                                                    source={require("./assets/aditem1.jpg")}
+                  <Image                                                                                    source={require("./assets/ads1.png")}
                     style={{ height: "100%", resizeMode: "stretch", width: "100%" }}
                   />
                 </View>

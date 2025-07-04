@@ -959,7 +959,7 @@ if(marked.length ==0){return}
               }}
             >
               Send
-            </Text>:<Image source={require("./assets/iconBW.png")}
+            </Text>:<Image source={require("./assets/icon.png")}
 	    style={{resizeMode:"contain",height:"100%",width:"100%"}}/>}
           </Pressable>
         </View>

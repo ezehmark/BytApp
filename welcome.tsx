@@ -194,7 +194,7 @@ if(!load)return (<>
 	  <Animated.View style={[{height:13.4,width:13.4,borderRadius:6.7,top:39.8,borderWidth:0,borderColor:"black",left:-19,positinon:"absolute",backgroundColor:"transparent",zIndex:5},
 		  dotLocStyle]} />
 		  {/*The animated logo*/}
-	  <Animated.Image source={require("./assets/agentLogo.png")} 
+	  <Animated.Image source={require("./assets/icon.png")} 
 	  style={[{alignSelf:"center",resizeMode:"stretch",height:100,width:100},logoStyle]}/>
 
 	  {/*Animated Agent*/}
