@@ -27,7 +27,7 @@ import useStore from "./zustand";
 import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
 import {requestUserPermission} from "./firebaseNotify.tsx";
-
+import {v4 as uuidv4} from "uuid";
 
 //const myStore = new MMKV();
 
@@ -35,21 +35,14 @@ export default function App() {
   const Stack = createStackNavigator();
 
 useEffect(() => {
-	requestUserPermission();
+	const userId = uuidv4();
+	requestUserPermission(userId);
 
   SplashScreen.hideAsync(); // hides splash when JS is ready
 }, []);
 
 //handling foregroundNotifications
 
-useEffect(()=>{
-registerPushNotification();
-
-const subscription = Notifications.addNotificationReceivedListener((notification)=>console.log("Notification:", notification));
-
-return ()=> sunscription.remove();
-
-},[]);
 
   //Initialize zustand variables and functions
   const chats = useStore((state) => state.chats);

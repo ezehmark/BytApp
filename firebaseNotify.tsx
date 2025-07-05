@@ -3,7 +3,7 @@ import { Platform, PermissionsAndroid } from 'react-native';
 import { setDoc, doc } from "firebase/firestore";
 import { db } from "./firebase.ts"
 
-export const requestUserPermission = async () => {
+export const requestUserPermission = async ({userId}) => {
   const authStatus = await messaging().requestPermission();
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -20,7 +20,7 @@ const getFcmToken = async () => {
     const token = await messaging().getToken();
     console.log('FCM Token:', token);
     // Send this token to your backend server if needed
-    await Doc(setDoc(db,"cs_app_users",{token:token}));
+    await Doc(setDoc(db,"cs_app_users",userId),{token:token});
   } catch (error) {
     console.log('Error getting FCM token:', error);
   }
