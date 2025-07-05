@@ -7471,6 +7471,11 @@ react-native-reanimated@~3.16.7:
     convert-source-map "^2.0.0"
     invariant "^2.2.4"
 
+react-native-safe-area-context@^5.5.1:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-5.5.1.tgz#9fac8ae5da8b9ff6f77eb3f697e073f04a1f2f3f"
+  integrity sha512-WYxV+mm7SWuapVWxq2071lkQlDUXjSwcu7Cc2bUtNcF80/Bl0WnuWAZ8+tO46M38PclMrQIIgbv83BvDHJNQ5g==
+
 react-native-screens@~4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-4.4.0.tgz#3fcbcdf1bbb1be2736b10d43edc3d4e69c37b5aa"
