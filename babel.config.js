@@ -1,5 +1,6 @@
 module.exports = function (api) {
   api.cache(true);
+
   return {
     presets: [
       [
@@ -9,6 +10,11 @@ module.exports = function (api) {
         },
       ],
     ],
+    env: {
+      production: {
+        plugins: ["transform-remove-console"], // ✅ Strips console.log, warn, etc. in release
+      },
+    },
     plugins: [
       "react-native-reanimated/plugin", // Required for react-native-reanimated
     ],

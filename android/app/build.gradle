@@ -4,8 +4,10 @@ apply plugin: "com.facebook.react"
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
+// ✅ Hermes setup with debug stripping only in release
 project.ext.react = [
-    enableHermes: true
+    enableHermes: true,
+    hermesCommandLineFlagsRelease: ["-O", "--strip-debug"]
 ]
 
 react {
@@ -45,11 +47,12 @@ android {
         versionName "1.0.0"
     }
 
+    // ✅ Enable ABI splits (release only)
     splits {
         abi {
             enable true
             reset()
-            include 'armeabi-v7a'
+            include 'armeabi-v7a', 'arm64-v8a'
             universalApk false
         }
     }
@@ -66,19 +69,22 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            // No minification or resource shrinking in debug
             minifyEnabled false
             shrinkResources false
+            debuggable true
         }
 
         release {
-            signingConfig signingConfigs.debug // Change to release key if needed
-            shrinkResources true
+            signingConfig signingConfigs.debug // 🔒 Replace with real release config when ready
             minifyEnabled true
+            shrinkResources true
             crunchPngs true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
 
-            // 🛠️ Only exclude inspector libs in release
+            // ✅ Only English strings to reduce size
+            resConfigs "en"
+
+            // ✅ Exclude debug-only native libs
             packagingOptions {
                 jniLibs {
                     useLegacyPackaging false
@@ -89,12 +95,22 @@ android {
         }
     }
 
+    // ✅ Exclude x86 & x86_64 ABIs from debug builds only
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "debug") {
+            variant.getFilters().clear()
+            variant.mergedFlavor.ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
+        }
+    }
+
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
     }
 }
 
-// Optional dynamic packagingOptions injection
+// 🛠️ Optional dynamic packaging option merging (no change)
 ["pickFirsts", "excludes", "merges", "doNotStrip"].each { prop ->
     def options = (findProperty("android.packagingOptions.$prop") ?: "").split(",")
     for (i in 0..<options.size()) options[i] = options[i].trim()
@@ -107,7 +123,7 @@ android {
 
 dependencies {
     implementation("com.facebook.react:react-android")
-    implementation ('com.google.firebase:firebase-messaging')
+    implementation('com.google.firebase:firebase-messaging')
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
