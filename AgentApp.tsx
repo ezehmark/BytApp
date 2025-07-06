@@ -27,15 +27,36 @@ import useStore from "./zustand";
 import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
 import {requestUserPermission} from "./firebaseNotify.tsx";
-import {v4 as uuidv4} from "uuid";
+import uuid from "react-native-uuid";
 
 //const myStore = new MMKV();
 
 export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
+
+  useEffect(() => {
+    async function prepare() {
+      // Optional: perform any async tasks here
+      setAppIsReady(true);
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
+
   const Stack = createStackNavigator();
 
 useEffect(() => {
-	const userId = uuidv4();
+	const userId = uuid.v4();
 	requestUserPermission(userId);
 
   SplashScreen.hideAsync(); // hides splash when JS is ready
@@ -51,6 +72,29 @@ const setChats = useStore((state) => state.setChats);
 const socket = useStore(s=>s.socket);
 const dark = useStore(st=>st.dark);
 
+//Hiding splash screen after a simulated delay
+
+const [appIsReady, setAppIsReady] = useState(false);
+
+  useEffect(() => {
+    async function prepare() {
+      // Simulate loading tasks
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setAppIsReady(true);
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
 
 
 // AND set dark mode inside a component like:
@@ -98,7 +142,8 @@ const setDark = useStore(state=>state.setDark);
 
 
   return (
-	  <View style={{flex:1}}>
+	  <View onLayout={onLayoutRootView}
+	  style={{flex:1}}>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="welcome"
