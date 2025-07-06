@@ -1,10 +1,10 @@
+
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
-// ✅ Hermes setup with debug stripping only in release
 project.ext.react = [
     enableHermes: true,
     hermesCommandLineFlagsRelease: ["-O", "--strip-debug"]
@@ -45,16 +45,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-	resConfigs "en"
-    }
-
-    // ✅ Enable ABI splits (release only)
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'armeabi-v7a', 'arm64-v8a'
-            universalApk false
+        resConfigs "en"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
         }
     }
 
@@ -73,18 +66,17 @@ android {
             minifyEnabled false
             shrinkResources false
             debuggable true
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
         }
 
         release {
-            signingConfig signingConfigs.debug // 🔒 Replace with real release config when ready
+            signingConfig signingConfigs.debug
             minifyEnabled true
             shrinkResources true
             crunchPngs true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-
-            // ✅ Only English strings to reduce size
-
-            // ✅ Exclude debug-only native libs
             packagingOptions {
                 jniLibs {
                     useLegacyPackaging false
@@ -92,14 +84,7 @@ android {
                 exclude "**/libhermes-inspector.so"
                 exclude "**/librnskia.so"
             }
-        }
-    }
-
-    // ✅ Exclude x86 & x86_64 ABIs from debug builds only
-    applicationVariants.all { variant ->
-        if (variant.buildType.name == "debug") {
-            variant.getFilters().clear()
-            variant.mergedFlavor.ndk {
+            ndk {
                 abiFilters "armeabi-v7a", "arm64-v8a"
             }
         }
@@ -110,7 +95,6 @@ android {
     }
 }
 
-// 🛠️ Optional dynamic packaging option merging (no change)
 ["pickFirsts", "excludes", "merges", "doNotStrip"].each { prop ->
     def options = (findProperty("android.packagingOptions.$prop") ?: "").split(",")
     for (i in 0..<options.size()) options[i] = options[i].trim()
