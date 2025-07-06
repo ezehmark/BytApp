@@ -74,7 +74,6 @@ const dark = useStore(st=>st.dark);
 
 //Hiding splash screen after a simulated delay
 
-const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
     async function prepare() {
