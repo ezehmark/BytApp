@@ -16,14 +16,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
 
         Log.d("FCM", "From: ${remoteMessage.from}")
-
-        // Handle data payload
         if (remoteMessage.data.isNotEmpty()) {
             Log.d("FCM", "Message data payload: ${remoteMessage.data}")
-            // Optional: Show a notification manually here
         }
 
-        // Handle notification payload
         remoteMessage.notification?.let {
             Log.d("FCM", "Message Notification Body: ${it.body}")
         }
@@ -33,10 +29,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         Log.d("FCM", "Refreshed token: $token")
 
-        val uuid = getDeviceUUID(applicationContext)
+        val uuid = getDeviceUUID(this)
         val androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-        val db = FirebaseFirestore.getInstance()
 
+        val db = FirebaseFirestore.getInstance()
         val data = hashMapOf(
             "fcm_token" to token,
             "device_id" to androidId,
