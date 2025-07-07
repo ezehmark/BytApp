@@ -97,6 +97,20 @@ jobs:
           name: apk-size-report-${{ github.sha }}
           path: apk-size-report.txt
 
+      - name: Dump DEX Class Details
+        run: |
+          mkdir -p dex-analysis
+          unzip -q android/app/build/outputs/apk/debug/app-debug.apk -d dex-analysis/apk
+          for dex in dex-analysis/apk/classes*.dex; do
+            dexdump -a "$dex" > dex-analysis/$(basename "$dex").txt || echo "Failed to dump $dex"
+          done
+
+      - name: Upload DEX Class Dump
+        uses: actions/upload-artifact@v4
+        with:
+          name: dex-class-report-${{ github.sha }}
+          path: dex-analysis/*.txt
+
       - name: Dump Logs on Failure
         if: failure()
         run: find android -name "*.log" -exec cat {} \; || true

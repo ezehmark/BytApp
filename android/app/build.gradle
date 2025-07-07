@@ -46,7 +46,17 @@ android {
         versionCode 1
         versionName "1.0.0"
         resConfigs "en"
-        // ❌ No ndk.abiFilters here — defined per buildType
+        // ❌ No ndk.abiFilters here anymore
+    }
+
+    // ✅ NEW: Only include arm64-v8a, no universal APK
+    splits {
+        abi {
+            enable true
+            reset()
+            include "arm64-v8a"
+            universalApk false
+        }
     }
 
     signingConfigs {
@@ -64,16 +74,11 @@ android {
             minifyEnabled false
             shrinkResources false
             debuggable true
-
-            // ✅ Force only arm64-v8a for debug
-            ndk {
-                abiFilters.clear()
-                abiFilters.add("arm64-v8a")
-            }
+            // ❌ No ndk.abiFilters — controlled by splits
         }
 
         release {
-            signingConfig signingConfigs.debug // Replace with real release config in production
+            signingConfig signingConfigs.debug // replace for production
             minifyEnabled true
             shrinkResources true
             crunchPngs true
@@ -87,11 +92,7 @@ android {
                 exclude "**/librnskia.so"
             }
 
-            // ✅ Force only arm64-v8a for release
-            ndk {
-                abiFilters.clear()
-                abiFilters.add("arm64-v8a")
-            }
+            // ❌ No ndk.abiFilters — controlled by splits
         }
     }
 
