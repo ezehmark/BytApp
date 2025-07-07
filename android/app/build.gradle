@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
@@ -108,16 +109,11 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:hermes-android")
 
-    // ✅ Firebase Messaging & Firestore
+    // ✅ Firebase services
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-firestore:24.10.3")
 
-    // ✅ Flipper debug tools
-// ✅ Flipper debug tools - version 0.125.0 is known stable & published
-debugImplementation("com.facebook.flipper:flipper:0.125.0")
-debugImplementation("com.facebook.flipper:flipper-network-plugin:0.125.0")
-debugImplementation("com.facebook.flipper:flipper-fresco-plugin:0.125.0")
-    // ✅ Optional WebP/GIF support — no duplicates
+    // ✅ Optional WebP/GIF support
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true"
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true"
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true"
@@ -133,5 +129,3 @@ debugImplementation("com.facebook.flipper:flipper-fresco-plugin:0.125.0")
         }
     }
 }
-
-apply plugin: 'com.google.gms.google-services'
