@@ -45,15 +45,11 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-        resConfigs "en"
-
-        // ✅ Only include arm64-v8a ABI
-        ndk {
-            abiFilters "arm64-v8a"
-        }
+        resConfigs "en" // ✅ Reduces language resources
+        // ❌ DO NOT include ndk.abiFilters here to avoid conflict with splits.abi
     }
 
-    // ✅ Apply ABI split, but only for arm64-v8a
+    // ✅ Enable ABI splitting globally, only arm64-v8a
     splits {
         abi {
             enable true
@@ -78,20 +74,17 @@ android {
             minifyEnabled false
             shrinkResources false
             debuggable true
-
-            // ✅ Reinforce ABI filter for debug
             ndk {
-                abiFilters "arm64-v8a"
+                abiFilters "arm64-v8a" // ✅ Safe here
             }
         }
 
         release {
-            signingConfig signingConfigs.debug // 🔒 Replace with real release config when ready
+            signingConfig signingConfigs.debug // Replace with release key for production
             minifyEnabled true
             shrinkResources true
             crunchPngs true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-
             packagingOptions {
                 jniLibs {
                     useLegacyPackaging false
@@ -99,10 +92,8 @@ android {
                 exclude "**/libhermes-inspector.so"
                 exclude "**/librnskia.so"
             }
-
-            // ✅ Reinforce ABI filter for release
             ndk {
-                abiFilters "arm64-v8a"
+                abiFilters "arm64-v8a" // ✅ Safe here
             }
         }
     }
