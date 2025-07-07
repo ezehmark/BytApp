@@ -37,7 +37,7 @@
       [
         "expo-splash-screen",
         {
-          "preventAutoHide": true
+          "preventAutoHide": false
         }
       ]
     ]
