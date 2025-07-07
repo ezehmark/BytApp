@@ -112,6 +112,34 @@ dependencies {
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
+    
+    implementation("com.facebook.react:react-android")
+    implementation("com.facebook.react:hermes-android")
+
+    // ✅ Firebase services
+    implementation('com.google.firebase:firebase-messaging')
+    implementation('com.google.firebase:firebase-firestore:24.10.3') // 👈 MISSING
+
+    // ✅ Flipper for debug only
+    debugImplementation("com.facebook.flipper:flipper:0.231.0")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.231.0")
+    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:0.231.0")
+
+    // ✅ Optional WebP/GIF support
+    def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
+    def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
+    def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
+
+    if (isGifEnabled) {
+        implementation("com.facebook.fresco:animated-gif:${reactAndroidLibs.versions.fresco.get()}")
+    }
+    if (isWebpEnabled) {
+        implementation("com.facebook.fresco:webpsupport:${reactAndroidLibs.versions.fresco.get()}")
+        if (isWebpAnimatedEnabled) {
+            implementation("com.facebook.fresco:animated-webp:${reactAndroidLibs.versions.fresco.get()}")
+        }
+    }
+
 
     if (isGifEnabled) {
         implementation("com.facebook.fresco:animated-gif:${reactAndroidLibs.versions.fresco.get()}")
