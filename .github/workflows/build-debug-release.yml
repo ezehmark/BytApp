@@ -1,4 +1,4 @@
-name: Build Debug APK
+name: Build Release APK
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build Debug APK
+    name: Build Release APK
     runs-on: ubuntu-latest
 
     steps:
@@ -46,7 +46,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-metro-
 
-      - name: Bundle React Native JS (Debug)
+      - name: Bundle React Native JS (Release)
         run: |
           node ./node_modules/react-native/cli.js bundle \
             --platform android \
@@ -62,10 +62,10 @@ jobs:
       - name: Make Gradle Executable
         run: chmod +x android/gradlew
 
-      - name: Build Debug APK (Verbose)
+      - name: Build Release APK (Verbose)
         run: |
           cd android
-          ./gradlew assembleDebug \
+          ./gradlew assembleRelease \
             --stacktrace \
             --no-daemon \
             --console=plain \
@@ -74,22 +74,22 @@ jobs:
       - name: List APKs
         run: find android/app/build/outputs/apk -type f
 
-      - name: Upload Debug APK
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: debug-apk-${{ github.sha }}
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: release-apk-${{ github.sha }}
+          path: android/app/build/outputs/apk/release/*.apk
 
-      - name: Analyze Debug APK Size
+      - name: Analyze Release APK Size
         run: |
-          mkdir -p apk-debug-extracted
-          unzip -q android/app/build/outputs/apk/debug/app-debug.apk -d apk-debug-extracted
+          mkdir -p apk-release-extracted
+          unzip -q android/app/build/outputs/apk/release/app-release.apk -d apk-release-extracted
 
           echo "=== Top-Level APK Contents ===" > apk-size-report.txt
-          du -sh apk-debug-extracted/* | sort -hr >> apk-size-report.txt
+          du -sh apk-release-extracted/* | sort -hr >> apk-size-report.txt
 
           echo "\n=== Top 20 Largest Files ===" >> apk-size-report.txt
-          find apk-debug-extracted -type f -exec du -h {} + | sort -hr | head -n 20 >> apk-size-report.txt
+          find apk-release-extracted -type f -exec du -h {} + | sort -hr | head -n 20 >> apk-size-report.txt
 
       - name: Upload APK Size Report
         uses: actions/upload-artifact@v4
@@ -100,7 +100,7 @@ jobs:
       - name: Dump DEX Class Details
         run: |
           mkdir -p dex-analysis
-          unzip -q android/app/build/outputs/apk/debug/app-debug.apk -d dex-analysis/apk
+          unzip -q android/app/build/outputs/apk/release/app-release.apk -d dex-analysis/apk
           for dex in dex-analysis/apk/classes*.dex; do
             dexdump -a "$dex" > dex-analysis/$(basename "$dex").txt || echo "Failed to dump $dex"
           done
