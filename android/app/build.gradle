@@ -45,19 +45,15 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-        resConfigs "en" // ✅ Reduces language resources
-        // ❌ DO NOT include ndk.abiFilters here to avoid conflict with splits.abi
-    }
+        resConfigs "en"
 
-    // ✅ Enable ABI splitting globally, only arm64-v8a
-    splits {
-        abi {
-            enable true
-            reset()
-            include "arm64-v8a"
-            universalApk false
+        // ✅ Use ONLY arm64-v8a for all builds
+        ndk {
+            abiFilters "arm64-v8a"
         }
     }
+
+    // ❌ Removed splits.abi to avoid conflict
 
     signingConfigs {
         debug {
@@ -74,13 +70,11 @@ android {
             minifyEnabled false
             shrinkResources false
             debuggable true
-            ndk {
-                abiFilters "arm64-v8a" // ✅ Safe here
-            }
+            // ✅ No need to redefine abiFilters here
         }
 
         release {
-            signingConfig signingConfigs.debug // Replace with release key for production
+            signingConfig signingConfigs.debug // Replace for production
             minifyEnabled true
             shrinkResources true
             crunchPngs true
@@ -92,9 +86,7 @@ android {
                 exclude "**/libhermes-inspector.so"
                 exclude "**/librnskia.so"
             }
-            ndk {
-                abiFilters "arm64-v8a" // ✅ Safe here
-            }
+            // ✅ No need to redefine abiFilters here either
         }
     }
 
