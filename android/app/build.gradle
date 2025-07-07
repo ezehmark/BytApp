@@ -46,14 +46,8 @@ android {
         versionCode 1
         versionName "1.0.0"
         resConfigs "en"
-
-        // ✅ Use ONLY arm64-v8a for all builds
-        ndk {
-            abiFilters "arm64-v8a"
-        }
+        // ❌ No ndk.abiFilters here — defined per buildType
     }
-
-    // ❌ Removed splits.abi to avoid conflict
 
     signingConfigs {
         debug {
@@ -70,15 +64,21 @@ android {
             minifyEnabled false
             shrinkResources false
             debuggable true
-            // ✅ No need to redefine abiFilters here
+
+            // ✅ Force only arm64-v8a for debug
+            ndk {
+                abiFilters.clear()
+                abiFilters.add("arm64-v8a")
+            }
         }
 
         release {
-            signingConfig signingConfigs.debug // Replace for production
+            signingConfig signingConfigs.debug // Replace with real release config in production
             minifyEnabled true
             shrinkResources true
             crunchPngs true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+
             packagingOptions {
                 jniLibs {
                     useLegacyPackaging false
@@ -86,7 +86,12 @@ android {
                 exclude "**/libhermes-inspector.so"
                 exclude "**/librnskia.so"
             }
-            // ✅ No need to redefine abiFilters here either
+
+            // ✅ Force only arm64-v8a for release
+            ndk {
+                abiFilters.clear()
+                abiFilters.add("arm64-v8a")
+            }
         }
     }
 
