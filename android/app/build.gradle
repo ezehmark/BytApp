@@ -113,10 +113,10 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.3")
 
     // ✅ Flipper debug tools
-    debugImplementation("com.facebook.flipper:flipper:0.231.0")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:0.231.0")
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:0.231.0")
-
+// ✅ Flipper debug tools - version 0.125.0 is known stable & published
+debugImplementation("com.facebook.flipper:flipper:0.125.0")
+debugImplementation("com.facebook.flipper:flipper-network-plugin:0.125.0")
+debugImplementation("com.facebook.flipper:flipper-fresco-plugin:0.125.0")
     // ✅ Optional WebP/GIF support — no duplicates
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true"
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true"
