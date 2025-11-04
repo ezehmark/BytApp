@@ -21,7 +21,7 @@
     "@react-navigation/stack": "^6.3.23",
     "@types/react": "^18.2.78",
     "axios": "^1.6.8",
-    "expo": "52.0.47",
+    "expo": "^52.0.47",
     "expo-blur": "~14.0.2",
     "expo-image-picker": "~16.0.6",
     "expo-linear-gradient": "~14.0.2",
