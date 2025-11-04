@@ -55,7 +55,7 @@ useEffect(() => {
   SplashScreen.hideAsync(); // hides splash when JS is ready
 }, []);
 
-//handling foregroundNotifications
+//handling xforegroundNotifications
 
 
   //Initialize zustand variables and functions
