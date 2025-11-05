@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Image,
   Text,
@@ -7,62 +8,113 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { BlurView } from "expo-blur";
-import { LinearGradient } from "expo-linear-gradient";
+import axios from "axios";
 
-interface networkProps {
-  isCard: boolean;
-  toggleCard: () => void;
-  handleSelectCard: (cardName: string) => void;
-  handleWhich: (cardName: string) => void;
-}
-
-// Define an array of gift cards
-const mobileNetworks = [
-  { name: "mtn", uri: "https://i.postimg.cc/JhRWnm0V/mtnIcon.png" },
-  { name: "airtel", uri: "https://i.postimg.cc/ydt1W52m/images-13.png" },
-  {
-    name: "glo",
-    uri: "https://i.postimg.cc/ZYvYXbyV/globacom-limited-icon-2048x2048-uovm3iz4.png",
-  },
-  { name: "9mobile", uri: "https://i.postimg.cc/rwM8d5ZP/images-18.jpg" },
-];
-
-const MobileNetworks: React.FC<networkProps> = ({
+const MobileNetworks = ({
   isCard,
+  setLivePlans,
   toggleCard,
-  handleWhich,
   handleSelectCard,
+  handleWhich,
+  setLoadingPlans,
 }) => {
+  const networks = [
+    {
+      id: 1,
+      value: "mtn",
+      label: "MTN",
+      color: "bg-yellow-500",
+      networkPlans: "mtnPlans",
+      logo: "https://i.postimg.cc/J7K6KYJb/mtn.jpg",
+    },
+    {
+      id: 2,
+      value: "airtel",
+      label: "Airtel",
+      color: "bg-red-500",
+      networkPlans: "airtelPlans",
+      logo: "https://i.postimg.cc/PrR6nLSJ/airtel.png",
+    },
+    {
+      id: 3,
+      value: "glo",
+      label: "Glo",
+      color: "bg-green-500",
+      networkPlans: "gloPlans",
+      logo: "https://i.postimg.cc/TYwksjqB/glo.jpg",
+    },
+    {
+      id: 4,
+      value: "9mobile",
+      label: "9mobile",
+      color: "bg-green-600",
+      networkPlans: "nineMobilePlans",
+      logo: "https://i.postimg.cc/cLtFxszm/9mobile.png",
+    },
+  ];
+
+  const [selectedNetwork, setSelectedNetwork] = useState(null);
+ 
+  const [loading, setLoading] = useState(false);
+
+  const handleVariations = async (id) => {
+    setLoadingPlans(true);
+    setLoading(true);
+    setLivePlans([]);
+
+    try {
+      const response = await axios.get(
+        `https://mybackend-oftz.onrender.com/getDataVariations`,
+        { params: { id } }
+      );
+      const networkPlans = response.data?.data?.data || [];
+      setLivePlans(networkPlans);
+      console.log("Fetched plans:", networkPlans);
+    } catch (err) {
+      console.error("Error fetching variations:", err.message);
+      alert("Failed to fetch plans: " + err.message);
+    } finally {
+      setLoading(false);
+      setLoadingPlans(false);
+      console.log("All variations fetched successfully");
+    }
+  };
+
   if (!isCard) return null;
 
   return (
-    <BlurView style={styles.mainBodi}>
+    <BlurView intensity={50} style={styles.mainBodi}>
       <View style={styles.bodi}>
-        <TouchableOpacity onPress={() => toggleCard()} style={styles.closeBtn}><Text>❌</Text>
+        {/* Close Button */}
+        <TouchableOpacity onPress={toggleCard} style={styles.closeBtn}>
+          <Text style={{ color: "white", fontSize: 16 }}>❌</Text>
         </TouchableOpacity>
 
+        {/* Content */}
         <View style={styles.container}>
           <Text style={styles.msg}>Choose Network</Text>
 
           <View style={styles.contentArea}>
             <ScrollView style={styles.scrollArea}>
               <View style={styles.msgArea}>
-                {mobileNetworks.map((network, index) => (
+                {networks.map((network) => (
                   <TouchableOpacity
-                    key={index}
+                    key={network.id}
                     style={styles.giftCardBox}
                     onPress={() => {
-                      handleWhich(network.name);
-                      handleSelectCard(network.name);
+                      handleWhich(network.value);
+                      handleVariations(network.id);
+                      handleSelectCard(network.value);
+                      setSelectedNetwork(network.value);
                     }}
                   >
                     <View style={styles.logoCover}>
                       <Image
                         style={styles.networkLogo}
-                        source={{ uri: network.uri }}
+                        source={{ uri: network.logo }}
                       />
                     </View>
-                    <Text style={styles.networkName}>{network.name}</Text>
+                    <Text style={styles.networkName}>{network.label}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
@@ -75,7 +127,12 @@ const MobileNetworks: React.FC<networkProps> = ({
 };
 
 const styles = StyleSheet.create({
-  mainBodi: { height: "100%", width: "100%", position: "absolute", zIndex: 20 },
+  mainBodi: {
+    height: "100%",
+    width: "100%",
+    position: "absolute",
+    zIndex: 20,
+  },
   bodi: {
     height: "85%",
     width: "90%",
@@ -104,14 +161,11 @@ const styles = StyleSheet.create({
   closeBtn: {
     height: 25,
     width: 45,
-    textAlign: "center",
-    color: "white",
     backgroundColor: "#20a385",
     borderRadius: 10,
     marginLeft: "75%",
     top: -2.5,
     zIndex: 3,
-    fontSize: 10,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -148,7 +202,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: 500,
     width: "98%",
-    backgroundColor: "d7e5d3",
+    backgroundColor: "#d7e5d3",
     justifyContent: "space-around",
     flexDirection: "column",
     alignSelf: "center",
@@ -190,7 +244,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: "black",
   },
-
   networkLogo: {
     resizeMode: "cover",
     position: "absolute",

@@ -12,11 +12,12 @@ module.exports = function (api) {
     ],
     env: {
       production: {
-        plugins: ["transform-remove-console"], // ✅ Strips console.log, warn, etc. in release
+        plugins: ["transform-remove-console"], // ✅ Removes console logs in production
       },
     },
     plugins: [
-      "react-native-reanimated/plugin", // Required for react-native-reanimated
+      "nativewind/babel",            // ✅ For Tailwind (NativeWind)
+      "react-native-reanimated/plugin", // ✅ For Reanimated (must come last)
     ],
   };
 };

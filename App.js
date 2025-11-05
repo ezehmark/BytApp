@@ -1,17 +1,20 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
   View,
-StatusBar,
+  StatusBar,
   Text,
   Image,
-Dimensions
+  Dimensions,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator,TransitionPresets } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import { BlurView } from "expo-blur";
 
 import Home from "./homes";
@@ -31,41 +34,41 @@ import TvSub from "./tvsubs.tsx";
 import Electricity from "./electricity.tsx";
 import Drop from "./drop.tsx";
 
-
-
-
-
 export default function App() {
+  const [darkTheme, setDarkTheme] = useState(false);
+  const [balance, setBalance] = useState(1500000);
 
-	const[darkTheme,setDarkTheme]=useState(false);
-	const [balance, setBalance]=useState(1500000);
+  const Stack = createStackNavigator();
+  const handleNav = async () => {
+    await NavigationBar.setBackgroundColorAsync(
+      darkTheme ? "#022d36" : "white",
+    );
+    await NavigationBar.setButtonStyleAsync(darkTheme ? "light" : "dark");
+  };
 
-
-const Stack = createStackNavigator();
-	const handleNav = async()=>{
-await NavigationBar.setBackgroundColorAsync(darkTheme?"#022d36":"white");               await NavigationBar.setButtonStyleAsync(darkTheme?"light":"dark")}
-                                                                      
-	useEffect(()=>{handleNav()},[]);
-
+  useEffect(() => {
+    handleNav();
+  }, []);
 
   const [nav, setNav] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openMsg, setOpenMsg] = useState(false);
   const [pressedTab, setPressedTab] = useState(null);
 
+  const[livePlans,setLivePlans]=useState([]) //The state that holds the live plans that will be sorted from the mobilenetworks comp
+  
+
   const toggleMenu = () => setMenuOpen((prev) => !prev);
   const toggleMsg = () => setOpenMsg((msg) => !msg);
-
-
 
   const tabs = [
     {
       name: "Home",
       route: "home",
       id: 1,
-      dark:"https://i.postimg.cc/Hsdvt26P/Picsart-25-05-09-09-28-17-219.png",
-light:"https://i.postimg.cc/Y97CSZxx/Picsart-25-05-09-09-25-29-920.png",
-active:"https://i.postimg.cc/3NYMmHyt/Picsart-25-05-09-09-30-35-168.png",
+      dark: "https://i.postimg.cc/Hsdvt26P/Picsart-25-05-09-09-28-17-219.png",
+      light: "https://i.postimg.cc/Y97CSZxx/Picsart-25-05-09-09-25-29-920.png",
+      active: "https://i.postimg.cc/3NYMmHyt/Picsart-25-05-09-09-30-35-168.png",
     },
     {
       name: "Fund",
@@ -74,11 +77,12 @@ active:"https://i.postimg.cc/3NYMmHyt/Picsart-25-05-09-09-30-35-168.png",
       uri: "https://i.postimg.cc/3RD6dnVS/Picsart-24-11-01-02-14-35-571.png",
     },
     {
-name: "Recents",
-route: "recents",
-id: 3,
-active:"https://i.postimg.cc/XvqcCg5Q/Picsart-25-05-10-06-47-10-520.png",
-light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
+      name: "Recents",
+      route: "recents",
+      id: 3,
+      active: "https://i.postimg.cc/XvqcCg5Q/Picsart-25-05-10-06-47-10-520.png",
+      light: "https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png",
+    },
 
     {
       name: "Profile",
@@ -86,26 +90,26 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
       id: 4,
       uri: "https://i.postimg.cc/rs3PwBXX/Picsart-24-11-01-05-26-01-447.png",
     },
-
   ];
-
 
   return (
     <>
-	  <StatusBar barStyle={darkTheme?"light-content":"dark-content"} 
-	  backgroundColor={darkTheme?"black":"white"}/>
+      <StatusBar
+        barStyle={darkTheme ? "light-content" : "dark-content"}
+        backgroundColor={darkTheme ? "black" : "white"}
+      />
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="home"
-          screenOptions={{ headerShown: false,gestureEnabled:false}}
+          screenOptions={{ headerShown: false, gestureEnabled: false }}
         >
           <Stack.Screen name="home">
             {(props) => (
               <Home
                 {...props}
-		darkTheme={darkTheme}
-		    balance={balance}
-		    setBalance={setBalance}
+                darkTheme={darkTheme}
+                balance={balance}
+                setBalance={setBalance}
                 toggleMenu={toggleMenu}
                 toggleMsg={toggleMsg}
                 setNav={setNav}
@@ -113,23 +117,20 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
             )}
           </Stack.Screen>
 
-	  <Stack.Screen name="drop">
-	  {(props)=><Drop {...props}/>}
-	  </Stack.Screen>
+          <Stack.Screen name="drop">
+            {(props) => <Drop {...props} />}
+          </Stack.Screen>
           <Stack.Screen name="tvsub">
             {(props) => (
               <TvSub {...props} toggleMenu={toggleMenu} toggleMsg={toggleMsg} />
             )}
           </Stack.Screen>
 
-
-
-
           <Stack.Screen name="electricity">
             {(props) => (
               <Electricity
                 {...props}
-		darkTheme={darkTheme}
+                darkTheme={darkTheme}
                 toggleMenu={toggleMenu}
                 toggleMsg={toggleMsg}
               />
@@ -139,7 +140,7 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
             {(props) => (
               <Recents
                 {...props}
-		darkTheme={darkTheme}
+                darkTheme={darkTheme}
                 toggleMenu={toggleMenu}
                 toggleMsg={toggleMsg}
               />
@@ -149,7 +150,7 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
             {(props) => (
               <BuyGiftCard1
                 {...props}
-		darkTheme={darkTheme}
+                darkTheme={darkTheme}
                 toggleMenu={toggleMenu}
                 toggleMsg={toggleMsg}
               />
@@ -159,7 +160,7 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
             {(props) => (
               <SellGiftCards
                 {...props}
-		darkTheme={darkTheme}
+                darkTheme={darkTheme}
                 toggleMenu={toggleMenu}
                 toggleMsg={toggleMsg}
               />
@@ -167,15 +168,20 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
           </Stack.Screen>
           <Stack.Screen name="fund">
             {(props) => (
-              <Fund {...props} darkTheme={darkTheme} balance={balance}
-		    toggleMenu={toggleMenu} toggleMsg={toggleMsg} />
+              <Fund
+                {...props}
+                darkTheme={darkTheme}
+                balance={balance}
+                toggleMenu={toggleMenu}
+                toggleMsg={toggleMsg}
+              />
             )}
           </Stack.Screen>
           <Stack.Screen name="buyairtime">
             {(props) => (
               <BuyAirtime
                 {...props}
-		darkTheme={darkTheme}
+                darkTheme={darkTheme}
                 toggleMenu={toggleMenu}
                 toggleMsg={toggleMsg}
               />
@@ -185,7 +191,9 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
             {(props) => (
               <BuyData
                 {...props}
-		darkTheme={darkTheme}
+                livePlans={livePlans}
+                setLivePlans={setLivePlans}
+                darkTheme={darkTheme}
                 toggleMenu={toggleMenu}
                 toggleMsg={toggleMsg}
               />
@@ -195,8 +203,8 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
             {(props) => (
               <Profile
                 {...props}
-		darkTheme={darkTheme}
-		setDarkTheme={setDarkTheme}
+                darkTheme={darkTheme}
+                setDarkTheme={setDarkTheme}
                 toggleMenu={toggleMenu}
                 toggleMsg={toggleMsg}
               />
@@ -205,7 +213,14 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
         </Stack.Navigator>
       </NavigationContainer>
 
-      {menuOpen && <Menu  isOpen={menuOpen} nav={nav}darkTheme={darkTheme}toggleMenu={toggleMenu} />}
+      {menuOpen && (
+        <Menu
+          isOpen={menuOpen}
+          nav={nav}
+          darkTheme={darkTheme}
+          toggleMenu={toggleMenu}
+        />
+      )}
       {openMsg && <Messages isMsg={openMsg} toggleMsg={toggleMsg} />}
 
       <View style={styles.bottomTab}>
@@ -216,27 +231,37 @@ light:"https://i.postimg.cc/jd9sTxX2/Picsart-25-05-10-06-50-39-806.png"},
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             const isTab = pressedTab == item.id;
-		  let uri = item.light;
-		  if(darkTheme){uri = item.dark;}
-		  else if(isTab){uri = item.active;}
-		  
+            let uri = item.light;
+            if (darkTheme) {
+              uri = item.dark;
+            } else if (isTab) {
+              uri = item.active;
+            }
 
-		
             return (
               <TouchableOpacity
-                style={[styles.tabArea,{backgroundColor:darkTheme?"#022d36":"white"}]}
+                style={[
+                  styles.tabArea,
+                  { backgroundColor: darkTheme ? "#022d36" : "white" },
+                ]}
                 onPress={() => {
                   setPressedTab(item.id);
                   nav?.navigate(item.route);
                 }}
               >
-                  <Image
-                    style={styles.tabImage}
-                    source={{
-                      uri
-                    }}
-                  />
-                  <Text style={[styles.tabText],{color:darkTheme?"#ccc":"black"}}>{item.name}</Text>
+                <Image
+                  style={styles.tabImage}
+                  source={{
+                    uri,
+                  }}
+                />
+                <Text
+                  style={
+                    ([styles.tabText], { color: darkTheme ? "#ccc" : "black" })
+                  }
+                >
+                  {item.name}
+                </Text>
               </TouchableOpacity>
             );
           }}
@@ -258,25 +283,25 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     backgroundColor: "#D3DEE8",
-backgroundColor:"transparent",
+    backgroundColor: "transparent",
     borderTopWidth: 0,
     borderColor: "#ddd",
     paddingBottom: 0,
   },
   tabArea: {
     height: "100%",
-position:"relative",
+    position: "relative",
     padding: 4,
-	  gap:0,
-	  zIndex:55,
-	  alignItems:"center",
-	  justifyContent:"space-around",
-	  flexDirection:"column",
-	  backgroundColor:"#feb819",
-width:screenWidth/4,
+    gap: 0,
+    zIndex: 55,
+    alignItems: "center",
+    justifyContent: "space-around",
+    flexDirection: "column",
+    backgroundColor: "#feb819",
+    width: screenWidth / 4,
   },
   tab: {
-    height:"100%",
+    height: "100%",
     width: "100%",
     borderRadius: 15,
   },

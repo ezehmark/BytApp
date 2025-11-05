@@ -17,11 +17,17 @@ import AirtelPlans from "./airtelplans.tsx";
 import GloPlans from "./gloplans.tsx";
 import NineMobilePlans from "./ninemobileplans.tsx";
 
-const BuyData: React.FC = () => {
+import LivePlansList from "./liveplanslist";
+
+const BuyData = ({
+  livePlans,
+  setLivePlans
+}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
+  const[loadingPlans,setLoadingPlans]=useState(false)
 
   const [cardList, setCardList] = useState(false);
   const toggleCardList = () => {
@@ -57,46 +63,29 @@ const BuyData: React.FC = () => {
 
   return (
     <>
+
+    {cardList&&
+    <LivePlansList
+    livePlans={livePlans}
+    isList={cardList}
+    toggleCardList={toggleCardList}
+    onSelectCard={onSelectCard}
+    />}
+
       {isCard && (
         <MobileNetworks
+        setLivePlans={setLivePlans}
           isCard={isCard}
           toggleCard={toggleCard}
           handleSelectCard={handleSelectCard}
           handleWhich={handleWhichIsSelected}
+          setLoadingPlans={setLoadingPlans}
         />
       )}
 
-      {cardList && whichIsSelected === "MTN" && (
-        <MtnPlans
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
 
-      {cardList && whichIsSelected === "AIRTEL" && (
-        <AirtelPlans
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
 
-      {cardList && whichIsSelected === "GLO" && (
-        <GloPlans
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
-
-      {cardList && whichIsSelected === "9MOBILE" && (
-        <NineMobilePlans
-          isList={cardList}
-          toggleCardList={toggleCardList}
-          onSelectCard={onSelectCard}
-        />
-      )}
+      
       <View style={styles.container}>
         
         <LinearGradient
@@ -133,12 +122,13 @@ const BuyData: React.FC = () => {
               </View>
 
               <ScrollView style={styles.scrollView}>
-                <View style={styles.airtimeForm}>
+                <View style={styles.airtimeForm}
+                className='bg-red-500'>
                   <TouchableOpacity
                     onPress={() => toggleCard()}
                     style={styles.networkBox}
                   >
-                    <Text style={styles.selectNetwork}>{cardType}</Text>
+                    <Text style={styles.selectNetwork}>{cardType.toLocaleUpperCase()}</Text>
                     <Image
                       source={{
                         uri: "https://i.postimg.cc/bdcnJBLZ/Picsart-24-11-09-18-11-45-769.png",
@@ -148,12 +138,13 @@ const BuyData: React.FC = () => {
                   </TouchableOpacity>
 
                   <TouchableOpacity
+                  className='bg-red-500'
                     onPress={toggleCardList}
                     style={styles.networkBox}
                   >
                     
                     <Text style={styles.selectNetwork}>
-                      {giftCardType}
+                      {loadingPlans?'Loading...':'Choose Plans'}
                     </Text>
                     <Image
                       source={{
