@@ -8,11 +8,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { BlurView } from "expo-blur";
+import { normalizeColor } from "react-native-reanimated/lib/typescript/Colors";
 
 // ✅ Cleaned: removed unused interface & fixed array guard
 const LivePlansList = ({
   livePlans = [],
   isList,
+  setSelectedInfo,
+  setSelectedPlan,
   toggleCardList,
   onSelectCard,
 }) => {
@@ -40,7 +43,7 @@ const LivePlansList = ({
                       <TouchableOpacity
                         key={index}
                         style={styles.planBox}
-                        onPress={() => onSelectCard(plan.name)}
+                        onPress={() =>{setSelectedPlan(plan);setSelectedInfo(`${plan.name} ${plan.valid_for} ₦${plan.price_in_naira}`);toggleCardList()}}
                       >
                         <View style={styles.logoCover}>
                           <Image
@@ -48,7 +51,7 @@ const LivePlansList = ({
                             source={{ uri: plan.uri }}
                           />
                         </View>
-                        <Text style={styles.planName}>{plan.name}</Text>
+                        <Text style={[styles.planName,{fontWeight:'normal'}]}><Text style={{fontWeight:'bold'}}>{plan.name}</Text> {plan.valid_for} <Text style={{fontWeight:'bold'}}>₦{plan.price_in_naira}</Text></Text>
                       </TouchableOpacity>
                     ) : null
                   )

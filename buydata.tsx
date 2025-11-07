@@ -21,6 +21,8 @@ import LivePlansList from "./liveplanslist";
 
 const BuyData = ({
   livePlans,
+  selectedInfo,
+  setSelectedInfo,
   setLivePlans
 }) => {
   const navigation = useNavigation();
@@ -61,6 +63,35 @@ const BuyData = ({
     setWhichIsSelected(cardName);
   };
 
+  //The codes that run for the data purchase
+
+
+
+ const [selectedPlan, setSelectedPlan] = useState<any>(null);
+  const [selectedNetwork, setSelectedNetwork] = useState<any>(null);
+  const finalAmount =
+    selectedPlan?.name === "500MB (CG)"
+      ? 460
+      : selectedPlan?.name === "1gb Awoof"
+        ? 400
+        : selectedNetwork?.id === 3
+          ? selectedPlan?.price_in_naira < 450
+            ? Math.round(selectedPlan?.price_in_naira * 1.06)
+            : Math.round(selectedPlan?.price_in_naira * 1.035)
+          : Math.round(selectedPlan?.price_in_naira * 1.026);
+
+
+    const[phone,setPhone]=useState('')
+  const dataHistory = {
+    phone: phone,
+    planSize: selectedPlan?.name,
+    price: finalAmount,
+    type: "Data Purchase",
+    duration: selectedPlan?.valid_for,
+  };
+
+
+
   return (
     <>
 
@@ -68,6 +99,8 @@ const BuyData = ({
     <LivePlansList
     livePlans={livePlans}
     isList={cardList}
+    setSelectedPlan={setSelectedPlan}
+    setSelectedInfo={setSelectedInfo}
     toggleCardList={toggleCardList}
     onSelectCard={onSelectCard}
     />}
@@ -144,7 +177,8 @@ const BuyData = ({
                   >
                     
                     <Text style={styles.selectNetwork}>
-                      {loadingPlans?'Loading...':'Choose Plans'}
+                      {loadingPlans?'Loading...':finalAmount? `${selectedPlan.name} : ₦${finalAmount}`:'Choose Plans'}
+                      
                     </Text>
                     <Image
                       source={{
@@ -155,12 +189,12 @@ const BuyData = ({
                   </TouchableOpacity>
                   <TextInput
                     style={styles.pinInput}
-                    value={pin}
+                    value={phone}
                     placeholder="Phone number"
                     color="black"
                     keyboardType="numeric"
                     placeholderTextColor="#999"
-                    onChangeText={setPin}
+                    onChangeText={setPhone}
                   />
 
                   <TextInput

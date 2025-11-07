@@ -92,6 +92,10 @@ export default function App() {
     },
   ];
 
+  //Buy Data Global codes
+  const[selectedInfo,setSelectedInfo]=useState('Demo Plan: 100Gb')
+  
+
   return (
     <>
       <StatusBar
@@ -195,6 +199,8 @@ export default function App() {
                 setLivePlans={setLivePlans}
                 darkTheme={darkTheme}
                 toggleMenu={toggleMenu}
+                selectedInfo={selectedInfo}
+                setSelectedInfo={setSelectedInfo}
                 toggleMsg={toggleMsg}
               />
             )}
