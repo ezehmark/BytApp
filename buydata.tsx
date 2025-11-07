@@ -177,7 +177,7 @@ const BuyData = ({
                   >
                     
                     <Text style={styles.selectNetwork}>
-                      {loadingPlans?'Loading...':finalAmount? `${selectedPlan.name} : ₦${finalAmount}`:'Choose Plans'}
+                      {loadingPlans?'Loading data...':finalAmount? `${selectedPlan.name} : ₦${finalAmount}`:'Choose Plans'}
                       
                     </Text>
                     <Image
