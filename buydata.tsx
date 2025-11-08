@@ -90,6 +90,149 @@ const BuyData = ({
     duration: selectedPlan?.valid_for,
   };
 
+  const handleConfirm = async () => {
+    if (!user) {
+      router.push("/register");
+      return;
+    }
+    setIsLoading(true);
+    console.log(
+      `selected Price: ${Math.round(selectedPlan?.name === "500MB (CG)" ? selectedPlan?.price_in_naira * 1.06 : selectedPlan?.price_in_naira * 1.026)}`,
+    );
+    console.log(`finalAmount: ${finalAmount}`);
+    const balance = user.balance;
+    if (hydrated && !user) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      if (!hydrated) {
+        setChecker("State not ready yet");
+        setCheckerColor("gray-700");
+        setIsLoading(false);
+        return;
+      }
+
+      if (pin.length !== 4) {
+        setChecker("PIN must be 4 digits");
+        setCheckerColor("red-500");
+        setIsLoading(false);
+        return;
+      }
+
+      if (pin !== user.pin) {
+        setChecker("Wrong PIN. Try again");
+        setCheckerColor("red-500");
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1500);
+        return;
+      }
+
+      if (balance < finalAmount) {
+        setChecker(`Your balance is low, please add fund`);
+        setCheckerColor("gray-700");
+        console.log(user);
+        console.log(balance);
+        setIsLoading(false);
+        return;
+      }
+      const time = new Date();
+
+      removeFund(finalAmount); //Remove fund immediately on trial
+
+
+
+      const response = await axios.post(
+        "https://mybackend-oftz.onrender.com/dataPurchase",
+        { selectedPlan: selectedPlan.id, phone: phoneNumber, ref: user?.email },
+      );
+
+      if (response.data.status === "Success") {
+        setSuccess(true);
+      
+
+        const newBalance = balance - finalAmount;
+
+	const updatedUser = useStore.getState().user;
+      setUser(updatedUser);
+      await setDoc(doc(db, "bytpay_users", user.email), updatedUser, {
+        merge: true,                                                                          });     
+
+	console.log('User updated in db after a successful transaction');
+	const updatedHistory = {
+        ...dataHistory,
+        createdAt: time,
+        network: selectedNetwork.label,                                                       
+          id: new Date().toISOString(),
+        status: "Success",                                                                      
+        date: new Date().toISOString(),
+      };
+      updateHistory(updatedHistory);                                                                                                                                                  console.log("History updated:", updatedHistory);
+
+        if (user?.email) {
+          const userDoc = doc(db, "bytpay_transactions", user.email);
+          const recordsRef = collection(userDoc, "records");
+          try {
+            await addDoc(recordsRef, {
+              ...dataHistory,
+              createdAt: time,
+              network: selectedNetwork.label,
+              id: new Date().toISOString(),
+              status: "Success",
+              Balance: newBalance,
+              date: new Date().toISOString(),
+            });
+
+            setChecker(
+              `Successful transaction! You just bought ${selectedPlan?.name} of data. Enjoy!.`,
+            );
+          } catch (err) {
+            setChecker(err.message);
+            console.log(err);
+          }
+
+          /*setTimeout(() => {
+            router.push("/dashboard?from=dataTransaction");
+          }, 2000);*/
+        }
+      } else {
+	      addFund(finalAmount); //Re-add the amount on failure
+        const network = selectedPlan?.service_name;
+        const phone = phoneNumber;
+        const planSize = selectedPlan?.data_plan;
+        const price = selectedPlan?.price;
+        console.log(response.data.data.message);
+        if (response.data.data.message.includes("Insufficient")) {
+          setChecker(
+            "Data plans are currently being re-loaded, retry in a while",
+          );
+          return;
+        } else {
+          setChecker(response.data.data.message);
+        }
+
+        setTimeout(() => {
+          router.push(
+            `/services/data/failed?network=${selectedNetwork}&phone=${phone}&size=${selectedPlan?.name}&reason=${checker}&price=${finalAmount}`,
+          );
+        }, 4000);
+      }
+    } catch (err) {
+      if (err.status == 500) {
+        setChecker(
+          "Error processing your request; Please check your device internet connection",
+        );
+        setSuccess(false);
+        return;
+      }
+      setChecker(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
 
   return (
