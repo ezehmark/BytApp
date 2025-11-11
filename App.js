@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import {
   FlatList,
@@ -92,12 +92,61 @@ export default function App() {
     },
   ];
 
+  const[checker,setChecker]=useState('')
+  const checkerRef = useRef(null)
+
+  
+
   //Buy Data Global codes
   const[selectedInfo,setSelectedInfo]=useState('Demo Plan: 100Gb')
   
 
   return (
     <>
+    {checker && (
+  <TouchableOpacity
+  onPress={()=>setChecker('')}
+    ref={checkerRef}
+    style={{
+      position: "absolute",
+      top: 50,
+      zIndex: 100,
+      maxWidth: 320,
+      marginBottom: 24,
+      padding: 12,
+      backgroundColor: "#EBF8FF", // blue-100
+      borderWidth: 1,
+      borderColor: "#D1D5DB", // gray-100
+      borderRadius: 20,
+      shadowColor: "#000",
+      shadowOffset: { width: 1, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 10,
+      elevation: 6, // for Android shadow
+    }}
+  >
+    <View
+      style={{
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 16,
+      }}
+    >
+      
+      <Text
+        style={{
+          color: "#1E3A8A", // blue-900
+          fontWeight: "500",
+          textAlign: "center",
+        }}
+      >
+        {checker}
+      </Text>
+    </View>
+  </TouchableOpacity>
+)}
+
       <StatusBar
         barStyle={darkTheme ? "light-content" : "dark-content"}
         backgroundColor={darkTheme ? "black" : "white"}
@@ -197,6 +246,8 @@ export default function App() {
                 {...props}
                 livePlans={livePlans}
                 setLivePlans={setLivePlans}
+                checker={checker}
+                setChecker={setChecker}
                 darkTheme={darkTheme}
                 toggleMenu={toggleMenu}
                 selectedInfo={selectedInfo}

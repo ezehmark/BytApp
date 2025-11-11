@@ -1,15 +1,20 @@
 module.exports = function (api) {
   api.cache(true);
 
+  const plugins = [
+    'nativewind/babel',
+    'react-native-reanimated/plugin', // must stay last
+  ];
+
+  if (process.env.NODE_ENV === 'production') {
+    plugins.splice(1, 0, [
+      'transform-remove-console',
+      { exclude: ['error', 'warn'] },
+    ]);
+  }
+
   return {
-    presets: ["babel-preset-expo"],
-    plugins: [
-      "nativewind/babel",
-      [
-        "transform-remove-console",
-        { exclude: ["error", "warn"] } // optional fine-tuning
-      ],
-      "react-native-reanimated/plugin", // must be last
-    ],
+    presets: ['babel-preset-expo'],
+    plugins,
   };
 };

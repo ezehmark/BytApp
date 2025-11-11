@@ -12,23 +12,38 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import MobileNetworks from "./mobilenetworks";
-import MtnPlans from "./mtnplans.tsx";
-import AirtelPlans from "./airtelplans.tsx";
-import GloPlans from "./gloplans.tsx";
-import NineMobilePlans from "./ninemobileplans.tsx";
+import useStore from "./zustand";
 
 import LivePlansList from "./liveplanslist";
+import axios from "axios";
 
 const BuyData = ({
   livePlans,
   selectedInfo,
   setSelectedInfo,
-  setLivePlans
+  setLivePlans,
+  checker,
+  setChecker
 }) => {
+ const user = useStore(s=>s.user)
+
+ 
+
+
+  //const[user,setUser]=useState(mockUser)
+    const removeFund = useStore((state) => state.removeFund);
+  const addFund = useStore(s=>s.addFund);
+  const setUser = useStore((s) => s.setUser);
+ 
+
+  const tpin = useStore((s) => s.tpin);
+ 
+  const [success, setSuccess] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
   const toggleMenu = route.params?.toggleMenu;
   const toggleMsg = route.params?.toggleMsg;
+  
   const[loadingPlans,setLoadingPlans]=useState(false)
 
   const [cardList, setCardList] = useState(false);
@@ -37,6 +52,7 @@ const BuyData = ({
   };
 
   const [pin, setPin] = useState("");
+  const[phone,setPhone]=useState(null)
 
   const [isCard, setIsCard] = useState(false);
   const toggleCard = () => {
@@ -81,7 +97,7 @@ const BuyData = ({
           : Math.round(selectedPlan?.price_in_naira * 1.026);
 
 
-    const[phone,setPhone]=useState('')
+  
   const dataHistory = {
     phone: phone,
     planSize: selectedPlan?.name,
@@ -90,9 +106,17 @@ const BuyData = ({
     duration: selectedPlan?.valid_for,
   };
 
+    const [loading, setLoading] = useState(false);
+      const [isLoading, setIsLoading] = useState(false);
+
+      const hydrated = useStore.persist?.hasHydrated()
+
+       const updateHistory = useStore((s) => s.updateHistory);
+
+      //The handle confirm function
   const handleConfirm = async () => {
     if (!user) {
-      router.push("/register");
+      //router.push("/register");
       return;
     }
     setIsLoading(true);
@@ -100,7 +124,7 @@ const BuyData = ({
       `selected Price: ${Math.round(selectedPlan?.name === "500MB (CG)" ? selectedPlan?.price_in_naira * 1.06 : selectedPlan?.price_in_naira * 1.026)}`,
     );
     console.log(`finalAmount: ${finalAmount}`);
-    const balance = user.balance;
+    const balance = user?.balance;
     if (hydrated && !user) {
       setIsLoading(false);
       return;
@@ -109,21 +133,21 @@ const BuyData = ({
     try {
       if (!hydrated) {
         setChecker("State not ready yet");
-        setCheckerColor("gray-700");
+
         setIsLoading(false);
         return;
       }
 
       if (pin.length !== 4) {
         setChecker("PIN must be 4 digits");
-        setCheckerColor("red-500");
+      
         setIsLoading(false);
         return;
       }
 
       if (pin !== user.pin) {
         setChecker("Wrong PIN. Try again");
-        setCheckerColor("red-500");
+     
         setTimeout(() => {
           setIsLoading(false);
         }, 1500);
@@ -132,7 +156,7 @@ const BuyData = ({
 
       if (balance < finalAmount) {
         setChecker(`Your balance is low, please add fund`);
-        setCheckerColor("gray-700");
+      
         console.log(user);
         console.log(balance);
         setIsLoading(false);
@@ -146,7 +170,7 @@ const BuyData = ({
 
       const response = await axios.post(
         "https://mybackend-oftz.onrender.com/dataPurchase",
-        { selectedPlan: selectedPlan.id, phone: phoneNumber, ref: user?.email },
+        { selectedPlan: selectedPlan.id, phone: phone, ref: user?.email },
       );
 
       if (response.data.status === "Success") {
@@ -157,8 +181,9 @@ const BuyData = ({
 
 	const updatedUser = useStore.getState().user;
       setUser(updatedUser);
-      await setDoc(doc(db, "bytpay_users", user.email), updatedUser, {
-        merge: true,                                                                          });     
+     /* await setDoc(doc(db, "bytpay_users", user.email), updatedUser, {
+        merge: true,                                                                        
+        });   */  
 
 	console.log('User updated in db after a successful transaction');
 	const updatedHistory = {
@@ -172,10 +197,10 @@ const BuyData = ({
       updateHistory(updatedHistory);                                                                                                                                                  console.log("History updated:", updatedHistory);
 
         if (user?.email) {
-          const userDoc = doc(db, "bytpay_transactions", user.email);
-          const recordsRef = collection(userDoc, "records");
+         // const userDoc = doc(db, "bytpay_transactions", user.email);
+          //const recordsRef = collection(userDoc, "records");
           try {
-            await addDoc(recordsRef, {
+           /* await addDoc(recordsRef, {
               ...dataHistory,
               createdAt: time,
               network: selectedNetwork.label,
@@ -183,7 +208,7 @@ const BuyData = ({
               status: "Success",
               Balance: newBalance,
               date: new Date().toISOString(),
-            });
+            });*/
 
             setChecker(
               `Successful transaction! You just bought ${selectedPlan?.name} of data. Enjoy!.`,
@@ -193,14 +218,12 @@ const BuyData = ({
             console.log(err);
           }
 
-          /*setTimeout(() => {
-            router.push("/dashboard?from=dataTransaction");
-          }, 2000);*/
+         
         }
       } else {
 	      addFund(finalAmount); //Re-add the amount on failure
         const network = selectedPlan?.service_name;
-        const phone = phoneNumber;
+        const phone = phone;
         const planSize = selectedPlan?.data_plan;
         const price = selectedPlan?.price;
         console.log(response.data.data.message);
@@ -213,11 +236,11 @@ const BuyData = ({
           setChecker(response.data.data.message);
         }
 
-        setTimeout(() => {
+        /*setTimeout(() => {
           router.push(
             `/services/data/failed?network=${selectedNetwork}&phone=${phone}&size=${selectedPlan?.name}&reason=${checker}&price=${finalAmount}`,
           );
-        }, 4000);
+        }, 4000);*/
       }
     } catch (err) {
       if (err.status == 500) {
@@ -350,7 +373,9 @@ const BuyData = ({
                     onChangeText={setPin}
                   />
 
-                  <TouchableOpacity style={styles.buyBox}>
+                  <TouchableOpacity style={styles.buyBox}
+                  disabled={isLoading}
+                  onPress={()=>handleConfirm()}>
                     
                     <Text style={styles.buyText}>Buy Data</Text>
                   </TouchableOpacity>

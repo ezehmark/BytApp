@@ -55,7 +55,22 @@ const zustandMMKVStorage = {
 const useStore = create<StoreState>()(
   persist(
     (set, get) => ({
-      user: null,
+      user: {
+        agreedToTerms: true,
+        balance: 140438,
+        bankDetails: {
+          accountNumber: "8817651850",
+          bankName: "Sterling BANK",
+        },
+        createdAt: "2025-08-06T01:25:19.627Z",
+        email: "ezehmark@gmail.com",
+        fromGoogle: false,
+        fullName: "Engr. Mark",
+        password: "Mark@BytPay5050",
+        phone: "09036202766",
+        pin: "5555",
+        verified: true
+      },
       loggedIn: false,
       tpin: 5555,
       storedPlans: null,
