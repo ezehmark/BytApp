@@ -1,10 +1,7 @@
 module.exports = function (api) {
   api.cache(true);
 
-  const plugins = [
-    'nativewind/babel',
-    'react-native-reanimated/plugin', // must stay last
-  ];
+  const plugins = ['react-native-reanimated/plugin'];
 
   if (process.env.NODE_ENV === 'production') {
     plugins.splice(1, 0, [
@@ -12,9 +9,9 @@ module.exports = function (api) {
       { exclude: ['error', 'warn'] },
     ]);
   }
-
+//new changes
   return {
-    presets: ['babel-preset-expo'],
+    presets: ['babel-preset-expo', 'nativewind/babel'],
     plugins,
   };
 };
