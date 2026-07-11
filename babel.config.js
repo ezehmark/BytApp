@@ -1,14 +1,16 @@
 module.exports = function (api) {
   api.cache(true);
 
-  const plugins = ['react-native-worklets/plugin', 'react-native-reanimated/plugin'];
+  const plugins = ['react-native-worklets/plugin'];
 
   if (process.env.NODE_ENV === 'production') {
-    plugins.splice(2, 0, [
+    plugins.push([
       'transform-remove-console',
       { exclude: ['error', 'warn'] },
     ]);
   }
+
+  plugins.push('react-native-reanimated/plugin');
 
   return {
     presets: ['babel-preset-expo', 'nativewind/babel'],
